@@ -1,0 +1,10 @@
+## Set these options. If option not exists, create it.
+ServerName "Galaxy FTP"
+Umask                           077
+AllowOverwrite                  on
+AllowStoreRestart               on
+
+##unmark
+DefaultRoot                     ~
+PassivePorts                  49152 65534
+Include /etc/proftpd/sql.conf

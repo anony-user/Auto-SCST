@@ -1,0 +1,22 @@
+<?xmlversion="1.0" encoding="utf-8"?>
+<!--   <jnlp spec="1.0+"codebase="http://unicoderewriter.sourceforge.net/webstart" href="UnicodeRewriterWebStart.jnlp"> -->
+   <jnlp spec="1.0+"codebase="file://///Users/huicw/UnicodeRewriter/webstart" href="UnicodeRewriterWebStart.jnlp">
+	<information>
+		<title>Unicode Rewriter</title>
+               	<vendor>ChiWai</vendor>
+               	<homepage href="http://unicoderewrite.sourceforge.net"/>
+		<description>Unicode Rewriter Web Start Launcher</description>
+		<description kind="short">Unicode Rewriter Web Start</description>
+		<icon href="images/sheep.png"/>
+		<offline-allowed/> 
+	</information>
+	<security>
+		<all-permissions/>
+	</security>
+       <resources>
+		<j2se version="1.4+"/>
+		<jar href="UnicodeRewriterS.jar"/>
+		<jar href="org.netbeans.lib.awtextraS.jar"/>
+       </resources>
+       <application-desc main-class="net.chiwai.UnicodeRewriter"/>
+</jnlp>

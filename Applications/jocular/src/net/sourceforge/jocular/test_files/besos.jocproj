@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<opticsProject version="0.036">
+	<ROOT_GROUP id="1171452141">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<POINT_SOURCE id="-1307112717">
+			<property key="NAME">S1</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="WAVELENGTH_MEAN">685nm</property>
+			<property key="WAVELENGTH_FWHM">0</property>
+			<property key="PHASE_FWHM">0</property>
+			<property key="TRANS_ANGLE">30deg</property>
+			<property key="ORTHO_ANGLE">30deg</property>
+			<positioner id="-1429705749" type="OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<POINT_SOURCE id="692195283">
+			<property key="NAME">S2</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="WAVELENGTH_MEAN">530nm</property>
+			<property key="WAVELENGTH_FWHM">0</property>
+			<property key="PHASE_FWHM">0</property>
+			<property key="TRANS_ANGLE">30deg</property>
+			<property key="ORTHO_ANGLE">30deg</property>
+			<positioner id="715330010" type="OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<POINT_SOURCE id="1196381482">
+			<property key="NAME">S3</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="WAVELENGTH_MEAN">470nm</property>
+			<property key="WAVELENGTH_FWHM">0</property>
+			<property key="PHASE_FWHM">0</property>
+			<property key="TRANS_ANGLE">30deg</property>
+			<property key="ORTHO_ANGLE">30deg</property>
+			<positioner id="475191329" type="OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<PART id="-960263368">
+			<property key="NAME">L1</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="FILE_NAME">Off the shelf parts/Linos G052010000 doublet.jocproj</property>
+			<positioner id="-114806357" type="OFFSET">
+				<property key="DIR_OFFSET">27.68252mm</property>
+			</positioner>
+		</PART>
+		<OPTICS_GROUP id="-1227402670">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<PART id="1292276209">
+				<property key="NAME">Prism</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="FILE_NAME">Off the shelf parts/Edmunds U43-494 Equilateral Prism.jocproj</property>
+				<positioner id="61751431" type="REVERSE_OFFSET">
+					<property key="DIR_OFFSET">0</property>
+				</positioner>
+			</PART>
+			<positioner id="633664125" type="TRANSVERSE_OFFSET">
+				<property key="DIR_OFFSET">42mm</property>
+				<property key="TRANS_OFFSET">0</property>
+				<property key="ORTHO_OFFSET">6mm</property>
+			</positioner>
+		</OPTICS_GROUP>
+		<OPTICS_GROUP id="-1951603706">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<PART id="325537104">
+				<property key="NAME">L2</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="FILE_NAME">Off the shelf parts/Linos G052008000 doublet.jocproj</property>
+				<positioner id="-691363397" type="OFFSET">
+					<property key="DIR_OFFSET">20mm</property>
+				</positioner>
+			</PART>
+			<IMAGER id="1280319228">
+				<property key="NAME"></property>
+				<property key="SUPPRESSED">false</property>
+				<property key="PIXEL_TYPE">MONO</property>
+				<property key="TRANS_SIZE">0.01</property>
+				<property key="ORTHO_SIZE">0.01</property>
+				<property key="TRANS_DIM">100</property>
+				<property key="ORTHO_DIM">100</property>
+				<property key="ABSORBS_PHOTONS">true</property>
+				<property key="IMAGE">iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAANElEQVR42u3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgx1lAABLpXWfAAAAABJRU5ErkJggg==</property>
+				<positioner id="1984470802" type="OFFSET">
+					<property key="DIR_OFFSET">37mm</property>
+				</positioner>
+			</IMAGER>
+			<positioner id="-909723067" type="ANGLE">
+				<property key="ROT_AXIS">TRANS_AXIS</property>
+				<property key="ANGLE">-60deg</property>
+				<property key="DIR_OFFSET">42mm</property>
+			</positioner>
+		</OPTICS_GROUP>
+		<positioner id="1290313962" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

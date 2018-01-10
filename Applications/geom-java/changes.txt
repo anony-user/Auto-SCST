@@ -1,0 +1,399 @@
+Changes in javaGeom library
+
+* lots of changes in method names
+* fixed AffineTransform2D.isMotion(), and cleanup code
+
+
+javaGeom-0.10.2   (2012.03.11, rev. 315)
+=====
+
+* fixed clipping of PolyOrientedCurve2D
+* added Domain2D.getAsPolygon()
+* fixed bug for computation of polygons buffer
+* enhanced buffer computation of curves with coincident tangents by using
+	curvature information
+* updated MultiPolygon2D class
+
+
+javaGeom-0.10.1   (2012.01.19, rev. 306)
+=====
+
+* used gpcj library version 2.2.0
+* added Circle2D.getIntersections(Circle2D)
+* fixed several bugs in circle inversion computation
+
+
+javaGeom-0.10.0   (2011.12.04, rev. 298)
+=====
+
+New features
+- added Point2D.plus(Vector2D) and Point2D.minus(Vector2D)
+- added methods for inserting vertices into simple polygons
+- added methods for filtering multiple adjacent vertices
+- added method SimplePolygon2D.getRing()
+- replaced static constructors with arrays by constructors with variable number
+    of arguments (ellipse)
+
+Bug fixes
+- fixed bug for clipping of clockwise polygons
+- fixed bug for circle inversion of lines and rays
+
+Regressions
+- removed dependency to java.awt.Point, making the library less dependent from awt
+
+
+javaGeom-0.9.2 (2011.10.16, rev. 286)
+=====
+
+Simply add the gpcj library to the jar and to the source.
+
+
+javaGeom-0.9.1 (2011.10.06, rev. 285)
+=====
+
+New features
+- added support for centroid and area computation of any polygon
+- added creation of rectangle polygons in Polygon2DUtils.
+- added computation of polygon difference
+- refactoring of buffer computation, created interfaces for cap and join
+	creation of curve buffers
+- added method Curve2D.getVertices()
+
+Bug fixes
+- fixed bug in Angle2D.getHorizontalAngle(doubles...)
+- fixed buffer of generic circulinear domains
+- fix buffer of polylines with multiple vertices
+- fix bug for buffer of infinite curves (lines or rays)
+
+Regressions
+- deprecated Boundary2D.getBoundaryCurves(), replaced by getContinuousCurves()
+- removed ContinuousCirculinearCurve2D
+- renamed CirculinearBoundarySet2D to CirculinearContourArray2D
+- splitted CirculinearCurveSet2D into interface and array implementation
+- put buffer computation classes in separate directory
+
+
+javaGeom-0.9.0 (2010.11.06, rev. 264)
+====
+
+main changes are removal of obsolete classes and methods, and a slight
+re-organisation of class hierarchy (mainly shape sets)
+
+New features
+- removed deprecated classes and methods
+- added ShapeSet2D, ShapeArray2D, DomainSet2D and DomainArray2D
+- added the GPCJ library, that can handle boolean operation on polygons
+	(union, intersection, difference, exclusive difference)
+	
+Bug fixes
+- fixed bugs in buffer computation
+- fixed bug in drawing polylines
+- correctly manages orientation of porjections on ellipse
+- fixed bugs in Polyline2D, LinearRing2D with last vertex equal to the first
+	one
+
+Regressions
+- removed many deprecated classes and methods, to cleanup the general design
+- CurveSet2D is now an interface, use CurveArray2D for implementation
+- renamed ContinuousBoundary2D as Contour2D
+- renamed ContinuousCirculinearCurve2D as CirculinearContinuousCurve2D
+- renamed BoundarySet2D as ContourArray2D
+- renamed exceptions classes
+
+Code
+- introduced LinearElement2D
+- introfuced the GeometricObject2D, superclass of shapes and transforms
+- removed 'final' from static methods
+- put declaration of static methods in the beginning of classes
+
+
+javaGeom-0.8.1 (2009.11.15, rev. 242)
+====
+
+New features
+- better support for buffer of infinite curves
+- added static factories in most implementation classes
+- added CirculinearCurve2DUtils.convert() method
+- added NonCirculinearClassException
+- added Point2D.centroid() by using weights
+
+Bug fixes
+- improve buffer of smooth curves by removing some curves that were too close
+	from original curve
+- fixed assertion bug in Conics
+- fix buffer computation of some shapes
+
+Regressions
+- changed ContinuousCirculinearCurve2D to CirculinearContinuousCurve2D
+
+Code
+- code rewriting in CirculinearCurve2D
+- added missing @override annotations
+
+
+javaGeom-0.8.0 (2009.06.09, rev. 226)
+====
+
+New features
+- added Circulinear branch, which manages curves composed of portion of lines
+	and/or of circles. This makes possible computation of curve length, curve
+	parallels, and shape buffers. Main implemented features:
+	+ CirculinearCurve2D.getParallel(double): computes the parallel curve
+	+ CirculinearShape2D.getBuffer(double): computes buffer of the shape
+	+ CirculinearShape2D.transform(CircleInversion2D): computes the result of
+		transform by a circle inversion.
+	+ CirculinearCurve2D.getLength(): computes total length of the curve
+	+ CirculinearCurve2D.getLength(double): converts position to length
+	+ CirculinearCurve2D.getPosition(double): converts length to position
+- added getLeftTangent() and getRightTangent() methods in ContinuousCurve2D
+	
+Bug fixes
+- fixed drawing of polycurves
+- fixed bug in intersecting circle arc and line
+- fixed bug in computing distance to some linear shapes
+- fixed bug in computation of box boundary
+
+Regressions
+- Ring2D renamed to LinearRing2D, reserving 'Ring2D' for an interface definition
+
+Code
+- splitted CurveSet2D (for future interface) and CurveArray2D (default
+	implementation of CurveSet2D)
+- introduced AbstractContinuousCurve and AbstractSmothCurve to reduce code
+	copies
+- normalized toString() methods of simple curves	
+	
+	
+javaGeom-0.7.1 (2009-04-24, rev. 198)
+====
+
+bug fixes
+- fixed bug in intersecting circle arc and line
+- added static builders for PolyBezierCurve2D
+- update class names in spline package
+- added accessors in Ellipse2D and EllipseArc2D
+- added Hyperbola2D.getAsymptotes()
+- fixed bug in HyperbolaBranch2D
+- fixed clipping of Empty CurveSet2D
+- Point2D.clip now returns an instance of PointSet2D
+- fixed bug in Line2D.
+
+
+javaGeom-0.7.0 (2009-02-17, rev. 192)
+====
+
+New features
+- Added Convex hull by Graham scan
+- Added point package, which contains point set implementations, and the
+	interface PointShape2D.
+- Added KDTree2D
+- Conic2D now implements Boundary2D
+- added Angle2D.getPseudoAngle();
+
+Regressions
+- Shape2D does not inherit from java.awt.Shape anymore, reducing the number of
+	methods for most classes
+- removed useless classes:
+	+ Disc2D, ParametricConic2D, HalfPlane2D
+- removed obsolete methods:
+	+ Polygon2D.getVerticesNumber()
+	+ PointSet2D.getPointsNumber()
+	+ Conic2D.getCartesianEquation()
+	+ Transform2D.transform(Point2D, Point2D) -> Point will become immutable
+- deprecated classes with doubtful use:
+	+ empty shapes
+	+ Point2D.INFINITY_POINT
+
+Code
+- moved Polylines into polygon package, and renamed 'ClosedPolyline2D' as
+    'Ring2D'
+- moved PointSet2D into point package
+- renamed 'LineObject2D' to 'Line2D', and changed its implementation
+    
+    
+javaGeom-0.6.3 (2008-12-22, rev. 167)
+====
+
+New features
+- Added Convex hull by Jarvis March
+- instances of Domain2D can be complemented
+- added methods to draw shapes:
+	+ Curve2D.draw(),
+	+ Boundary2D.fill(),  
+	+ Domain2D.fill(), Domain2D.draw()
+	+ Box2D.draw(), Box2D.fill()
+	+ Point2D.draw(), PointSet2D.draw()
+- implemented getWindingAngle() of EllipseArc2D, ParabolaArc2D
+- added Polyline2D.getVertex() and Polygon2D.getVertex()
+	
+Regressions
+- removed Shape2D.defaultClipWindow
+- changed names of methods in polylines and polygons: 
+	+ 'Points' -> 'Vertices'
+	+ 'verticesNumber' -> 'vertexNumber'
+- remove deprecated methods 
+	+ getClippedShape in Point2D
+- changed AffineTransform2D.getInverseTransform() to invert()
+
+Bug fixes
+- fixed projection on lines (!)
+- fixed computation of curvature for quad and cubic splines
+- fixed clipping of BoundaryPolyCurve2D
+- fixed clipping of domains
+- fixed clipping of inverse circle arcs
+
+Coding
+
+
+	
+javaGeom-0.6.2 (2008-07-30, rev. 153)
+====
+
+New features:
+geom2d:
+- added QuadBezier2D
+- added grid subpackage
+- added Boundary2D.getDomain(): Domain2D
+
+Bug fixes
+geom2d:
+- Many bug fixes in conics:
+	+ fixed transform of Parabolas
+	+ fixed transform and comparison of Ellipses
+	+ fixed transform, clipping, computation of conic coefficients for Hyperbolas
+	+ introduced construction of Ellipse from 2 focii
+- Fixed clipping of boundaries
+
+Coding
+geom2d:
+- introduced UnboundedShapeException, NonInvertibleTransformException
+- dissociate LineArc2D from other line classes
+- many changes in class names:
+	+ Utilitary classes are now named XXXUtils
+	+ Polygon2D->SimplePolygon2D, PolygonalShape2D->Polygon2D
+	+ StraightObject2D splitted into LinearShape2D (interface) and AbstractLine2D
+
+		
+javaGeom-0.6.1 (2008-05-24, rev. 137)
+====
+
+Start implementing 3D methods, revision of package hierarchy.
+
+geom2d:
+- splitted curve subpackage into curve and domain subpackages
+- fixed clipping of closed curves, and implemented clipping methods in the
+	specific class 'CurveUtil' and 'Boundary2DUtil'.
+- simplified hierarchy of affine transforms, to keep only one concrete class.
+- added method Shape2D.isEmpty()
+- lot of rewriting in Box2D:
+	+ Box2D does not implement PolygonalShape2D anymore
+	+ better support of infinite boxes
+- removed Dimension2D (useless)
+
+geom3d:
+- added several classes:
+	+ Vector3D, Box3D, PointSet3D, and EmptySet3D
+	+ /curve: Curve3d, ContinuousCurve3D
+	+ /line: StraightLine3D, LineSegment3D
+	+ /plane: Plane3D
+
+
+
+javaGeom-0.6.0 (2008-03-08, rev. 115)
+====
+
+- changed package hierarchy, by dividing geom2d into several subpackages
+- implemented Iterable for PointSet2D and CurveSet2D
+- introduced SmoothOrientedCurve2D interface
+- curve: add method Curve2D.project(Point2D), different from the method
+	Curve2D.getPosition(Point2D), for better computation of curve clipping.
+- improved implementation of Hyperbola2D and Parabola2D, and their respective
+	arcs
+- various code cleanup
+
+
+javaGeom-0.5.2 (2008-01-17, rev. 93)
+
+- Clipping of smooth curves has been improved
+- Function "shape2D.getClippedShape()" have been renamed to
+	"Shape2D.clip()", and clipping procedures have been improved
+- Replace Math.sqrt() by Math.hypot(), to make computations more robust
+- Vector2D is more robust for checking colinearity and orthogonality
+- CircleArc2D.getReverseCurve() now returns a circle arc, not an ellipse arc
+- Some classes have been renamed:
+	Domain2D to GenericDomain2D, 
+	AbstractDomain2D to Domain2D, 
+	AbstractPolygon2D to PolygonalShape2D
+- Deprecate class ContinuousOrientedCurveSet2D, and remove references to it
+- add LinearTransforms, and GlideReflection2D
+
+
+javaGeom-0.5.1 (2007-12-02, rev. 86)
+====
+
+- Use generics for curve set implementations, giving more control on type cast
+	and adding more safety 
+- Change hierarchy of affine transforms, allowing more control on type of 
+	transforms after transform composition 
+- Specialize the return type of overloaded methods when necessary 
+- Add more controls on the curve collection in CurveSet2D 
+- Deprecate class PolarPoint2D 
+- Fix bug in polyline path
+
+
+javaGeom-0.5.0 (2007-10-20, rev. 76)
+====
+
+- Better support for generics
+- Change implementation of Bounding box, making it more robust and more generic
+- Add fonction to compute polygon centroid
+- Add class MultiPolygon2D, for multiply connected polygons
+- improve stability and robustness for various functions (point-point 
+	distances, affine transform)
+- improve implementation of Parabola2D and ParabolArc2D
+- introduce Hyperbolic conics (HyperbolaD, HyperbolaBranch2D, and 
+	HyperbolaBranchArc2D)
+
+
+javaGeom-0.4.0 (2007-05-13, rev. 55)
+====
+
+- update to Java 1.5.0 and to generics (finally !)
+- add method Curve2D.getReverseCurve() which returns same curve with inverse
+	parametrization
+- add method ContinuousCurve2D.getAsPolyline(int), to use extract curve
+	approximation with a given number of subsegments
+- Implements methods in BezierCurve2D and ParabolaArc2D which uses polyline
+	approximations
+
+
+javaGeom-0.3.2 (2007-05-03, rev. 47)
+====
+
+- Introduce ParabolaArc2D
+- minor changes in Parabola2D
+- Add setter class for geometric classes: Circle2D, CircleArc2D, 
+	StraightLine2D, LineSegment2D, Ray2D...
+- AbstractPolygon2D now returns an iterator instead of a Point2D array
+- Polyline2D and Polygon2D admit better handling of points
+
+
+javaGeom-0.3.1 (2007-04-22, rev. 45)
+====
+
+- Box2D implements methods for clipping different types of curves
+- add method ContinuousCurve2D.getSubcurve(double, double) to extract a piece
+	of curve.
+- class hierarchy of different classes has been updated
+- better support for curve sets, 
+- better support for pathIterator of many curves
+- fix bugs, in particular in EllipseArc2D and CircleArc2D
+
+
+javaGeom v0.3.0 (rev. 29)
+====
+
+- The support of some conics have been improved, and Parabola2D is introduced.
+- The curve hierarchy have been rewritten, M
+- Modifications have been made in the hierarchy of affine transforms.
+

@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<opticsProject version="0.039">
+	<ROOT_GROUP id="1303333830">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<POINT_SOURCE id="-1174671958">
+			<property key="NAME">S1</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="WAVELENGTH_MEAN">650nm</property>
+			<property key="WAVELENGTH_FWHM">0</property>
+			<property key="PHASE_FWHM">0</property>
+			<property key="TRANS_ANGLE">20deg</property>
+			<property key="ORTHO_ANGLE">20deg</property>
+			<positioner id="2141903570" type="OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<POINT_SOURCE id="761998603">
+			<property key="NAME">S2</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="WAVELENGTH_MEAN">450nm</property>
+			<property key="WAVELENGTH_FWHM">0</property>
+			<property key="PHASE_FWHM">10deg</property>
+			<property key="TRANS_ANGLE">20deg</property>
+			<property key="ORTHO_ANGLE">20deg</property>
+			<positioner id="1421448252" type="OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<POINT_SOURCE id="1545078628">
+			<property key="NAME">S3</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="WAVELENGTH_MEAN">550nm</property>
+			<property key="WAVELENGTH_FWHM">0</property>
+			<property key="PHASE_FWHM">10deg</property>
+			<property key="TRANS_ANGLE">20deg</property>
+			<property key="ORTHO_ANGLE">20deg</property>
+			<positioner id="-1655576563" type="OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<POINT_SOURCE id="819452913">
+			<property key="NAME">S4</property>
+			<property key="SUPPRESSED">true</property>
+			<property key="WAVELENGTH_MEAN">525nm</property>
+			<property key="WAVELENGTH_FWHM">200nm</property>
+			<property key="PHASE_FWHM">10deg</property>
+			<property key="TRANS_ANGLE">20deg</property>
+			<property key="ORTHO_ANGLE">20deg</property>
+			<positioner id="-1058221309" type="OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<PART id="862363822">
+			<property key="NAME">L1 Edmunds-32-315</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="FILE_NAME">Off%20the%20shelf%20parts/Edmunds%2032-315.jocproj</property>
+			<positioner id="-2132977598" type="REVERSE_OFFSET">
+				<property key="DIR_OFFSET">40mm</property>
+			</positioner>
+		</PART>
+		<TRIANGULAR_PRISM id="-1256727667">
+			<property key="NAME">PR1</property>
+			<property key="SUPPRESSED">true</property>
+			<property key="INSIDE_MATERIAL">SF10</property>
+			<property key="WIDTH">15mm</property>
+			<property key="LENGTH">15mm</property>
+			<property key="ANGLE_1">60deg</property>
+			<property key="ANGLE_2">60deg</property>
+			<positioner id="321021254" type="TRANSLATE_ROTATE">
+				<property key="DIR_OFFSET">77mm</property>
+				<property key="TRANS_OFFSET">0.0</property>
+				<property key="ORTHO_OFFSET">2mm</property>
+				<property key="DIR_ANGLE">0</property>
+				<property key="TRANS_ANGLE">180deg</property>
+				<property key="ORTHO_ANGLE">0</property>
+			</positioner>
+		</TRIANGULAR_PRISM>
+		<PART id="1448889319">
+			<property key="NAME">PR2</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="FILE_NAME">Off%20the%20shelf%20parts/Edmunds%20U43-494%20Equilateral%20Prism.jocproj</property>
+			<positioner id="1185933780" type="TRANSLATE_ROTATE">
+				<property key="DIR_OFFSET">73mm</property>
+				<property key="TRANS_OFFSET">0</property>
+				<property key="ORTHO_OFFSET">3mm</property>
+				<property key="DIR_ANGLE">0</property>
+				<property key="TRANS_ANGLE">180deg</property>
+				<property key="ORTHO_ANGLE">0</property>
+			</positioner>
+		</PART>
+		<OPTICS_GROUP id="1787456999">
+			<property key="NAME">G2</property>
+			<property key="SUPPRESSED">false</property>
+			<EXTRUDED_SPLINE id="1159165886">
+				<property key="NAME">ES1</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="INSIDE_MATERIAL">N_BK7</property>
+				<property key="SIMPLIFY_THRESHOLD">0.0</property>
+				<property key="POINTS_X">2mm,2mm*cos(30deg),2mm*cos(60deg),-2mm,-2mm,2mm*cos(-60deg),2mm*cos(-30deg)</property>
+				<property key="THICKNESS">10mm</property>
+				<property key="POINTS_Y">0.0,2mm*sin(30deg),2mm*sin(60deg),4mm,-4mm,2mm*sin(-60deg),2mm*sin(-30deg)</property>
+				<property key="POINTS_TYPES">SMOOTH,SMOOTH,SMOOTH,CUSP,CUSP,SMOOTH,SMOOTH</property>
+				<positioner id="294661637" type="TRANSLATE_ROTATE">
+					<property key="DIR_OFFSET">50mm</property>
+					<property key="TRANS_OFFSET">0</property>
+					<property key="ORTHO_OFFSET">0</property>
+					<property key="DIR_ANGLE">0</property>
+					<property key="TRANS_ANGLE">-90deg</property>
+					<property key="ORTHO_ANGLE">0</property>
+				</positioner>
+			</EXTRUDED_SPLINE>
+			<EXTRUDED_SPLINE id="1740231255">
+				<property key="NAME">ES2</property>
+				<property key="SUPPRESSED">true</property>
+				<property key="INSIDE_MATERIAL">N_BK7</property>
+				<property key="SIMPLIFY_THRESHOLD">0.0</property>
+				<property key="POINTS_X">3mm*cos(0deg),3mm*cos(45deg),3mm*cos(90deg),3mm*cos(135deg),3mm*cos(180deg),3mm*cos(225deg),3mm*cos(270deg),3mm*cos(315deg)</property>
+				<property key="THICKNESS">10mm</property>
+				<property key="POINTS_Y">3mm*sin(0deg),3mm*sin(45deg),3mm*sin(90deg),3mm*sin(135deg),3mm*sin(180deg),3mm*sin(225deg),3mm*sin(270deg),3mm*sin(315deg)</property>
+				<property key="POINTS_TYPES">SMOOTH,SMOOTH,SMOOTH,SMOOTH,SMOOTH,SMOOTH,SMOOTH,SMOOTH</property>
+				<positioner id="1859350027" type="TRANSLATE_ROTATE">
+					<property key="DIR_OFFSET">50mm</property>
+					<property key="TRANS_OFFSET">0</property>
+					<property key="ORTHO_OFFSET">0</property>
+					<property key="DIR_ANGLE">0</property>
+					<property key="TRANS_ANGLE">-90deg</property>
+					<property key="ORTHO_ANGLE">0</property>
+				</positioner>
+			</EXTRUDED_SPLINE>
+			<PART id="1700903594">
+				<property key="NAME">L2 Edmunds-32-315</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="FILE_NAME">Off%20the%20shelf%20parts/Edmunds%2032-315.jocproj</property>
+				<positioner id="-564079963" type="OFFSET">
+					<property key="DIR_OFFSET">30mm</property>
+				</positioner>
+			</PART>
+			<IMAGER id="-1452465456">
+				<property key="NAME">I1</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="PIXEL_TYPE">COLOUR</property>
+				<property key="TRANS_SIZE">5mm</property>
+				<property key="ORTHO_SIZE">5mm</property>
+				<property key="TRANS_DIM">100</property>
+				<property key="ORTHO_DIM">100</property>
+				<property key="ABSORBS_PHOTONS">true</property>
+				<property key="IMAGE">iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAANElEQVR42u3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgx1lAABLpXWfAAAAABJRU5ErkJggg==</property>
+				<positioner id="779972139" type="TRANSVERSE_OFFSET">
+					<property key="DIR_OFFSET">70mm</property>
+					<property key="TRANS_OFFSET">0.0</property>
+					<property key="ORTHO_OFFSET">0mm</property>
+				</positioner>
+			</IMAGER>
+			<positioner id="1889504877" type="ANGLE">
+				<property key="ROT_AXIS">TRANS_AXIS</property>
+				<property key="ANGLE">-60deg</property>
+				<property key="DIR_OFFSET">75mm</property>
+			</positioner>
+		</OPTICS_GROUP>
+		<positioner id="2080041611" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

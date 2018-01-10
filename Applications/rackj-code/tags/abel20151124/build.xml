@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="rebuild" name="rackj">
+	<import file="build.in.xml"/>
+	<property name="dest" value="tmp.dir"/>
+	<property name="theJAR" value="rackj.jar"/>
+	<property name="src" value="src"/>
+
+	<target depends="init" name="compile">
+		<echo message="Java version: ${ant.java.version}"/>
+	    <javac debug="true" deprecation="true" destdir="${dest}" executable="${jdk.home}/bin/javac" 
+	    	fork="true" nowarn="false" target="${ant.java.version}">
+			<classpath>
+				<pathelement location="${dest}"/>
+				<pathelement location="${gobuJAR}"/>
+				<pathelement location="${picardJAR}"/>
+			</classpath>
+			<src path="${src}"/>
+		</javac>
+		<antcall target="chmod"/>
+	</target>
+
+	<target name="archive">
+		<unzip src="${gobuJAR}" dest="${dest}">
+			<patternset>
+				<include name="bio301/dataproc/EscapeStringTokenizer.*"/>
+			</patternset>
+		</unzip>
+		<jar compress="false" destfile="${theJAR}">
+			<fileset dir="${dest}">
+				<include name="**/*.*"/>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="clean">
+		<delete file="${theJAR}"/>
+			<delete failonerror="false" includeemptydirs="true">
+			<fileset dir="${dest}"/>
+		</delete>
+	</target>
+	
+	<target name="chmod">
+		<chmod perm="755">
+			<fileset dir="scripts">
+				<include name="**/*.pl"/>
+			</fileset>
+		</chmod>
+	</target>
+	
+	<target name="svnco">
+		<exec executable="${svnEXEC}">
+			<arg value="co" />
+			<arg value="${svnURL}" />
+			<arg value="." />
+		</exec>
+		<antcall target="chmod"/>
+	</target>
+
+	<target name="svnci">
+		<exec executable="${svnEXEC}">
+			<arg value="ci" />
+		</exec>
+		<antcall target="chmod"/>
+	</target>
+
+	<target depends="compile,archive,chmod" name="make"/>
+
+	<target depends="clean,make" name="rebuild"/>
+
+	<target name="init">
+		<mkdir dir="${dest}"/>
+	</target>
+	
+	
+	<!-- PACKAGE section -->
+	<target depends="make" name="package">
+		<mkdir dir="${basedir}/toTAR/rackJ"/>
+		<delete dir="${basedir}/toTAR/rackJ" includes="${basedir}/toTAR/rackJ/**"/>
+		<copy overwrite="true" todir="${basedir}/toTAR/rackJ">
+			<fileset dir="${basedir}">
+				<include name="${theJAR}"/>
+				<include name="ReleaseNote.txt"/>
+				<include name="LICENSE(intervaltree).txt"/>
+				<include name="lgpl.txt"/>
+				<include name="README.txt"/>
+				<include name="manual/**/*"/>
+				<include name="scripts/**/*"/>
+				<exclude name="**/.svn/**"/>
+				<exclude name="**/*.bak"/>
+				<exclude name="**/*.ppt"/>
+				<exclude name="**/*.tmp"/>
+				<exclude name="**/*~"/>
+				<exclude name="**/PrebuildCGFF/*/*"/>
+			</fileset>
+		</copy>
+		<delete file="rackJ.tar.gz"/>
+		<tar destfile="rackJ.tar.gz" compression="gzip">
+			<tarfileset dir="${basedir}/toTAR" mode="755">
+				<include name="rackJ/**/*.pl"/>
+			</tarfileset>
+			<tarfileset dir="${basedir}/toTAR">
+				<include name="rackJ/**"/>
+				<exclude name="rackJ/**/*.pl"/>
+			</tarfileset>
+		</tar>
+		<delete dir="toTAR"/>
+	</target>
+
+</project>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<opticsProject version="0.035">
+	<ROOT_GROUP id="-637557090">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<PLANO_ASPHERIC_LENS id="-1322814696">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<property key="THICKNESS">7.5mm</property>
+			<property key="DIAMETER">25mm</property>
+			<property key="RADIUS">14.728mm</property>
+			<property key="COEFF_UNITS">MM</property>
+			<property key="CONIC_COEFF">-1.439040</property>
+			<property key="POLY_COEFFS">0, 3.415802E-05, -6.692779E-09, 2.374581E-11, -3.745068E-14</property>
+			<property key="INSIDE_MATERIAL">LBAL32</property>
+			<positioner id="1637219963" type="AXIS">
+				<property key="AXIS">Z</property>
+			</positioner>
+		</PLANO_ASPHERIC_LENS>
+		<positioner id="-1674895365" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

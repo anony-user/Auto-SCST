@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+<opticsProject version="0.031">
+	<ROOT_GROUP id="605019974">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<property key="OUTSIDE_MATERIAL">VACUUM</property>
+		<OPTICS_GROUP id="-1449880923">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<POINT_SOURCE id="-910033345">
+				<property key="NAME">P1</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="WAVELENGTH_MEAN">600nm</property>
+				<property key="WAVELENGTH_FWHM">10nm</property>
+				<property key="PHASE_FWHM">10deg</property>
+				<property key="TRANS_ANGLE">3deg</property>
+				<property key="ORTHO_ANGLE">P1>trans</property>
+				<property key="OUTSIDE_MATERIAL">VACUUM</property>
+				<positioner id="-699337105" type="OFFSET">
+					<property key="DIR_OFFSET">0.0</property>
+				</positioner>
+			</POINT_SOURCE>
+			<POINT_SOURCE id="-1470314959">
+				<property key="NAME">P2</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="WAVELENGTH_MEAN">550nm</property>
+				<property key="WAVELENGTH_FWHM">10nm</property>
+				<property key="PHASE_FWHM">10deg</property>
+				<property key="TRANS_ANGLE">P1>trans</property>
+				<property key="ORTHO_ANGLE">P1>trans</property>
+				<property key="OUTSIDE_MATERIAL">VACUUM</property>
+				<positioner id="1606184623" type="TRANSVERSE_OFFSET">
+					<property key="DIR_OFFSET">0.0</property>
+					<property key="TRANS_OFFSET">0.0</property>
+					<property key="ORTHO_OFFSET">5mm</property>
+				</positioner>
+			</POINT_SOURCE>
+			<POINT_SOURCE id="-1672694855">
+				<property key="NAME">P3</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="WAVELENGTH_MEAN">500nm</property>
+				<property key="WAVELENGTH_FWHM">10nm</property>
+				<property key="PHASE_FWHM">10deg</property>
+				<property key="TRANS_ANGLE">P1>trans</property>
+				<property key="ORTHO_ANGLE">P1>trans</property>
+				<property key="OUTSIDE_MATERIAL">VACUUM</property>
+				<positioner id="-1693662092" type="TRANSVERSE_OFFSET">
+					<property key="DIR_OFFSET">0.0</property>
+					<property key="TRANS_OFFSET">5mm</property>
+					<property key="ORTHO_OFFSET">0.0</property>
+				</positioner>
+			</POINT_SOURCE>
+			<POINT_SOURCE id="-1253590370">
+				<property key="NAME">P4</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="WAVELENGTH_MEAN">450nm</property>
+				<property key="WAVELENGTH_FWHM">10nm</property>
+				<property key="PHASE_FWHM">10deg</property>
+				<property key="TRANS_ANGLE">P1>trans</property>
+				<property key="ORTHO_ANGLE">P1>trans</property>
+				<property key="OUTSIDE_MATERIAL">VACUUM</property>
+				<positioner id="2011696651" type="TRANSVERSE_OFFSET">
+					<property key="DIR_OFFSET">0.0</property>
+					<property key="TRANS_OFFSET">0.0</property>
+					<property key="ORTHO_OFFSET">-5mm</property>
+				</positioner>
+			</POINT_SOURCE>
+			<POINT_SOURCE id="-146638059">
+				<property key="NAME">P5</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="WAVELENGTH_MEAN">400nm</property>
+				<property key="WAVELENGTH_FWHM">10nm</property>
+				<property key="PHASE_FWHM">10deg</property>
+				<property key="TRANS_ANGLE">P1>trans</property>
+				<property key="ORTHO_ANGLE">P1>trans</property>
+				<property key="OUTSIDE_MATERIAL">VACUUM</property>
+				<positioner id="1273941537" type="TRANSVERSE_OFFSET">
+					<property key="DIR_OFFSET">0.0</property>
+					<property key="TRANS_OFFSET">-5mm</property>
+					<property key="ORTHO_OFFSET">0.0</property>
+				</positioner>
+			</POINT_SOURCE>
+			<positioner id="914452360" type="AXIS">
+				<property key="AXIS">Z</property>
+			</positioner>
+		</OPTICS_GROUP>
+		<SPHERICAL_LENS id="933724017">
+			<property key="NAME">L1</property>
+			<property key="SUPPRESSED">true</property>
+			<property key="DIAMETER">5cm</property>
+			<property key="THICKNESS">10mm</property>
+			<property key="FRONT_SHAPE">CONVEX</property>
+			<property key="FRONT_RADIUS">0.11965022338447719</property>
+			<property key="BACK_SHAPE">CONVEX</property>
+			<property key="BACK_RADIUS">L1>front rad</property>
+			<property key="INSIDE_MATERIAL">BOROSILICATE</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<positioner id="942637817" type="OFFSET">
+				<property key="DIR_OFFSET">25cm</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<OPTICS_GROUP id="1251866511">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<SPHERICAL_LENS id="-1286251729">
+				<property key="NAME">L2</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="DIAMETER">5cm</property>
+				<property key="THICKNESS">0.02110847132601062</property>
+				<property key="FRONT_SHAPE">CONVEX</property>
+				<property key="FRONT_RADIUS">0.053254281847132594</property>
+				<property key="BACK_SHAPE">CONVEX</property>
+				<property key="BACK_RADIUS">L2>front rad</property>
+				<property key="INSIDE_MATERIAL">N_BK7</property>
+				<property key="OUTSIDE_MATERIAL">VACUUM</property>
+				<positioner id="520504378" type="OFFSET">
+					<property key="DIR_OFFSET">0.0</property>
+				</positioner>
+			</SPHERICAL_LENS>
+			<SPHERICAL_LENS id="-880821159">
+				<property key="NAME">L3</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="DIAMETER">5cm</property>
+				<property key="THICKNESS">0.006092932347428072</property>
+				<property key="FRONT_SHAPE">CONCAVE</property>
+				<property key="FRONT_RADIUS">L2>back rad</property>
+				<property key="BACK_SHAPE">FLAT</property>
+				<property key="BACK_RADIUS">20cm</property>
+				<property key="INSIDE_MATERIAL">F2</property>
+				<property key="OUTSIDE_MATERIAL">VACUUM</property>
+				<positioner id="-961827702" type="OFFSET">
+					<property key="DIR_OFFSET">L2>thick/2+L3>thick/2</property>
+				</positioner>
+			</SPHERICAL_LENS>
+			<positioner id="38009184" type="OFFSET">
+				<property key="DIR_OFFSET">L1#dir</property>
+			</positioner>
+		</OPTICS_GROUP>
+		<SIMPLE_APERTURE id="1147731974">
+			<property key="NAME">A1</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">L1>dia</property>
+			<property key="OUTER_DIAMETER">20cm</property>
+			<positioner id="-410494882" type="OFFSET">
+				<property key="DIR_OFFSET">L1#dir</property>
+			</positioner>
+		</SIMPLE_APERTURE>
+		<IMAGER id="-1251042219">
+			<property key="NAME">I1</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="PIXEL_TYPE">MONO</property>
+			<property key="TRANS_SIZE">2cm</property>
+			<property key="ORTHO_SIZE">2cm</property>
+			<property key="TRANS_DIM">200</property>
+			<property key="ORTHO_DIM">200</property>
+			<property key="ABSORBS_PHOTONS">true</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<property key="IMAGE">iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAIAAAAiOjnJAAAE+0lEQVR42u3dTWtTaRQAYD9rU5N+pG1Mkya2TS1pGqxYqLizbgpiBaG06koo6EJB8HMhXUgpKK5cKooI/gR/gwtX/gV/gEv3HhxmFs6MM53c6O3c51lcasBye97znnPea0327AH4S/v27RMEAIUdAAAAAAAAAAAAAAAAAAAyx3/NBQAAAADSb3BwMJfL9fb25vN50SAZY2Njw8PDfX19Q0NDlUqlWCyKCZ06fPhwZNLo6Ghco25FesVVbtGpSKmoUlGrom41m82pqan8NyJDR6I41Wq1er3eaDQKhUK1Wm21WuVyWWToSOTQ9PR0qVQaGBiI+b3dbkeGxSsiQ0eiSkX7m5ycPHHixMLCQjTEqFjRH0WGjsR0NT4+PjMz8+bNm+3t7cXFxcit3t5ekSGBg+Hy8vKrV68ePHiwsbHR398vJiTjwoULb9++ffToUUzxokGSYniPMUscMsRvjgMAAOBUCwCaI+ldkr179/6EvwKg0YCdAKSP0R7ozihjmjG0AgDJN1zNl13MAwjA8RZA0UIqIFEAQM/FesNP1OE/zsh1ZA+yR4jddrK9FYvELswejQnAFG/xwK7A0iIhYNfk1j/eQPfu0L7aQaQOHDggXjpAYvbv39/X1zcyMnLw4MHRb3wYblILPzg4eOTIkXq9XiqVIs4ZildUqYGBgUKhkMvljh07Vq1WJyYmIhz5fD7lmyHlWzxi2Gq1KpXK2NhYXIeHh+OV2LpZSaxIqahVcY2NFclU+WZpaWl5efnq1avpLNS1Wm19ff3WrVtRBtIZ1c3NzRcvXly6dKlYLEYHiL0aQY48i2tWEqunpycq1m8lamZmptlslsvlO3fufPr0KRYvqY/HTTAvY9Ovra1tbGzcv3//3bt33c74//D92+329evXv3z58vTp04sXL05PT8dOaDQa0Q2ibmVlij106FDtd7Ozs6dPn56fn798+fLLly9jwx0/fjxtM2kk1tmzZ69du7a1tfXs2bNo5WkL6cmTJyOMT548uXfvXnyxuLg4Pj5+9OjR6AmRc1lJrKjVMQT09/fHNRpijO1zc3ORYSsrK6dOnUp2x/9dTHca67jVx48fR97HF+kc8M+fP3/jxo3Xr19HVsVNRlZFH4zEioqVlVYYBSDyKVphjAIxssQ0EA0xqnekWoIFKdltGt/tB8N7SkpCBDaS6cyZM7F1ow/GgBGJla3jdqxETFpxKoz9FJ0xcz9/NwP7x6koZPcZYWyy7o0s/yasaQ79d/fmSTLw654RIAmQND8raRI/dVo7TNmABq2fAgCwa/3g7WJ+4TvJdPUJlnfIcTZJYHsgp7G0kJ09ZsshDzAdo0pBt1JWcVWfulXD0vnUFz2XzC+zBAIA/s/ScNoyb4GjmZ8FewbA6QF9UJfE/IQ0BcNi5grDn19XQgAAwPkfAABMzV2xurp69+7dra2tZrNpdUhGLpc7d+7c7du3P3z4sLS0FH8UExJQr9e3t7dv3rx55cqVz58/p+1jodmtRkZGNjc35+bmPn78+PDhw2KxKCYkoFAolMvl9+/fP3/+vN1uNxoNMSGZVjgxMTE7O1utVhcWFkqlkpiQgKmpqVarFdfIrcnJyaGhITEhAfl8vlarxaQVdWt+fr6np0dMSEYkUyRWDFvKFbAL+Y0aAAAAAAAAAACA7/nNKgAAAADYOc/VANDOAAAAwLEZJB8AQPd9BTjKlchRh5DRAAAAAElFTkSuQmCC</property>
+			<positioner id="547933288" type="OFFSET">
+				<property key="DIR_OFFSET">50cm</property>
+			</positioner>
+		</IMAGER>
+		<AUTOFOCUS_SENSOR id="-2102461072">
+			<property key="NAME">S1</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">10cm</property>
+			<property key="MINIMUMS">5cm</property>
+			<property key="MAXIMUMS">20cm</property>
+			<property key="OBJECT_NAMES">L1</property>
+			<property key="OBJECT_PROPERTIES">Front Radius</property>
+			<property key="MINIMUMS">5cm</property>
+			<property key="MAXIMUMS">20cm</property>
+			<positioner id="-1178220756" type="OFFSET">
+				<property key="DIR_OFFSET">I1#dir</property>
+			</positioner>
+		</AUTOFOCUS_SENSOR>
+		<AUTOFOCUS_SENSOR id="-1244101461">
+			<property key="NAME">S2</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">10cm</property>
+			<property key="MINIMUMS">4cm</property>
+			<property key="MAXIMUMS">9cm</property>
+			<property key="OBJECT_NAMES">L2</property>
+			<property key="OBJECT_PROPERTIES">Front Radius</property>
+			<property key="MINIMUMS">4cm</property>
+			<property key="MAXIMUMS">9cm</property>
+			<positioner id="1370341113" type="OFFSET">
+				<property key="DIR_OFFSET">I1#dir</property>
+			</positioner>
+		</AUTOFOCUS_SENSOR>
+		<AUTOFOCUS_SENSOR id="-543853763">
+			<property key="NAME">S3</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">10cm</property>
+			<property key="MINIMUMS">13mm,1mm</property>
+			<property key="MAXIMUMS">22mm,10mm</property>
+			<property key="OBJECT_NAMES">L2 | L3</property>
+			<property key="OBJECT_PROPERTIES">Thickness | Thickness</property>
+			<property key="MINIMUMS">13mm,1mm</property>
+			<property key="MAXIMUMS">22mm,10mm</property>
+			<positioner id="-686928130" type="OFFSET">
+				<property key="DIR_OFFSET">I1#dir</property>
+			</positioner>
+		</AUTOFOCUS_SENSOR>
+		<positioner id="1491266201" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

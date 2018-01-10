@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<opticsProject version="0.036">
+	<ROOT_GROUP id="-1011616067">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<POINT_SOURCE id="-289576766">
+			<property key="NAME">S1</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="WAVELENGTH_MEAN">633nm</property>
+			<property key="WAVELENGTH_FWHM">0nm</property>
+			<property key="PHASE_FWHM">10deg</property>
+			<property key="TRANS_ANGLE">0deg</property>
+			<property key="ORTHO_ANGLE">0deg</property>
+			<positioner id="174003761" type="TRANSVERSE_OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+				<property key="TRANS_OFFSET">1mm</property>
+				<property key="ORTHO_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<POINT_SOURCE id="-1606584889">
+			<property key="NAME">S2</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="WAVELENGTH_MEAN">S1>Mean Wavelength</property>
+			<property key="WAVELENGTH_FWHM">0nm</property>
+			<property key="PHASE_FWHM">10deg</property>
+			<property key="TRANS_ANGLE">0deg</property>
+			<property key="ORTHO_ANGLE">0deg</property>
+			<positioner id="557036960" type="TRANSVERSE_OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+				<property key="TRANS_OFFSET">2mm</property>
+				<property key="ORTHO_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<POINT_SOURCE id="-1319275345">
+			<property key="NAME">S3</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="WAVELENGTH_MEAN">S1>Mean Wavelength</property>
+			<property key="WAVELENGTH_FWHM">0nm</property>
+			<property key="PHASE_FWHM">10deg</property>
+			<property key="TRANS_ANGLE">0deg</property>
+			<property key="ORTHO_ANGLE">0deg</property>
+			<positioner id="144147594" type="TRANSVERSE_OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+				<property key="TRANS_OFFSET">3mm</property>
+				<property key="ORTHO_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<POINT_SOURCE id="-1667246288">
+			<property key="NAME">S4</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="WAVELENGTH_MEAN">S1>Mean Wavelength</property>
+			<property key="WAVELENGTH_FWHM">0nm</property>
+			<property key="PHASE_FWHM">10deg</property>
+			<property key="TRANS_ANGLE">0deg</property>
+			<property key="ORTHO_ANGLE">0deg</property>
+			<positioner id="-403208374" type="TRANSVERSE_OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+				<property key="TRANS_OFFSET">4mm</property>
+				<property key="ORTHO_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<POINT_SOURCE id="-1448161232">
+			<property key="NAME">S5</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="WAVELENGTH_MEAN">S1>Mean Wavelength</property>
+			<property key="WAVELENGTH_FWHM">0nm</property>
+			<property key="PHASE_FWHM">10deg</property>
+			<property key="TRANS_ANGLE">0deg</property>
+			<property key="ORTHO_ANGLE">0deg</property>
+			<positioner id="-1241361320" type="TRANSVERSE_OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+				<property key="TRANS_OFFSET">5mm</property>
+				<property key="ORTHO_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<POINT_SOURCE id="-775481556">
+			<property key="NAME">S6</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="WAVELENGTH_MEAN">S1>Mean Wavelength</property>
+			<property key="WAVELENGTH_FWHM">0nm</property>
+			<property key="PHASE_FWHM">10deg</property>
+			<property key="TRANS_ANGLE">0deg</property>
+			<property key="ORTHO_ANGLE">0deg</property>
+			<positioner id="-1210843518" type="TRANSVERSE_OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+				<property key="TRANS_OFFSET">5.5mm</property>
+				<property key="ORTHO_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<PART id="1104044815">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<property key="FILE_NAME">Off the shelf parts/Linos G052008000 doublet.jocproj</property>
+			<positioner id="2037498618" type="OFFSET">
+				<property key="DIR_OFFSET">10mm</property>
+			</positioner>
+		</PART>
+		<IMAGER id="-815197143">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<property key="PIXEL_TYPE">MONO</property>
+			<property key="TRANS_SIZE">0.01</property>
+			<property key="ORTHO_SIZE">0.01</property>
+			<property key="TRANS_DIM">100</property>
+			<property key="ORTHO_DIM">100</property>
+			<property key="ABSORBS_PHOTONS">false</property>
+			<property key="IMAGE">iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAAYUlEQVR42u3QMQ3AMAwAsDIojL5FUgq5QyFkS2UU8kzaJBuCxwAAAAAAAAAAAAAAAIC/23tL6KoqCV1rLQldESGh65wjoWvOKYEXZKaErnuvBAAAAAAAAAAAAAAAAADggx42yAiAfCSw7gAAAABJRU5ErkJggg==</property>
+			<positioner id="-756435953" type="OFFSET">
+				<property key="DIR_OFFSET">52.3mm</property>
+			</positioner>
+		</IMAGER>
+		<positioner id="1581495740" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

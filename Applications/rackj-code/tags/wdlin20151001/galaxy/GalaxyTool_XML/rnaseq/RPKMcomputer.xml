@@ -1,0 +1,118 @@
+<tool id="rnaseq_rpkmcomputer_id" name="RPKM computation">
+ <description>Compute gene expression levels in RPKMs</description>
+ <command>java -classpath \$rackjPath:\$samPath rnaseq.RPKMComputer
+          
+          #for $mappingFiles in $mapping_selections
+            -M ${mappingFiles.mappingMethod_opts.mappingMethod} ${mappingFiles.mappingMethod_opts.mappingFilename}
+          #end for
+          
+          -GFF ${genome.fields.cgffFilePath}
+          -model ${genome.fields.modelFilePath}
+          
+          #if str($joinFactor) != "":
+            -J ${joinFactor}
+          #else
+            -J 2
+          #end if
+          #if str($min) != "":
+            -min ${min}
+          #else
+            -min 8
+          #end if
+          #if str($identityCutoff) != "":
+            -ID ${identityCutoff}
+          #else
+            -ID 0.95
+          #end if
+            
+          -exon ${isExon}
+          -contain ${isContain}
+          -ALL ${isALL}
+            
+          -O ${outputPrefix}
+          
+          &gt; ${logFile}
+          
+          &amp;&amp; mv ${outputPrefix}.geneRPKM ${geneRPKMFilename}
+          &amp;&amp; mv ${outputPrefix}.exonCount ${exonCountFilename}
+          &amp;&amp; mv ${outputPrefix}.spliceCount ${spliceCountFilename}
+ </command>
+ 
+ <inputs>
+ 	
+  <!-- $mappingMethod & $mappingFilename-->
+  <repeat name="mapping_selections" title="Mapping file" min="1">
+    <conditional name="mappingMethod_opts">
+      <param name="mappingMethod" type="select" label="Format">
+        <option value="SAM" selected="true">SAM</option>
+        <option value="PSLX">PSLX</option>
+        <option value="BLAT">BLAT</option>
+      </param>
+      <when value="SAM">
+    	  <param name ="mappingFilename" format="sam,bam" type="data" optional="false" label="Mapping file"/>
+      </when>
+      <when value="PSLX">
+      	<param name ="mappingFilename" format="pslx" type="data" optional="false" label="Mapping file"/>
+      </when>
+      <when value="BLAT">
+   	    <param name ="mappingFilename" format="psl,pslx" type="data" optional="false" label="Mapping file"/>
+      </when>
+    </conditional>
+  </repeat>
+  <!-- $genome-->
+  <param name="genome" type="select" optional="false" label="Genome">
+    <options from_file="rackj.loc">
+     <column name="value" index="0"/>
+     <column name="name" index="1"/>
+     <column name="cgffFilePath" index="4"/>
+     <column name="modelFilePath" index="5"/>
+     <filter type="static_value" value="null" keep="false" column="4"/>
+     <filter type="static_value" value="null" keep="false" column="5"/>
+    </options>
+  </param>
+ 	
+  <!-- $identityCutoff-->
+  <param name ="identityCutoff" type="float" size="5" optional="true" value="" label="Identity cutoff (-ID)" help="default is 0.95.">
+   <validator type="in_range" message="Identity cutoff should be between 0 and 1" min="0" max="1"/>
+  </param>
+  
+  <!-- $joinFactor-->
+  <param name ="joinFactor" type="integer" size="5" optional="true" value="" label="Block join factor (-J)" help="default is 2.">
+   <validator type="in_range" message="Block join factor should not be less than 0" min="0"/>
+  </param>
+  
+  <!-- $isExon-->
+  <param name="isExon" type="boolean" truevalue="true" falsevalue="false" checked="True" label="Use exon region (-exon)"/>
+  
+  <!-- $isContain-->
+  <param name="isContain" type="boolean" truevalue="true" falsevalue="false" checked="False" label="Check by containing (-contain)"/>
+  
+  <!-- $isALL-->
+  <param name="isALL" type="boolean" truevalue="true" falsevalue="false" checked="True" label="Check all alignment blocks (-ALL)"/>
+ 	
+  <!-- $min-->
+  <param name ="min" type="integer" size="5" optional="true" value="" label="Minimum overlap (-min)" help="default is 8.">
+   <validator type="in_range" message="Minimum overlap should not be less than 1" min="1"/>
+  </param>
+  
+  <!-- $outputPrefix-->
+  <param name="outputPrefix" type="text" size="10" label="Prefix of output filename (-O)">
+    <validator type="regex" message="This field cannot be empty nor contain any whitespace character">^\S+$</validator>
+  </param>
+ 	
+ </inputs>
+ 
+ <outputs>
+   <data format="generpkm" name="geneRPKMFilename" label="${outputPrefix}.geneRPKM"/>
+   <data format="exoncount" name="exonCountFilename" label="${outputPrefix}.exonCount"/>
+   <data format="splicecount" name="spliceCountFilename" label="${outputPrefix}.spliceCount"/>
+   <data format="txt" name="logFile" label="${outputPrefix}_RPKMComputer.log"/> 
+ </outputs>
+  
+ <help>
+For detailed information on RACKJ, click here_.
+
+.. _here: http://rackj.sourceforge.net/Manual/index.html#rnaseq.RPKMComputer
+ </help>
+  
+</tool>

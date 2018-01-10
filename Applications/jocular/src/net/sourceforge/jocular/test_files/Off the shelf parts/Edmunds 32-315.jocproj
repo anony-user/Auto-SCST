@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<opticsProject version="0.037">
+	<ROOT_GROUP id="-21184779">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<SPHERICAL_LENS id="1282841394">
+			<property key="NAME">L1coating</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">L1>Dia</property>
+			<property key="THICKNESS">100nm</property>
+			<property key="FRONT_SHAPE">CONVEX</property>
+			<property key="FRONT_RADIUS">L1>front radius + L1coating>thick</property>
+			<property key="BACK_SHAPE">CONCAVE</property>
+			<property key="BACK_RADIUS">L1>front radius</property>
+			<property key="INSIDE_MATERIAL">MAGNESIUM_FLUORIDE</property>
+			<positioner id="-463073644" type="OFFSET">
+				<property key="DIR_OFFSET">-(L1>thick/2+L2>thick/2+L1coating>thick/2)</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<SPHERICAL_LENS id="998865251">
+			<property key="NAME">L1</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">12.5mm</property>
+			<property key="THICKNESS">3.73mm</property>
+			<property key="FRONT_SHAPE">CONVEX</property>
+			<property key="FRONT_RADIUS">24.77mm</property>
+			<property key="BACK_SHAPE">CONVEX</property>
+			<property key="BACK_RADIUS">18.01mm</property>
+			<property key="INSIDE_MATERIAL">N_BK7</property>
+			<positioner id="872445174" type="OFFSET">
+				<property key="DIR_OFFSET">0 - L2>thick/2</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<SPHERICAL_LENS id="-2051305577">
+			<property key="NAME">L2</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">L1>Diameter</property>
+			<property key="THICKNESS">1.33mm</property>
+			<property key="FRONT_SHAPE">CONCAVE</property>
+			<property key="FRONT_RADIUS">L1>back radius</property>
+			<property key="BACK_SHAPE">CONVEX</property>
+			<property key="BACK_RADIUS">51.17mm</property>
+			<property key="INSIDE_MATERIAL">N_SF5</property>
+			<positioner id="-1968848973" type="OFFSET">
+				<property key="DIR_OFFSET">L1>thick/2</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<SPHERICAL_LENS id="897757810">
+			<property key="NAME">L2coating</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">L1>dia</property>
+			<property key="THICKNESS">L1coating>thickness</property>
+			<property key="FRONT_SHAPE">CONCAVE</property>
+			<property key="FRONT_RADIUS">L2>back radius</property>
+			<property key="BACK_SHAPE">CONVEX</property>
+			<property key="BACK_RADIUS">L2>back radius + L1coating>thick</property>
+			<property key="INSIDE_MATERIAL">MAGNESIUM_FLUORIDE</property>
+			<positioner id="1989383350" type="OFFSET">
+				<property key="DIR_OFFSET">L1>thick/2+L2>thick/2+L1coating>thick/2</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<positioner id="1243003820" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

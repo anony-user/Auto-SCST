@@ -1,0 +1,63 @@
+<tool id="ssdacompare_id"  name="SSDA">
+  <description>Sample-Sensitive Donor and Acceptor</description>
+  <command>SSDAcompare.pl
+           
+           ${outputPrefix}
+           
+           ${fineSpliceFileA}
+           
+           ${rpkmFileA}
+           
+           ${aliasA}
+           
+           ${fineSpliceFileB}
+           
+           ${rpkmFileB}
+           
+           ${aliasB}
+           
+           \$rackjPath
+           
+		   #if str($PvalTh) != "":
+			${PvalTh}
+           #else
+			0.1
+		   #end if
+           
+           &amp;&amp; mv ${outputPrefix} ${outputFilename}
+  </command>
+  
+  <inputs>
+    <!-- $fineSpliceA -->
+    <param name="fineSpliceFileA" format="finesplice" type="data" optional="false" label="FineSplice file A"/>
+    <!-- $geneRPKMA -->
+    <param name="rpkmFileA" format="generpkm" type="data" optional="false" label="geneRPKM file A"/>
+    <!-- $aliaA -->
+    <param name="aliasA" type="text" optional="false" value="" label="Alias of file A">
+      <validator type="regex" message="This field cannot be empty or contain any whitespace character">^\S+$</validator>
+    </param>
+    
+    <!-- $fineSpliceB -->
+    <param name="fineSpliceFileB" format="finesplice" type="data" optional="false" label="FineSplice file B"/>    
+    <!-- $geneRPKMA -->
+    <param name="rpkmFileB" format="generpkm" type="data" optional="false" label="geneRPKM file B"/>
+    <!-- $aliaB -->    
+    <param name="aliasB" type="text" optional="false" value="" label="Alias of file B">
+      <validator type="regex" message="This field cannot be empty or contain any whitespace character">^\S+$</validator>
+    </param>
+    
+	<param name ="PvalTh" type="float" size="5" optional="true" value="" label="P-value threshold" help="default is 0.1.">
+		<validator type="in_range" message="P-value threshold should be between 0 and 1" min="0" max="1"/>
+	</param>
+
+  <!-- $outputPrefix -->
+    <param name="outputPrefix" value="" type="text" optional="false" size="10" label="Prefix of output filename">
+      <validator type="regex" message="This field cannot be empty or contain any whitespace character">^\S+$</validator>
+    </param>
+  </inputs>
+  
+  <outputs>
+    <data format="xls" name="outputFilename" label="${outputPrefix}.SSDA.xls"/>
+  </outputs>
+    
+</tool>

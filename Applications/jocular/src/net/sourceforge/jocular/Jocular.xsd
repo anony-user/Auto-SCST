@@ -1,0 +1,190 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en">
+			Jocular schema
+		</xsd:documentation>
+	</xsd:annotation>
+
+	<xsd:element name="opticsProject" type="opticsProjectType"/>
+  
+	<xsd:complexType name="opticsProjectType">
+		<xsd:sequence>			
+			<xsd:element name="ROOT_GROUP" type="groupType" minOccurs="0"/>	
+			
+		</xsd:sequence>
+		<xsd:attribute name="version" type="xsd:string"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="groupType">
+		<xsd:sequence>
+			<xsd:sequence maxOccurs="unbounded">
+				<xsd:element name="property" type="propertyType"/>
+			</xsd:sequence>
+			<xsd:sequence maxOccurs="unbounded">
+				<xsd:choice>
+					<xsd:element name="OPTICS_GROUP" type="groupType" minOccurs="0"/>	
+					<xsd:element name="IMAGER" type="imagerType" minOccurs="0"/>	
+					<xsd:element name="POINT_SOURCE" type="hemiPointSourceType" minOccurs="0"/>	
+					<xsd:element name="SPHERICAL_LENS" type="sphericalLensType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="TRIANGULAR_PRISM" type="triangularPrismType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="IMAGE_SOURCE" type="imageSourceType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="SIMPLE_APERTURE" type="simpleApertureType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="SPECTROPHOTOMETER" type="spectroPhotometerType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="AUTOFOCUS_SENSOR" type="autofocusSensorType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="ROTATED_SPLINE" type="rotatedSplineType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="PLANO_ASPHERIC_LENS" type="planoAsphericLensType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="EXTRUDED_SPLINE" type="extrudedSplineType" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element name="PART" type="part" minOccurs="0" maxOccurs="unbounded"/>
+				</xsd:choice>
+			</xsd:sequence>
+			<xsd:element name="positioner" type="positionerType"/>			
+		</xsd:sequence>
+		<xsd:attribute name="id" type="xsd:integer"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="positionerType">
+			<xsd:sequence maxOccurs="unbounded">
+				<xsd:element name="property" type="propertyType"/>
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer"/>
+			<xsd:attribute name="type" type="xsd:string"/>
+	</xsd:complexType>
+	<xsd:complexType name="simpleApertureType">
+			<xsd:sequence>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="property" type="propertyType"/>
+				</xsd:sequence>
+				<xsd:element name="positioner" type="positionerType"/>				
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer"/>
+	</xsd:complexType>
+	<xsd:complexType name="spectroPhotometerType">
+			<xsd:sequence>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="property" type="propertyType"/>
+				</xsd:sequence>
+				<xsd:element name="positioner" type="positionerType"/>				
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer"/>
+	</xsd:complexType>
+	<xsd:complexType name="autofocusSensorType">
+			<xsd:sequence>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="property" type="propertyType"/>
+				</xsd:sequence>
+				<xsd:element name="positioner" type="positionerType"/>				
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer"/>
+	</xsd:complexType>
+	<xsd:complexType name="rotatedSplineType">
+			<xsd:sequence>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="property" type="propertyType"/>
+				</xsd:sequence>
+				<xsd:element name="positioner" type="positionerType"/>				
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="planoAsphericLensType">
+			<xsd:sequence>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="property" type="propertyType"/>
+				</xsd:sequence>
+				<xsd:element name="positioner" type="positionerType"/>				
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer"/>
+	</xsd:complexType>
+	<xsd:complexType name="part">
+			<xsd:sequence>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="property" type="propertyType"/>
+				</xsd:sequence>
+				<xsd:element name="positioner" type="positionerType"/>				
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer"/>
+	</xsd:complexType>
+	<xsd:complexType name="extrudedSplineType">
+			<xsd:sequence>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="property" type="propertyType"/>
+				</xsd:sequence>
+				<xsd:element name="positioner" type="positionerType"/>				
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer"/>
+	</xsd:complexType>
+	<xsd:complexType name="imagerType">
+			<xsd:sequence>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="property" type="propertyType"/>
+				</xsd:sequence>
+				<xsd:element name="positioner" type="positionerType"/>				
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="triangularPrismType">
+			<xsd:sequence>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="property" type="propertyType"/>
+				</xsd:sequence>
+				<xsd:element name="positioner" type="positionerType"/>				
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="imageSourceType">
+			<xsd:sequence>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="property" type="propertyType"/>
+				</xsd:sequence>
+				<xsd:element name="positioner" type="positionerType"/>				
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="hemiPointSourceType">
+			<xsd:sequence>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="property" type="propertyType"/>
+				</xsd:sequence>
+				<xsd:element name="positioner" type="positionerType"/>
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="sphericalLensType">
+			<xsd:sequence>
+				<xsd:sequence maxOccurs="unbounded">
+					<xsd:element name="property" type="propertyType"/>
+				</xsd:sequence>
+				<xsd:element name="positioner" type="positionerType"/>
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:integer"/>
+	</xsd:complexType>
+	
+	<xsd:simpleType name="shapeType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="CONCAVE"/>
+			<xsd:enumeration value="CONVEX"/>
+			<xsd:enumeration value="FLAT"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="materialType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="VACUUM"/>
+			<xsd:enumeration value="BOROSILICATE"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:complexType name="propertyType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="key" type="xsd:string" use="required"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+  
+</xsd:schema>

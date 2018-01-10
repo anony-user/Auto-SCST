@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.6.5
+Created-By: 1.3.1 (IBM Corporation)
+
+Name: org/w3c/css/sac/
+Specification-Title: Simple API for CSS
+Specification-Version: 1.3
+Specification-Vendor: World Wide Web Consortium
+Specification-URL: http://www.w3.org/Style/CSS/SAC/
+Implementation-Title: org.w3c.css.sac
+Implementation-Version: 1.3
+Implementation-Vendor: World Wide Web Consortium
+Implementation-URL: http://www.w3.org/Style/CSS/SAC/
+
+Name: org/w3c/dom/smil/
+Specification-Title: Document Object Model (DOM) for Synchronized Mult
+ imedia Integration Language (SMIL)
+Specification-Vendor: World Wide Web Consortium
+Specification-URL: http://www.w3.org/TR/SMIL2/
+Implementation-Title: org.w3c.dom.smil
+Implementation-Vendor: World Wide Web Consortium
+Implementation-URL: http://dev.w3.org/cvsweb/java/classes/org/w3c/dom/
+ smil/
+
+Name: org/w3c/dom/svg/
+Specification-Title: Document Object Model (DOM) for Scalable Vector G
+ raphics (SVG)
+Specification-Version: 1.1
+Specification-Vendor: World Wide Web Consortium
+Specification-URL: http://www.w3.org/TR/SVG11/
+Implementation-Title: org.w3c.dom.svg
+Implementation-Version: 1.1
+Implementation-Vendor: World Wide Web Consortium
+Implementation-URL: http://www.w3.org/TR/SVG11/java.html
+

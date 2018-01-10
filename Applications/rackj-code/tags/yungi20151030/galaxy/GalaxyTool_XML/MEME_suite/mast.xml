@@ -1,0 +1,56 @@
+<tool id="mast_id"  name="MAST">
+  <description>Motif Alignment and Search Tool</description>
+  <command>mast
+           
+           ${inputXML}
+           
+           ${sequenceFile}
+           
+           -mt ${mt}
+           
+           -hit_list
+           
+           #if str($norc) == "off":
+               -norc
+           #end if
+           
+           -nostatus
+           
+           &gt; ${outputPrefix} 
+           
+           &amp;&amp; MastWrapper.pl ${outputPrefix} ${sequenceFile} &gt; ${outputFile}
+  </command>
+  
+  <inputs>
+    <!-- $inputXML -->
+    <param format="xml" name="inputXML" type="data" label="XML file from MEME outputs"/>
+            
+    <!-- $sequenceFile -->
+    <param name="sequenceFile" format="fasta" type="data" optional="false" label="Sequence FASTA"/>
+
+    <!-- $mt -->
+    <param name="mt" type="float" optional="false" value="0.001" label="Motif p-value threshold">
+      <validator type="in_range" message="This field should be positive" min="0"/>
+    </param>
+    
+    <!-- $norc -->
+    <param name="norc" type="select" display="radio" label="Score reverse complement DNA strand">
+      <option value="on" selected="true">On</option>
+      <option value="off">Off</option>
+    </param>
+    
+    <!-- $outputPrefix -->
+    <param name="outputPrefix" value="" type="text" optional="false" size="10" label="Prefix of output filename">
+      <validator type="regex" message="This field cannot be empty nor contain any whitespace character">^\S+$</validator>
+    </param>
+    
+    <param name="non_commercial_use" label="I certify that I am not using this tool for commercial purposes" type="boolean" truevalue="NON_COMMERCIAL_USE" falsevalue="COMMERCIAL_USE" checked="False">
+      <validator type="expression" message="This tool is only available for non-commercial use.">value == True</validator>
+    </param>
+  </inputs>
+  
+  <outputs>
+    <data format="mast" name="outputFile" label="${outputPrefix}.mast"/>
+  </outputs>
+    
+</tool>

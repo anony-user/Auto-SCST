@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<opticsProject version="0.035">
+	<ROOT_GROUP id="-144345778">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<OPTICS_GROUP id="888867335">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<ROTATED_SPLINE id="-256850356">
+				<property key="NAME"></property>
+				<property key="SUPPRESSED">false</property>
+				<property key="INSIDE_MATERIAL">SHINYMETAL</property>
+				<property key="SIMPLIFY_THRESHOLD">1e-10</property>
+				<property key="POINTS_X">-1mm,-1mm,0.0,3mm,4mm,9mm,9mm</property>
+				<property key="POINTS_Y">4mm,0.0,0.0,1mm,2mm,3mm,4mm</property>
+				<property key="POINTS_TYPES">CUSP,CUSP,SQUARE,SMOOTH,SMOOTH,CUSP,CUSP</property>
+				<positioner id="-1867331873" type="OFFSET">
+					<property key="DIR_OFFSET">0.0</property>
+				</positioner>
+			</ROTATED_SPLINE>
+			<POINT_SOURCE id="195975393">
+				<property key="NAME"></property>
+				<property key="SUPPRESSED">false</property>
+				<property key="WAVELENGTH_MEAN">600nm</property>
+				<property key="WAVELENGTH_FWHM">10nm</property>
+				<property key="PHASE_FWHM">10deg</property>
+				<property key="TRANS_ANGLE">0</property>
+				<property key="ORTHO_ANGLE">0deg</property>
+				<positioner id="1279020606" type="ANGLE">
+					<property key="ROT_AXIS">TRANS_AXIS</property>
+					<property key="ANGLE">-39deg</property>
+					<property key="DIR_OFFSET">0.25mm</property>
+				</positioner>
+			</POINT_SOURCE>
+			<positioner id="834377237" type="OFFSET">
+				<property key="DIR_OFFSET">20mm</property>
+			</positioner>
+		</OPTICS_GROUP>
+		<positioner id="-1513430707" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

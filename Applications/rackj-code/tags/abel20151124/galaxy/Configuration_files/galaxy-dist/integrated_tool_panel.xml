@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<toolbox>
+    <section id="getext" name="Upload Data" version="">
+        <tool id="upload1" />
+    </section>
+    <label id="1" text="RACKJ" version="" />
+    <section id="mappingID" name="Mapping" version="">
+        <tool id="mappingblat_id" />
+        <tool id="mappingbowtie_id" />
+        <tool id="mappingbowtieblat_id" />
+    </section>
+    <section id="ComputeID" name="Compute" version="">
+        <tool id="rnaseq_rpkmcomputer_id" />
+        <tool id="genintroncount_id" />
+        <tool id="genfinesplicecount_id" />
+    </section>
+    <section id="CompareID" name="Compare" version="">
+        <tool id="ssircompare_id" />
+        <tool id="ssescompare_id" />
+        <tool id="ssdacompare_id" />
+        <tool id="ssdacompare_chi_id" />
+    </section>
+    <section id="sequenceGenerationID" name="Sequence Generation" version="">
+        <tool id="seqgen_as_id" />
+        <tool id="mdust_id" />
+        <tool id="promoterseqgen_id" />
+    </section>
+    <section id="MastManipulationID" name="Mast Manipulation" version="">
+        <tool id="mastannotation_id" />
+        <tool id="mastannotation_as_id" />
+        <tool id="mastcompare_id" />
+    </section>
+    <label id="2" text="BAM/SAM Manipulation" version="" />
+    <section id="SAMtoolsID" name="SAMtools" version="">
+        <tool id="bam_sort" />
+        <tool id="sam_to_bam" />
+        <tool id="bam_to_sam" />
+        <tool id="sam_merge2" />
+    </section>
+    <label id="3" text="Feature Extraction" version="" />
+    <section id="motifs" name="MEME Suite" version="">
+        <tool id="meme_meme" />
+        <!-- multiProcess version <tool id="meme_meme_p" /> -->
+        <tool id="mast_id" />
+    </section>
+    <label id="4" text="Mapping Tools" version="" />
+    <section id="ncbi_blast_plus_tools" name="NCBI BLAST+" version="">
+        <tool id="ncbi_blastn_wrapper" />
+        <tool id="ncbi_blastp_wrapper" />
+        <tool id="ncbi_blastx_wrapper" />
+        <tool id="ncbi_tblastn_wrapper" />
+        <tool id="ncbi_tblastx_wrapper" />
+        <tool id="blastxml_to_tabular" />
+    </section>
+</toolbox>

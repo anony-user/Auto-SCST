@@ -1,0 +1,1 @@
+20130524: fix a bug of samGetSEQfast.pl for empty PSL inputs.

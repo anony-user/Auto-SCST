@@ -1,0 +1,85 @@
+body, td, th {
+	font-family: verdana,arial,helvetica,sans-serif;
+	font-size: 85%;
+}
+
+p {
+	font-family: verdana,arial,helvetica,sans-serif;
+}
+
+li {
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+em {
+	font-weight: bold;
+	font-style: italic;
+}
+
+acronym {
+        border-bottom: 1px dashed #00cc00;
+        cursor: help;
+}
+
+blockquote
+{
+/*   font-family: courier new, monospace; */
+/*  background-color: #DDD; */
+  padding: 0 5 0 5;
+}
+
+h1 {
+	font-family: verdana,arial,helvetica,sans-serif;
+	font-size: 130%;
+	font-weight: bold;
+	color: #000066;
+}
+
+h2 {
+	font-family: verdana,arial,helvetica,sans-serif;
+	font-size: 125%;
+	font-weight: bold;
+	color: #000066;
+}
+
+h3 {
+	font-family: verdana,arial,helvetica,sans-serif;
+	font-size: 110%;
+	font-weight: bold;
+	color: #000066;
+}
+
+h4 {
+	font-family: verdana,arial,helvetica,sans-serif;
+	font-size: 100%;
+	font-weight: bold;
+	color: #000066;
+}
+
+small {
+	font-family: verdana,arial,helvetica,sans-serif;
+	font-size: 75%;
+}
+
+a.small {
+	font-family: verdana,arial,helvetica,sans-serif;
+	font-size: 75%;
+	text-decoration: none;
+}
+
+img
+{
+  border: 0px;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+td
+{
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.newsDate {
+	font-style: italic;
+	color: #333380;
+}

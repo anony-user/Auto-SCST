@@ -1,0 +1,19 @@
+<tool id="bam_sort" name="Sort BAM Files">
+  <command>samtools sort $inBAM $outPrefix 
+           2&gt; $logFile
+           &amp;&amp; mv ${outPrefix}.bam $outbam
+  </command>
+  
+  <inputs>
+ 	 <param name="inBAM" type="data" format="bam" label="Choose bam file"/>
+ 	 <param name="outPrefix" type="text" value="" size="10" label="Prefix of sorted bam">
+ 	   <validator type="regex" message="This field cannot be empty nor contain any whitespace character">^\S+$</validator>
+ 	 </param>
+  </inputs>
+  
+  <outputs>
+   <data format="bam" name="outbam" label="${outPrefix}.bam"/>
+   <data format="txt" name="logFile" label="${outPrefix}.log"/>
+  </outputs>
+
+</tool>

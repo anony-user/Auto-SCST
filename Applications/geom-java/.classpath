@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/check"/>
+	<classpathentry kind="src" path="src/demo"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/tune"/>
+	<classpathentry kind="lib" path="lib/gpcj-2.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/gpcj.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

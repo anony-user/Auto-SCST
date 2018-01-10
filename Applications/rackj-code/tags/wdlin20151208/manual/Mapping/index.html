@@ -1,0 +1,425 @@
+<html>
+	<head><title>RACKJ - Scripts for Mapping</title>
+	
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-12601445-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	
+	</head>
+	
+	<body>
+		<table border=2 align=right><tr><td><a href="../index.html">home</a></td></tr></table>
+		<h1><a name="top">Scripts for Mapping</a></h1>
+
+		<h2>Contents</h2>
+		<ul>
+		<li><a href="#preparation">Preparation</a>
+		<li><a href="#before">Before Mapping</a>
+			<ul>
+			<li><a href="#capitalization">Upper- or lower-cased sequence headers</a></li>
+			<li><a href="#preindex">preindex.pl</a></li>
+			<li><a href="#fixFasta">fixFasta.pl</a></li>
+			</ul>
+		<li><a href="#mapping">Mapping Methods</a>
+			<ul>
+			<li><a href="#target">Mapping target</a></li>
+			<li><a href="#MappingBlat">MappingBlat.pl</a></li>
+			<li><a href="#MappingBowtie">MappingBowtie.pl</a></li>
+			<li><a href="#MappingBowtieBlat">MappingBowtieBlat.pl</a></li>
+			<li><a href="#MappingBowtieBlat2">MappingBowtieBlat2.pl</a></li>
+			<li><a href="#Mapping">Mapping.pl -- the wrapper</a></li>
+			</ul>
+		<li><a href="#helper">Helper Scripts</a>
+			<ul>
+			<li><a href="#sam2fas">sam2fas.pl</a></li>
+			<li><a href="#sam_filter">sam_filter.pl</a></li>
+			</ul>
+		<li><a href="#examples">Examples</a>
+			<ul>
+			<li><a href="#example1">Mapping RNAseq reads using BLAT</a></li>
+			<li><a href="#example2">Mapping RNAseq reads using Bowtie2 and then BLAT</a></li>
+			<li><a href="#example3">Translation level mapping using BLAT</a></li>
+			</ul>
+		</ul>
+
+
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="preparation">Preparation</a></h2>
+		Our mapping pipeline currently adopts two mapping programs, i.e., <a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">Bowtie2</a> and <a href="http://genome.ucsc.edu/FAQ/FAQblat.html#blat3">BLAT</a>, a mapping file manipulation tool, i.e., <a href="http://samtools.sourceforge.net/">SAMtools</a>, and a set of perl scripts. So here is a checklist:
+		<ol>
+			<li><a href="http://www.bioperl.org/wiki/Main_Page">BioPerl</a> is installed.</li>
+			<li><a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">Bowtie2</a> is installed and the enviornment variable PATH is pointing to its directory.</li>
+			<li><a href="http://genome.ucsc.edu/FAQ/FAQblat.html#blat3">BLAT</a> is installed and the enviornment variable PATH is pointing to its directory.</li>
+			<li><a href="http://samtools.sourceforge.net/">SAMtools</a> is installed and the enviornment variable PATH is pointing to its directory.</li>
+			<li>The enviornment variable PATH is pointing to RACK<font color="blue"><b>J</b></font> subdirectories &quot;scripts&quot; and &quot;scripts/pipeline&quot;.</li>
+			<li>The enviornment variable INC is created and containing RACK<font color="blue"><b>J</b></font> subdirectory &quot;scripts/pipeline&quot;.</li>
+		</ol>
+
+		For <a href="http://en.wikipedia.org/wiki/Bash_%28Unix_shell%29">bash</a> users, setting on environment variables corresponds to adding something like the following lines into ~/.bash_profile.
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+PATH=&quot;/path/to/Bowtie2/executable:$PATH&quot;
+PATH=&quot;/path/to/BLAT/executable:$PATH&quot;
+PATH=&quot;/path/to/SAMtools/executable:$PATH&quot;
+PATH=&quot;/path/to/rackJ/scripts/:$PATH&quot;
+PATH=&quot;/path/to/rackJ/scripts/pipeline:$PATH&quot;
+
+INC=&quot;/path/to/rackJ/scripts/PerlLib&quot;
+export INC
+</pre></div></p>
+
+
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="before">Before Mapping</a></h2>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="capitalization">Upper- or lower-cased sequence headers</a></h3>
+		Although our mapping scripts work well regardless of capitalization of sequence headers, we found that it may affect presentation of visualization tools. For example, reads mapped to &quot;chrm&quot; may not been shown in some visualization tools simply because its corresponding chromosome inside was named &quot;ChrM&quot;. So time would be saved if some check and/or modifications could have been done on (1) reference sequence headers, (2) chromosome names in GFF3 or canonical GFF files, and (3) the visualization tool you use.</p>
+		<hr>
+	    
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="preindex">preindex.pl</a></h3>
+		In some circumstance, especially when running multiple mapping tasks under a cluster environment like the <a href="http://en.wikipedia.org/wiki/Portable_Batch_System">PBS</a>, we need to build indexes at first to avoid <a href="http://en.wikipedia.org/wiki/Race_condition">race condition</a> on index building, which may cause some error when accessing reference sequences. This script simply builds indexes using Bio::DB::Fasta and <i>faidx</i> of SAMtools.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+preindex.pl &lt;inputFasta&gt;
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>inputFastq: the FASTA file to be indexed</li>
+		</ol>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="fixFasta">fixFasta.pl</a></h3>
+		The <i>faidx</i> program of SAMtools may have problem when handling a FASTA file with sequence lines of inconsistent lengths. This script fixes a FASTA file so that the <i>faidx</i> program shall index the fixed version without any problem.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+fixFasta.pl &lt;inFasta&gt; &lt;outFasta&gt;
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>inFasta: the FASTA file to be fixed</li>
+			<li>outFasta: the FASTA file fixed</li>
+		</ol>
+		
+				
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="mapping">Mapping Methods</a></h2>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="target">Mapping target</a></h3>
+		All our mapping scripts read three fixed parameters from the command line: (1) <i>target</i>, (2) <i>query</i>, and (3) <i>output</i>. The <i>target</i> is a string indicating which genome to be mapped but not a file nor a path to index prefix. Before executing Bowtie2 or BLAT, the <i>target</i> string will be translated into an appropriate parameter so that users can always use the same target string for all our mapping scripts.</p>
+		To do this, a <i>mapping table</i> containing the translation of the <i>target</i> and actual target file (or index prefix) should be maintained and indicated by the environment variable <i>TargetTableFile</i>. Below is an example <i>mapping table</i>, in which <font color=green>&lt;TAB&gt;</font> means the tab character.</p>
+		
+		<table border=2 align=center>
+			<tr><td>
+<pre>#target<font color=green>&lt;TAB&gt;</font>blat<font color=green>&lt;TAB&gt;</font>bowtie2
+TAIR10<font color=green>&lt;TAB&gt;</font>/myDB/TAIR10.fasta<font color=green>&lt;TAB&gt;</font>/myDB/TAIR10
+HG19<font color=green>&lt;TAB&gt;</font>/myDB/HG19.fasta<font color=green>&lt;TAB&gt;</font>/myDB/HG19</pre>
+			</td></tr>
+		</table></p>
+		
+		In this example, <font face="courier">/myDB/TAIR10.fasta</font> will be used when calling BLAT with <i>target</i> string &quot;TAIR10&quot;, and <font face="courier">/myDB/HG19</font> will be used when calling Bowtie2 with <i>target</i> string &quot;HG19&quot;.
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="MappingBlat">MappingBlat.pl</a></h3>
+		This script calls BLAT and does some post processing on the mapping results.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+MappingBlat.pl [options] &lt;target&gt; &lt;query&gt; &lt;SAMout&gt; &lt;BLAT parameters&gt;
+</pre></div></p>
+		
+		<h4>Options/Parameters</h4>
+		<ol>
+			<li>-ID &lt;threshold&gt;: a float number of identity threshold for filtering SAM output. (default: -1, for no filtering; 0 for filtering unmapped reads)</li>
+			<li>-SamTmp &lt;filename&gt;: temporary SAM file for filtered queries. One record per query. (default: the <a href="http://en.wikipedia.org/wiki//dev/null">null device</a>)</li>
+			<li>-target &lt;target&gt;: user-defined target FASTA file, to replace that in the <a href="#target">mapping table</a></li>
+			<li>-unmap: apply this to include unmapped records in the output</li>
+			<li>-md: apply this to include MD tag in SAM records</li>
+			<li>&lt;target&gt;: the <a href="#target"><i>target</i></a> string</li>
+			<li>&lt;query&gt;: the query file in FASTA format</li>
+			<li>&lt;SAMout&gt;: the output file in SAM format (not BAM)</li>
+			<li>&lt;BLAT parameters&gt;: parameters to be passed to <a href="http://genome.ucsc.edu/goldenPath/help/blatSpec.html">BLAT</a></li>
+		</ol>
+
+		<h4>Notes</h4>
+		<ol>
+			<li>This script automatically adds <i>-out=pslx</i> for BLAT. DO NOT add any other format options for BLAT.</li>
+			<li>Options <a href="http://genome.ucsc.edu/goldenPath/help/blatSpec.html"></i>-q=type -t=type</i></a> were suggested for BLAT. For example, <i>-q=rna -t=dna</i> would be good for RNAseq, <i>-q=dna -t=dna</i> would be good for DNAseq, and <i>-q=dnax -t=dnax</i> would be good for translation-level mapping (but time-consuming).</li>
+		</ol>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="MappingBowtie">MappingBowtie.pl</a></h3>
+		This script calls Bowtie2 and does some post processing on the mapping results.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+MappingBowtie.pl [options] &lt;target&gt; &lt;query&gt; &lt;SAMout&gt; &lt;Bowtie2 parameters&gt;
+</pre></div></p>
+		
+		<h4>Options/Parameters</h4>
+		<ol>
+			<li>-ID &lt;threshold&gt;: a float number of identity threshold for filtering SAM output. (default: -1, for no filtering; 0 for filtering unmapped reads)</li>
+			<li>-SamTmp &lt;filename&gt;: temporary SAM file for filtered queries. One record per query. (default: the <a href="http://en.wikipedia.org/wiki//dev/null">null device</a>)</li>
+			<li>-target &lt;target&gt;: user-defined target index prefix, to replace that in the <a href="#target">mapping table</a></li>
+			<li>&lt;target&gt;: the <a href="#target"><i>target</i></a> string</li>
+			<li>&lt;query&gt;: the query file in FASTA format</li>
+			<li>&lt;SAMout&gt;: the output file in SAM format (not BAM)</li>
+			<li>&lt;Bowtie2 parameters&gt;: parameters to be passed to <a href="http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml">Bowtie2</a></li>
+		</ol>
+
+		<h4>Notes</h4>
+		<ol>
+			<li>This script automatically adds <i>-f --quiet</i> for Bowtie2, so the query file must be in FASTA format.</li>
+			<li>The filtering procedure exactly processes what outputted by Bowtie2. So, for example, <i>-ID 0.9 -SamTmp tmp.sam</i> would let all reads without alignment of at least 0.9 identity recorded be in tmp.sam, including reads without any alignment. And <i>-ID 0.9 -SamTmp tmp.sam</i> plus <i>--no-unal</i> for Bowtie2 would let only aligned reads without alignment at least 0.9 identity recorded be in tmp.sam.</li>
+		</ol>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="MappingBowtieBlat">MappingBowtieBlat.pl</a></h3>
+		This script wraps <a href="#MappingBowtie">MappingBowtie.pl</a> and <a href="#MappingBlat">MappingBlat.pl</a>. All query reads will be mapped by Bowtie through MappingBowtie.pl, and rest reads (reads not passing the identity filter) will be mapped by BLAT through MappingBlat.pl.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+MappingBowtieBlat.pl &lt;target&gt; &lt;query&gt; &lt;SAMout&gt; -bowtie &lt;MappingBowtie.pl options&gt; -blat &lt;MappingBlat.pl options&gt;
+</pre></div></p>
+		
+		<h4>Options/Parameters</h4>
+		<ol>
+			<li>&lt;target&gt;: the <a href="#target"><i>target</i></a> string</li>
+			<li>&lt;query&gt;: the query file in FASTA format</li>
+			<li>&lt;SAMout&gt;: the output file in SAM format (not BAM)</li>
+			<li>&lt;MappingBowtie.pl options&gt;: options to be passed to <a href="#MappingBowtie">MappingBowtie.pl</a>, including those to be passed to Bowtie2</li>
+			<li>&lt;MappingBlat.pl options&gt;: options to be passed to <a href="#MappingBlat">MappingBlat.pl</a>, including those to be passed to BLAT</li>
+		</ol>
+
+		<h4>Notes</h4>
+		<ol>
+			<li>This script automatically applies <i>-SamTmp</i> when invoking <a href="#MappingBowtie">MappingBowtie.pl</a>, which means, for <a href="#MappingBowtie">MappingBowtie.pl</a>, <i>-ID</i> should be appropriately set and <i>-SamTmp</i> should NOT be applied manually.</li>
+			<li>This script will append <i>-ID 0</i> to &lt;MappingBowtie.pl options&gt; when there is no <i>-ID</i> option.</li>
+		</ol>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="MappingBowtieBlat2">MappingBowtieBlat2.pl</a></h3>
+		This script wraps <a href="#MappingBowtie">MappingBowtie.pl</a> and <a href="#MappingBlat">MappingBlat.pl</a>. All query reads will be mapped by Bowtie through MappingBowtie.pl, and rest reads (reads not passing the identity filter) will be processed by a two-pass application of MappingBlat.pl.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+MappingBowtieBlat2.pl &lt;target&gt; &lt;query&gt; &lt;SAMout&gt; -bowtie &lt;MappingBowtie.pl options&gt; -blat1 &lt;MappingBlat.pl 1st-pass options&gt; -blat2 &lt;MappingBlat.pl 2nd-pass options&gt;
+</pre></div></p>
+		
+		<h4>Options/Parameters</h4>
+		<ol>
+			<li>&lt;target&gt;: the <a href="#target"><i>target</i></a> string</li>
+			<li>&lt;query&gt;: the query file in FASTA format</li>
+			<li>&lt;SAMout&gt;: the output file in SAM format (not BAM)</li>
+			<li>&lt;MappingBowtie.pl options&gt;: options to be passed to <a href="#MappingBowtie">MappingBowtie.pl</a>, including those to be passed to Bowtie2</li>
+			<li>&lt;MappingBlat.pl 1st-pass options&gt;: options to be passed to the first pass of <a href="#MappingBlat">MappingBlat.pl</a>, including those to be passed to BLAT</li>
+			<li>&lt;MappingBlat.pl 2nd-pass options&gt;: options to be passed to the second pass of <a href="#MappingBlat">MappingBlat.pl</a>, including those to be passed to BLAT</li>
+		</ol>
+
+		<h4>Notes</h4>
+		<ol>
+			<li>This script automatically applies <i>-SamTmp</i> when invoking <a href="#MappingBowtie">MappingBowtie.pl</a> and first pass of <a href="#MappingBlat">MappingBlat.pl</a>, which means, for these two invocations, <i>-ID</i> should be appropriately set and <i>-SamTmp</i> should NOT be applied manually.</li>
+			<li>This script will append <i>-ID 0</i> to &lt;MappingBowtie.pl options&gt; and &lt;MappingBlat.pl 1st-pass options&gt; when there is no <i>-ID</i> option.</li>
+			<li>A reasonable usage of this script is to apply different search strategies on the two BLAT invocations. For example, default parameters for the first, and finer parameters (e.g. <i>-tilSize=9 -stepSize=3</i>) for the second.</li>
+		</ol>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="Mapping">Mapping.pl -- the wrapper</a></h3>
+		This script is a super-wrapper of above four mapping scripts, it (1) splits an input FASTA/FASTQ file into the specified number of parts, (2) concurrently maps all parts using the specified mapping script, and (3) outputs mapping results in SAM or BAM (binary SAM) format.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+Mapping.pl [options] &lt;target&gt; &lt;query&gt; &lt;SAMfile&gt; &lt;MethodScript&gt; &lt;method parameters&gt;
+</pre></div></p>
+		
+		<h4>Options/Parameters</h4>
+		<ol>
+			<li>&lt;target&gt;: the <a href="#target"><i>target</i></a> string</li>
+			<li>&lt;query&gt;: the query file in FASTA or FASTQ format</li>
+			<li>&lt;SAMfile&gt;: the output file in SAM or BAM (binary SAM) format, the format is decided according to the extension filename. The output format will be BAM if not decidable.</li>
+			<li>&lt;MethodScript&gt;: One of above four scripts, i.e., <a href="#MappingBlat">MappingBlat.pl</a>, <a href="#MappingBowtie">MappingBowtie.pl</a>, <a href="#MappingBowtieBlat">MappingBowtieBlat.pl</a>, and <a href="#MappingBowtieBlat2">MappingBowtieBlat2.pl</a>.</li>
+			<li>&lt;method parameters&gt;: options to be passed to the &lt;MethodScript&gt;</li>
+			<li>-space &lt;X&gt;: replace space characters in read IDs to &lt;X&gt; (default: '_', underline)</li>
+			<li>-slash &lt;Y&gt;: replace slash characters ('/') in read IDs to &lt;Y&gt; (default: '_', underline)</li>
+			<li>-split &lt;Z&gt;: split the query FASTA or FASTQ file into &lt;Z&gt; shares of FASTA files for mapping (default: 1, no splitting)</li>
+			<li>-table &lt;altTable&gt;: replace the <a href="#target"><i>mapping table</i></a> by &lt;altTable&gt;</li>
+			<li>-tmpdir &lt;tmpDir&gt;: the place to generate a temporary directory for storing all intermediate files of mapping (default: current working directory)</li>
+			<li>-keep: keep all intermediate files; otherwise, those files, including the temporary direcotry containing them, will be removed</li>
+			<li>-sortname: sort SAM records in the output file by read IDs. This is the default sorting order.</li>
+			<li>-sortpos: sort SAM records in the output file by mapping coordinates</li>
+			<li>-nosort: no sorting</li>
+			<li>-showcmd: show the command of running this script and those commands invoked by this script</li>
+		</ol>
+
+		<h4>Notes</h4>
+		<ol>
+			<li>The <i>-split</i> option makes this script generates &lt;Z&gt; processes to run &lt;MethodScript&gt; for those &lt;Z&gt; parts of reads. So it is important not to set &lt;Z&gt; to exceed your computer's capacity.</li>
+			<li>It may not be necessary to apply <i>-split</i> option when taking <a href="#MappingBowtie">MappingBowtie.pl</a> as the method script because the Bowtie2 option <i>-p</i> can be applied for multi-threading.</li>
+			<li>No <i>-SamTmp</i> option for the method script is allowed when &lt;Z&gt; (<i>-split</i>) is greater than 1 because this will cause two or more processes writing to one same temporary SAM file.</li>
+		</ol>
+		
+				
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="helper">Helper Scripts</a></h2>
+		
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="sam2fas">sam2fas.pl</a></h3>
+		This script translates a SAM file into a FASTA file.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+sam2fas.pl &lt;inSAM&gt; &lt;outFASTA&gt;
+</pre></div></p>
+		
+		<h4>Options/Parameters</h4>
+		<ol>
+			<li>&lt;inSAM&gt;: the input SAM file</li>
+			<li>&lt;outFASTA&gt;: the output FASTA file</li>
+		</ol>
+
+		<h4>Notes</h4>
+		<ol>
+			<li>Sequences of reversed-and-complemented SAM records will be their reversed-and-complemented SEQ. That is, all sequences in the output FASTA file follow their very original direction.</li>
+			<li>This script exacly generates one sequence for each SAM records, regardless of redundancy.</li>
+		</ol>
+		<hr>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="sam_filter">sam_filter.pl</a></h3>
+		This script reads SAM records from the standard input and write reads with qualified records and reads without qualified records into two separate SAM files.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+sam_filter.pl [-ID &lt;idThreshold&gt;] &lt;passedSAM&gt; &lt;filteredSAM&gt;
+</pre></div></p>
+		
+		<h4>Options/Parameters</h4>
+		<ol>
+			<li>-ID &lt;idThreshold&gt;: identity threshold for filtering. Setting this threshold 0 will let those unmapped records filtered. (default: 0.9)</li>
+			<li>&lt;passedSAM&gt;: the output SAM file for reads with only qualified records</li>
+			<li>&lt;filteredSAM&gt;: the output SAM file for reads without any qualified records</li>
+		</ol>
+
+		<h4>Notes</h4>
+		<ol>
+			<li>This script works properly with SAM files whose records of the same read ID are consecutive. Generally speaking, SAM or BAM files made directly by most aligners and BAM files sorted by names should fit this requirement.</li>
+			<li>There will be only one record for each read in &lt;filteredSAM&gt;.</li>
+			<li>SAM headers from the input will be written to both output SAM files.</li>
+		</ol>
+		
+				
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="examples">Examples</a></h2>
+		
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="example1">Mapping RNAseq reads using BLAT</a></h3>
+		With <i>mapping table</i> set as described <a href="#target">above</a> and read sequences in file MyQuery.fastq, the following command performs these operations:
+		<ol>
+			<li>splits input MyQuery.fastq into 20 FASTA files,</li>
+			<li>maps 20 FASTA files using 20 processes of BLAT,</li>
+			<li>translates output PSLX files into SAM files,</li>
+			<li>translates SAM files into BAM files,</li>
+			<li>merges BAM files into one single BAM file, and</li>
+			<li>sorts the BAM file by name.</li>
+		</ol>
+		
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+Mapping.pl -split 20 TAIR10 MyQuery.fastq Result.bam MappingBlat.pl -q=rna -t=dna
+</pre></div></p>
+
+		Note that it would be better to make sure these 20 BLAT processes can be run concurrently without much <a href="http://en.wikipedia.org/wiki/Context_switch">context-switch</a>, this can be observed by process mointors like <i>top</i> under UN*X.</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+Mapping.pl -split 20 x MyQuery.fastq Result.bam MappingBlat.pl -q=rna -t=dna -target /myDB/TAIR10.fasta
+</pre></div></p>
+
+		Alternatively, without <i>mapping table</i>, we may leave a dummy string for the &lt;target&gt; parameter and assign the genome file by <i>-target</i> option in &lt;method parameters&gt;.</p>
+		<hr>
+		
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="example2">Mapping RNAseq reads using Bowtie2 and then BLAT</a></h3>
+		The following command performs these operations:
+		<ol>
+			<li>maps reads using Bowtie2 with options <i>-p 8 -k 30 --sensitive</i>,</li>
+			<li>filters ailgnment results with identity threshold 0.9, and</li>
+			<li>maps unqualified reads using BLAT.</li>
+			<li>translates, merges, and sorts mapping results into one single BAM file which is sorted by name.</li>
+		</ol>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+Mapping.pl TAIR10 MyQuery.fastq Result.bam MappingBowtieBlat.pl -bowtie -p 8 -k 30 --sensitive -ID 0.9 -blat -q=rna -t=dna
+</pre></div></p>
+
+		Again, it would be better to make sure that <i>-p 8</i> for Bowtie2 can be performed appropriately. Also note that this command creates only one process for BLAT. The following steps do the same thing and run BLAT faster.</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+Mapping.pl TAIR10 MyQuery.fastq Result.bowtie.bam MappingBowtie.pl -p 8 -k 30 --sensitive -ID 0.9 -SamTmp Result.bowtieTmp.sam
+</pre></div></p>
+		Map reads with bowtie, filter alignments with identity threshold 0.9, and save unqualified reads/records in Result.bowtieTmp.sam. It is important not to apply the Bowtie2 option <i>--no-unal</i> so that unmapped reads would be also unqualified.</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+sam2fas.pl Result.bowtieTmp.sam Result.bowtieTmp.fasta
+</pre></div></p>
+		Translate those unqualified reads into a FASTA file.</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+Mapping.pl -split 20 TAIR10 Result.bowtieTmp.fasta Result.blat.bam MappingBlat.pl -q=rna -t=dna
+</pre></div></p>
+		Mapping with 20 processes of BLAT.</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+samtools merge -n Result.bam Result.blat.bam Result.bowtie.bam
+</pre></div></p>
+		Merge mapping results made by Bowtie2 and BLAT. <i>cat</i> of SAMtools would be much faster than <i>merge</i> but not sorted by name.</p>
+		<hr>
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="example3">Translation level mapping using BLAT</a></h3>
+		The following command runs translation level BLAT against transcript sequences of TAIR10. Note that BLAT options <i>-stepSize=1 minIdentity=15 -minScore=20</i> refine default BLAT parameters and cost much more running time. These BLAT parameters are all adjustable.</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+Mapping.pl -split 10 x MyQuery.fasta Result.bam MappingBlat.pl -q=dnax -t=dnax -stepSize=1 -minIdentity=15 -minScore=20 -target TAIR10_cdna_20101214_updated
+</pre></div></p>
+
+	</body>
+
+</html>

@@ -1,0 +1,619 @@
+<html>
+	<head><title>RACKJ - Useful Scripts</title>
+	
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-12601445-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	
+	</head>
+	
+	<body>
+		<table border=2 align=right><tr><td><a href="../index.html">home</a></td></tr></table>
+		<h1><a name="top">Useful Scripts</a></h1>
+		
+		<h2>Contents</h2>
+		<ul>
+		<li><a href="#sequence">Sequence Processing</a>
+			<ul>
+			<li><a href="#fastq2fasta">FASTQ =&gt; FASTA</a>
+			<li><a href="#FastqFilter">FastqFilter.pl</a></li>
+			<li><a href="#ShuffleFasta">ShuffleFasta.pl</a></li>
+			<li><a href="#ShuffleFastq">ShuffleFastq.pl</a></li>
+			<li><a href="#TrimFasta">TrimFasta.pl</a></li>
+			<li><a href="#SplitFasta">SplitFasta.pl</a></li>
+			<li><a href="#SplitFastq">SplitFastq.pl</a></li>
+			</ul>
+		<li><a href="#alignment">Alignment Manipulation</a>
+			<ul>
+			<li><a href="#psl2sam">psl2sam.pl</a>
+			<li><a href="#samGetSEQ">samGetSEQ.pl</a>
+			<li><a href="#samGetSEQfast">samGetSEQfast.pl</a>
+			</ul>
+		<li><a href="#gff">GFF/CGFF Manipulation</a>
+			<ul>
+			<li><a href="#GFFExtractor">GFFExtractor.pl</a></li>
+			<li><a href="#CGFFStatistics">CGFFStatistics.pl</a></li>
+			<li><a href="#SeqGen">SeqGen.pl</a></li>
+			<li><a href="#IntronicCGFF">IntronicCGFF.pl</a></li>
+			</ul>
+		<li><a href="#comparison">Comparisons</a>
+			<ul>
+			<li><a href="#RPKMcorrelation">RPKMcorrelation.pl</a></li>
+			<li><a href="#SSEScompare">SSEScompare.pl</a></li>
+			<li><a href="#SSEScompare_ex">SSEScompare_ex.pl</a></li>
+			<li><a href="#SSIRcompare">SSIRcompare.pl</a></li>
+			<li><a href="#SSIRcompare_ex">SSIRcompare_ex.pl</a></li>
+			<li><a href="#SSDAcompare">SSDAcompare.pl</a></li>
+			<li><a href="#SSDAcompare_chisqr">SSDAcompare_chisqr.pl</a></li>
+			<li><a href="#CoveredRegionDiff">CoveredRegionDiff.pl</a></li>
+			</ul>
+		<li><a href="#visualization">Visualization</a>
+			<ul>
+			<li><a href="#Visualization">Visualization.pl</a></li>
+			</ul>
+		</ul>
+
+
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="sequence">Sequence Processing</a></h2>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="fastq2fasta">FASTQ =&gt; FASTA</a></h3>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+perl -pe 's|@|>|;s|.*||s if $.%4==3 || $.%4==0;close $ARGV if eof' Your.*.fastq > output.fasta
+</pre></div></p>
+		This perl one-liner commend helps transfer FASTQ file(s) into a FASTA file.
+		<hr>
+		
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="FastqFilter">FastqFilter.pl</a></h3>
+		Used to filter sequences in a FASTQ file according to base calling scores.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+FastqFilter.pl &lt;inputFastq&gt; &lt;trimLength&gt; &lt;qualityType&gt; &lt;qualityFilter&gt; &lt;qualifiedRatio&gt; &lt;outputFastq&gt;
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>inputFastq: input filename of the FASTQ file</li>
+			<li>trimLength: trim length, every sequence will be trimmed to this length before filtering if this is set greater than 0.</li>
+			<li>qualityType: type of quality encoding, currently available: Sanger, Solexa/illumina1.0, illumina1.3, illumina1.5, illumina1.8. See <a href="http://en.wikipedia.org/wiki/FASTQ_format#Encoding">here</a> for reference.</li>
+			<li>qualityFilter: a quality score as a filter for deciding a base is qualified or not. 20 would be a good choice.</li>
+			<li>qualifiedRatio: a sequence is qualified if it has more than or equal to this ratio of bases are qualified (above <i>qualityFilter</i>).</li>
+			<li>outputFastq: output filename</li>
+		</ol>
+
+		<h4>Notes</h4>
+		This script accepts only four-line-per-sequence FASTQ files.
+		<hr>
+		
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="ShuffleFasta">ShuffleFasta.pl</a></h3>
+		Sometimes mate-pair reads are stored in two files separated for each ends, this script is used to shuffle them for further processing. RACK<font color="blue"><b>J</b></font>'s mate-pair facility works only for suffled sequence data.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+ShuffleFasta.pl &lt;inFasta1&gt; &lt;inFasta2&gt; &lt;outFasta&gt;
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>inFasta1: input FASTA file of one end</li>
+			<li>inFasta2: input FASTA file of the other end</li>
+			<li>outFasta: output FASTA file</li>
+		</ol>
+		<hr>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="ShuffleFastq">ShuffleFastq.pl</a></h3>
+		Sometimes mate-pair reads are stored in two files separated for each ends, this script is used to shuffle them for further processing. RACK<font color="blue"><b>J</b></font>'s mate-pair facility works only for suffled sequence data.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+ShuffleFastq.pl &lt;inFastq1&gt; &lt;inFastq2&gt; &lt;outFastq&gt;
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>inFastq1: input FASTQ file of one end</li>
+			<li>inFastq2: input FASTQ file of the other end</li>
+			<li>outFastq: output FASTQ file</li>
+		</ol>
+		<hr>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="TrimFasta">TrimFasta.pl</a></h3>
+		Simply trim sequences in a FASTA file.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+TrimFasta.pl &lt;inFasta&gt; &lt;trimLength&gt; &lt;outFasta&gt;
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>inFasta: input FASTA file</li>
+			<li>trimLength: trim length</li>
+			<li>outFasta: output FASTA file</li>
+		</ol>
+
+		<h4>Notes</h4>
+		This script can also be used for trimming a FASTQ file.</p>
+		<hr>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="SplitFasta">SplitFasta.pl</a></h3>
+		Split one single FASTA file into multiple FASTA files. This would be useful if the splitted files are to be mapped to a genome at the same time.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+SplitFasta.pl &lt;inFasta&gt; &lt;numSeq&gt;
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>inFasta: input FASTA file</li>
+			<li>numSeq: number of sequences per output file</li>
+		</ol>
+		<hr>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="SplitFastq">SplitFastq.pl</a></h3>
+		Split one single FASTQ file into multiple FASTQ files. This would be useful if the splitted files are to be mapped to a genome at the same time.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+SplitFastq.pl &lt;inFastq&gt; &lt;numSeq&gt;
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>inFastq: input FASTQ file</li>
+			<li>numSeq: number of sequences per output file</li>
+		</ol>
+
+
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="alignment">Alignment Manipulation</a></h2>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="psl2sam">psl2sam.pl</a></h3>
+		This psl2sam.pl is modified from the psl2sam.pl in the <a href="http://samtools.sourceforge.net/">SAMtools project</a>. We modified it for the following improvements:
+		<ol>
+			<li> implementation of SQ headers,</li>
+			<li> precise reflection of BLAT alignment blocks, original psl2sam.pl would transfer an alignment with CIGAR 66M2I1D6M to be with CIGAR 67M1I6M, which misses one mismatch,</li>
+			<li> implementation of NM and XM tags, where the latter is implemented by <a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">Bowtie2</a> for number of mismatches,</li>
+			<li> implementation of MD tags, and</li>
+			<li> translation of PSL output made by <a href="http://genome.ucsc.edu/goldenPath/help/blatSpec.html">the BLAT program</a> with options <i>-q=dnax -t=dnax</i> (translation-level BLAT).</li>
+		</ol>
+		</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+psl2sam.pl [-u &lt;chrMappingFile&gt;] [-md] &lt;genomeFasta&gt; &lt;inPSL&gt;
+</pre></div></p>
+		
+		<h4>Parameters/options</h4>
+		<ol>
+			<li>-u &lt;chrMappingFile&gt;: a chromosome ID mapping file used when translating PSL records into SAM records. Earlier <a href="../Manual/index.html#rnaseq.AlignmentFilter">rnaseq.AlignmentFilter</a> would produce lower-cased chromosome IDs which may result in problems with visualization tools like <a href="http://www.broadinstitute.org/igv/">IGV</a>. This problem is now corrected.</li>
+			<li>-md: apply this option if MD tags are needed.</li>
+			<li>genomeFasta: the genome FASTA file for mapping reads</li>
+			<li>inPSL: a PSL format file of alignment records</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		<ol>
+			<li>This script requires BioPerl installed.</li>
+			<li>This script outputs to standard output.</li>
+			<li>This script does not store SEQ fields. See <a href="#samGetSEQ">samGetSEQ.pl</a> and <a href="#samGetSEQfast">samGetSEQfast.pl</a> for filling SEQ.</li>
+		</ol>
+		<hr>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="samGetSEQ">samGetSEQ.pl</a></h3>
+		This script is for adding SEQ fields to SAM records.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+samGetSEQ.pl &lt;inSAM&gt; [&lt;FASTA&gt;]+
+</pre></div></p>
+		
+		<h4>Parameters/options</h4>
+		<ol>
+			<li>inSAM: input SAM file. Use STDIN for reading from standard input.</li>
+			<li>FASTA: FASTA file of reads, at least one FASTA file should be inputted.</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		<ol>
+			<li>This script outputs to standard output.</li>
+			<li>It is a good idea to pipe psl2sam.pl and samGetSEQ.pl.</li>
+		</ol>
+		<hr>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="samGetSEQfast">samGetSEQfast.pl</a></h3>
+		This script is for adding SEQ fields to SAM records, a faster version of <a href="#samGetSEQ">samGetSEQ.pl</a>.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+samGetSEQfast.pl [-unmap] &lt;inSAM&gt; [&lt;FASTA&gt;]+
+</pre></div></p>
+		
+		<h4>Parameters/options</h4>
+		<ol>
+			<li>-unmap: apply this option to include unaligned reads into the output.</li>
+			<li>inSAM: input SAM file. Use STDIN for reading from standard input.</li>
+			<li>FASTA: FASTA file of reads, at least one FASTA file should be inputted.</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		<ol>
+			<li>This script outputs to standard output.</li>
+			<li>This script guarantees filling all SEQ fields of the input SAM if read IDs in the SAM is a <a href="http://en.wikipedia.org/wiki/Subsequence">subsequence</a> of those in FASTA files.</li>
+			<li>It is a good idea to pipe psl2sam.pl and samGetSEQfast.pl.</li>
+		</ol>
+
+
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="gff">GFF/CGFF Manipulation</a></h2>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="GFFExtractor">GFFExtractor.pl</a></h3>
+		Extract specified records from a <a href="http://www.sequenceontology.org/gff3.shtml">GFF3</a> file. This script extracts records with the specified feature (column 3 of the GFF file) with specified attribute values (column 9 of the GFF file).</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+GFFExtractor.pl &lt;GffFilename&gt; &lt;outputFilename&gt; [&lt;feature&gt; [&lt;attr&gt;]]
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>GffFilename: input GFF3 file</li>
+			<li>outputFilename: output filename</li>
+			<li>feature: the type of the feature to be extracted. This will be &quot;gene&quot; if not specified.</li>
+			<li>attr: the attribute to be extracted. This will be &quot;ID&quot; if not specified.</li>
+		</ol>
+		<hr>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="CGFFStatistics">CGFFStatistics.pl</a></h3>
+		This script gives some basic statistics of intronic intervals and intergenic intervals in a canonical GFF file (made by <a href="../Manual/index.html#misc.CanonicalGFF">misc.CanonicalGFF</a> or <a href="../Manual/index.html#misc.SeqGeneMd">misc.SeqGeneMd</a>).</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+CGFFStatistics.pl &lt;inputCGFF&gt; [&lt;step&gt; &lt;maximum&gt; &lt;outputFileName&gt;]
+</pre></div></p>
+		If <i>step</i>, <i>maximum</i>, and <i>outputFileName</i> are given, the following five columns will be reported in the output file: (1) distance, controlled by <i>step</i> and <i>maximum</i>, (2) ratio of intergenic intervals shorter than the distance, (3) ratio of intronic intervals shorter than the distance, (4) precision of itme 2, and (5) corresponding F-measure.</p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>inputCGFF: input canonical GFF file</li>
+			<li>step: step of distance in the report file</li>
+			<li>maximum: maximum distance in the report file</li>
+			<li>outputFileName: output filename</li>
+		</ol>
+		<hr>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="SeqGen">SeqGen.pl</a></h3>
+		Extract sequences from a FASTA file based on genomic locations in a canonical GFF file (made by <a href="../Manual/index.html#misc.CanonicalGFF">misc.CanonicalGFF</a> or <a href="../Manual/index.html#misc.SeqGeneMd">misc.SeqGeneMd</a>).</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+SeqGen.pl [-n &lt;lineLength&gt;] &lt;outputFasta&gt; &lt;genomeFasta&gt; &lt;CGFF&gt; [&lt;strandFile&gt;]
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>-n &lt;lineLength&gt;: output FASTA will contain this many characters per line if this option is specified.</li>
+			<li>outputFasta: output file</li>
+			<li>genomeFasta: a FASTA file of genome sequences</li>
+			<li>CGFF: the canonical GFF file</li>
+			<li>strandFile: a 2-column file containing gene IDs and strands (+ and -). If this file is given or the CGFF file is with strand information, output sequences will follow the specified strands.</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		This script requires BioPerl installed.
+		<hr>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="IntronicCGFF">IntronicCGFF.pl</a></h3>
+		Transfer a canonical GFF file (made by <a href="../Manual/index.html#misc.CanonicalGFF">misc.CanonicalGFF</a> or <a href="../Manual/index.html#misc.SeqGeneMd">misc.SeqGeneMd</a>, which usually describe exon regions) into an intronic one. This would be useful for sample-sensitive intron-retention computation.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+IntronicCGFF.pl &lt;inputCGFF&gt; &lt;outputCGFF&gt;
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>inputCGFF: input CGFF file</li>
+			<li>outputCGFF: output CGFF file</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		<ul>
+			<li>In the output canonical GFF file, Gene regions are kept while exon regions are transferred to be intronic.</li>
+			<li>This script is now less useful because <a href="../Manual/index.html#rnaseq.ExonCounter">rnaseq.ExonCounter</a> is capable of giving counts of intronic reads.</li>
+		</ul>
+
+
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="comparison">Comparisons</a></h2>
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="RPKMcorrelation">RPKMcorrelation.pl</a></h3>
+		Compute pearson correlation coeficient for all pairs of given samples.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+RPKMcorrelation.pl [-read] [-uniq] [-log] &lt;geneRPKM_1&gt; [&lt;geneRPKM_i&gt;]+
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>-read: apply this option to compute correlation based on read counts but not RPKM values</li>
+			<li>-uniq: apply this option to compute correlation based on uniq-read counts</li>
+			<li>-log: apply this option to compute correlation based on log values, zeros will be replaced by one half of the minimum of all non-zero values</li>
+			<li>geneRPKM_i: .geneRPKM filename of <i>i-th</i> sample</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		This script requires the Statistics::Basic module.
+		<hr>
+	    
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="SSEScompare">SSEScompare.pl</a></h3>
+		Sample-sensitive exon-skipping (ES) comparison.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+SSEScompare.pl &lt;outputFilename&gt; &lt;readLength&gt; &lt;prefix_1&gt; [&lt;prefix_i&gt;]+
+</pre></div></p>
+		Suppose that a number of executions of <a href="../Manual/index.html#rnaseq.RPKMComputer">rnaseq.RPKMComputer</a> had been done in the working directory with different output prefixes (respectively for different samples), this script performs a sample-sensitive ES comparison for samples specified by these <i>prefixes</i>. Suppose <i>n</i> prefixes are inputted in the command line, this script outputs a table that contains the following information:
+		<ol type=A>
+			<li> the ES event: gene ID in column 1 and an exon pair in column 2,</li>
+			<li> <i>n</i> columns of numbers of reads supporting the ES event,</li>
+			<li> <i>n</i> columns of coverage depths (number of times that the gene been covered by its reads),</li>
+			<li> a chi-squared value (goodness-of-fit) comparing item B taking item C as the background,</li>
+			<li> <i>n</i> columns of numbers of splice-reads that involve exactly one skipped exon and one of the exon pair, and</li>
+			<li> a minimum chi-squared value (goodness-of-fit) of (i) comparing item B taking item E as the background and (ii) comparing item E taking item B as the background.</li>
+		</ol>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>outputFilename: output file</li>
+			<li>readLength: read length</li>
+			<li>prefix_i: output prefix of the <a href="../Manual/index.html#rnaseq.RPKMComputer">rnaseq.RPKMComputer</a> execution of <i>i-th</i> sample</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		With the output table, an Excel function like CHIDIST() would help getting corresponding P-values for aforementioned item F (degree of freedom = number of samples -1), which helps find ES events with statistical significance. But be aware that it is still very possible to have false positive ES events reported. The following approach would help get rid of those false positive ES events:
+		<ol>
+			<li> Use larger <i>-min</i> for <a href="../Manual/index.html#rnaseq.RPKMComputer">rnaseq.RPKMComputer</a>, with some loss of sensitivity.
+			<li> Take a look at corresponding <a href="../Manual/index.html#rnaseq.FineSpliceCounter">.fineSplice</a> file, a true positive may come with agreements with known splicing sites and/or be supported by reads with various splicing positions on them.
+			<li> Of course, <a href="../Manual/index.html#visualization">visualization</a> would give fast judgement than looking those .fineSplice files.
+		</ol>
+		<hr>
+	    
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="SSEScompare_ex">SSEScompare_ex.pl</a></h3>
+		Sample-sensitive exon-skipping (ES) comparison, the computation script. This script is warpped by <a href="#SSEScompare">SSEScompare.pl</a>. Use this script when there is an inconsistency between prefixes of .spliceCount and .geneRPKM files of some sample.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+SSEScompare_ex.pl &lt;outputFilename&gt; &lt;readLength&gt; &lt;spliceCount_1&gt; &lt;geneRPKM_1&gt; &lt;name_1&gt; [&lt;spliceCount_i&gt; &lt;geneRPKM_i&gt; &lt;name_i&gt;]+
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>outputFilename: output file</li>
+			<li>readLength: read length</li>
+			<li>spliceCount_i: .spliceCount filename of <i>i-th</i> sample</li>
+			<li>genePRKM_i: .geneRPKM filename of <i>i-th</i> sample</li>
+			<li>name_i: name of <i>i-th</i> sample</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		See <a href="#SSEScompare">SSEScompare.pl</a> for detailed description.
+		<hr>
+	    
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="SSIRcompare">SSIRcompare.pl</a></h3>
+		Sample-sensitive intron-retention (IR) comparison.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+SSIRcompare.pl &lt;outputFilename&gt; &lt;intronPrefix_1&gt; &lt;exonPrefix_1&gt; [&lt;intronPrefix_i&gt; &lt;exonPrefix_i&gt;]+
+</pre></div></p>
+		Suppose that a number of executions of <a href="../Manual/index.html#rnaseq.RPKMComputer">rnaseq.RPKMComputer</a> have been done in the working directory, and the same number of executions of <a href="../Manual/index.html#rnaseq.ExonCounter">rnaseq.ExonCounter</a> for .intronCount files have been done in the same working directory. This script performs a sample-sensitive IR comparison for samples specified by the <i>intronPrefixes</i> and <i>exonPrefixes</i>. Suppose <i>n</i> intronPrefixes and <i>n</i> exonPrefixes are inputted in the command line, this script outputs a table contains the following information:
+		<ol type=A>
+			<li> the IR event: gene ID in column 1, intron number in column 2, and intron length in column 3,</li>
+			<li> <i>n</i> columns of numbers of reads supporting the IR event,</li>
+			<li> <i>n</i> columns of numbers of reads belonging to neighboring exons,</li>
+			<li> a chi-squared value (goodness-of-fit) comparing item B taking item C as the background,</li>
+			<li> <i>n</i> columns of numbers of reads belonging to the gene,</li>
+			<li> a chi-squared value (goodness-of-fit) comparing item B taking item E as the background,</li>
+			<li> <i>n</i> columns of numbers of splicing reads spanning the intron, and</li>
+			<li> a chi-squared value (goodness-of-fit) comparing item B taking item G as the background.</li>
+		</ol>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>outputFilename: output file</li>
+			<li>readLength: read length</li>
+			<li>intronPrefix_i: output prefix of <a href="../Manual/index.html#rnaseq.ExonCounter">rnaseq.ExonCounter</a> execution of <i>i-th</i> sample for intron reads</li>
+			<li>exonPrefix_i: output prefix of <a href="../Manual/index.html#rnaseq.RPKMComputer">rnaseq.RPKMComputer</a> execution of <i>i-th</i> sample</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		With the output table, an Excel function like CHIDIST() would help getting corresponding P-values for aforementioned items D and F (degree of freedom = number of samples -1), which means IR events with significant statistical interference. But be aware that it is still very possible to have false positive IR events. One of the reasons might be incorrectness of genome annotation: sometimes an actual exon appears in an intronic interval of the database, and differential expression may make the &quot;IR&quot; event significant. It is a good idea to get <a href="../Manual/index.html#visualization">visualization</a> before doing any experiment.
+		</ol>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="SSIRcompare_ex">SSIRcompare_ex.pl</a></h3>
+		Sample-sensitive intron-retention (IR) comparison, the computation script. This script is warpped by <a href="#SSIRcompare">SSIRcompare.pl</a>. Use this script when there is an inconsistency between prefixes of .intronCount, .exonCount, .geneRPKM, and .spliceCount files of some sample.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%;"><pre>
+SSIRcompare_ex.pl &lt;outputFilename&gt; &lt;intronCount_1&gt; &lt;exonCount_1&gt; &lt;geneRPKM_1&gt; &lt;spliceCount_1&gt; &lt;name_1&gt; [&lt;intronCount_i&gt; &lt;exonCount_i&gt; &lt;geneRPKM_i&gt; &lt;spliceCount_i&gt; &lt;name_i&gt;]+
+</pre></div></p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>outputFilename: output file</li>
+			<li>intronCount_i: .intronCount filename of <i>i-th</i> sample</li>
+			<li>exonCount_i: .exonCount filename of <i>i-th</i> sample</li>
+			<li>genePRKM_i: .geneRPKM filename of <i>i-th</i> sample</li>
+			<li>spliceCount_i: .spliceCount filename of <i>i-th</i> sample</li>
+			<li>name_i: name of <i>i-th</i> sample</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		See <a href="#SSIRcompare">SSIRcompare.pl</a> for detailed description.
+		<hr>
+	    
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="SSDAcompare">SSDAcompare.pl</a></h3>
+		Sample-sensitive alternative donor/acceptor (DA) site comparison.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+SSDAcompare.pl &lt;outputFilename&gt; &lt;fineSplice_1&gt; &lt;geneRPKM_1&gt; &lt;name_1&gt; &lt;fineSplice_2&gt; &lt;geneRPKM_2&gt; &lt;name_2&gt; &lt;rackjJARpath&gt; &lt;PvalTh&gt; [&lt;strandCGFF&gt;]
+</pre></div></p>
+		Suppose that read data of two samples have been processed by <a href="../Manual/index.html#rnaseq.RPKMComputer">rnaseq.RPKMComputer</a> (or plus by <a href="../Manual/index.html#rnaseq.FineSpliceCounter">rnaseq.FineSpliceCounter</a>). For each gene, for every pair of splicing patterns that sharing the same exon pair, this script tests if there is some preference for one of the splicing pattern using the fisher exact test. The output table contains:
+		<ol type=A>
+			<li>gene ID</li>
+			<li>splicing pattern 1: the first splicing pattern, plus one additional column indicating this pattern in the database or not if the <i>novel</i> column is present in the input <a href="../Manual/index.html#rnaseq.FineSpliceCounter">.fineSplice</a> files.</li>
+			<li>splicing pattern 2: the second splicing pattern, plus one additional column indicating this pattern in the database or not if the <i>novel</i> column is present in the input <a href="../Manual/index.html#rnaseq.FineSpliceCounter">.fineSplice</a> files.</li>
+			<li>a string indicating the change between the two splicing pattern is of donor and/or acceptor if <i>strandCGFF</i> is given.</li>
+			<li>numbers of reads that supporting the first (or second) splicing pattern in the first (or second) sample.</li>
+			<li>P-value of fisher exact test based on the four read numbers.</li>
+			<li>numbers of uniq-reads of this gene in the two samples.</li>
+			<li>P-value of fisher exact test based on numbers of uniq-reads of the gene in the two samples and numbers of splice-reads of the only splicing pattern NOT in database (or the splicing pattern with fewer total reads).</li>
+		</ol>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>outputFilename: output file</li>
+			<li>fineSplice_i: .fineSplice filename of <i>i-th</i> sample</li>
+			<li>genePRKM_i: .geneRPKM filename of <i>i-th</i> sample</li>
+			<li>name_i: name of <i>i-th</i> sample</li>
+			<li>rackjJARpath: the path to RACK<font color="blue"><b>J</b></font> JAR file</li>
+			<li>PvalTh: P-value threshold. Records with P-value greater than this threshold will not be reported.</li>
+			<li>strandCGFF: a canonical GFF file with strand information. The string indicating the change between the two splicing pattern is of donor and/or acceptor will be reported if this parameter is given.</li>
+		</ol>
+		<hr>
+	    
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="SSDAcompare_chisqr">SSDAcompare_chisqr.pl</a></h3>
+		Sample-sensitive alternative donor/acceptor (DA) site comparison, the chi-squared version.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+SSDAcompare_chisqr.pl [-minSplice &lt;minSpliceReads&gt;] [-minDB &lt;minDBmatch&gt;] &lt;outputFilename&gt; &lt;chiSqrTh&gt; &lt;strandCGFF&gt; &lt;fineSplice_1&gt; &lt;geneRPKM_1&gt; &lt;name_1&gt; [&lt;fineSplice_i&gt; &lt;geneRPKM_i&gt; &lt;name_i&gt;]+
+</pre></div></p>
+		This chi-squared version of <a href="#SSDAcompare">SSDAcompare.pl</a> supports the comparison of multiple libraries (can be more than two). The major difference between this script and <a href="#SSDAcompare">SSDAcompare.pl</a> is that this script gives chi-squared values (goodness-of-fit) but not P-values made by fisher exact tests.</p>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>-minSplice &lt;minSpliceReads&gt;: set to filter out those records of any splicing pattern with total splice-reads less than <i>minSpliceReads</i></li>
+			<li>-minDB &lt;minDBmatch&gt;: set to filter out those records with less than <i>minDBmatch</i> splicing patterns in database</li>
+			<li>outputFilename: output file</li>
+			<li>chiSqrTh: records with chi-squared values less than this threshold will not be reported</li>
+			<li>strandCGFF: a canonical GFF file with strand information</li>
+			<li>fineSplice_i: .fineSplice filename of <i>i-th</i> sample</li>
+			<li>genePRKM_i: .geneRPKM filename of <i>i-th</i> sample</li>
+			<li>name_i: name of <i>i-th</i> sample</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		With the output table, an Excel function like CHIDIST() would help getting corresponding P-values (degree of freedom = number of samples -1), which means alternative DA events with significant statistical interference.
+		<hr>
+	    
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="CoveredRegionDiff">CoveredRegionDiff.pl</a></h3>
+		Given two <a href="../Manual/index.html#rnaseq.GeneCoverageArray">.geneCoverage</a> files, this script computes the maximum difference between the first(last) base-pair of getting transcription evidence for each gene.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: hidden; WIDTH: 90%"><pre>
+CoveredRegionDiff.pl &lt;outputFilename&gt; &lt;strandCGFF&gt; &lt;prefix1&gt; &lt;prefix2&gt;
+</pre></div></p>
+		The output file contains the following columns:
+		<ol>
+			<li> gene ID
+			<li> gene start position (5' of the genome)
+			<li> strand of the gene
+			<li> number of reads in the first sample
+			<li> number of reads in the second sample
+			<li> the first base-pair of getting transcription evidence (5' of the genome) in the first sample
+			<li> the last base-pair of getting transcription evidence (3' of the genome) in the first sample
+			<li> the first base-pair of getting transcription evidence (5' of the genome) in the second sample
+			<li> the last base-pair of getting transcription evidence (3' of the genome) in the second sample
+			<li> the maximum difference between the first(last) base-pair of getting transcription evidence
+			<li> the ratio between the maximum difference and the transcription length
+		</ol>
+		
+		<h4>Parameters</h4>
+		<ol>
+			<li>outputFilename: output filename</li>
+			<li>strandCGFF: a canonical GFF file with strand information</li>
+			<li>prefix1: prefix of the first .geneCoverage file</li>
+			<li>prefix2: prefix of the second .geneCoverage file</li>
+		</ol>
+
+
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="visualization">Visualization</a></h2>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="Visualization">Visualization.pl</a></h3>
+		Help doing <a href="../Manual/index.html#visualization">visualization tasks</a> automatically.</p>
+		
+		<h4>Usage</h4>
+		We strongly suggest to make one individual copy of this script to the working directory (even rename it), and make necessary changes according to comments inside the script. That means, this script need to be edited to work well. It automatically calls <a href="../Manual/index.html#rnaseq.RegionTracer">rnaseq.RegionTracer</a> (or <a href="../Manual/index.html#rnaseq.GeneTracer">rnaseq.GeneTracer</a>) and <a href="../Manual/index.html#graphics.ReadViz">graphics.ReadViz</a> for making plots.</p>
+
+
+	</body>
+
+</html>

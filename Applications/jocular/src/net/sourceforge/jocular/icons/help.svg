@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91+devel r"
+   sodipodi:docname="help.svg"
+   inkscape:export-filename="/home/kenneth/git/code/src/net/sourceforge/jocular/icons/help24.png"
+   inkscape:export-xdpi="144"
+   inkscape:export-ydpi="144"
+   viewBox="0 0 16 16">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="31.678384"
+     inkscape:cx="3.4564341"
+     inkscape:cy="20.004593"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     width="0px"
+     height="0px"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:snap-object-midpoints="false"
+     inkscape:snap-center="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:object-nodes="true"
+     inkscape:window-width="1301"
+     inkscape:window-height="744"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:snap-nodes="true"
+     units="mm"
+     inkscape:snap-global="true"
+     inkscape:snap-grids="false"
+     inkscape:snap-bbox="true"
+     inkscape:snap-midpoints="true"
+     inkscape:snap-page="true"
+     inkscape:snap-text-baseline="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid778"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       units="px"
+       spacingx="1"
+       spacingy="1"
+       originx="0mm"
+       originy="0mm" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-127.55906,-398.56695)">
+    <g
+       id="g4460"
+       transform="translate(1.902583,-5.5320305)">
+      <circle
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.03199996;marker:none;enable-background:accumulate"
+         id="path784"
+         cx="111.70142"
+         cy="395.66931"
+         r="2.5599966" />
+      <path
+         inkscape:transform-center-y="-2.383473e-06"
+         inkscape:transform-center-x="2.3999959"
+         inkscape:connector-curvature="0"
+         id="path808"
+         d="m 111.70142,395.6693 h -6.07999"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:#ffffff;stroke-width:1.27999842;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+         sodipodi:nodetypes="cc" />
+      <circle
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#7700ff;fill-opacity:1;stroke:none;stroke-width:0.03199996;marker:none;enable-background:accumulate"
+         id="path780"
+         cx="114.90141"
+         cy="392.46933"
+         r="7.9999905" />
+      <ellipse
+         ry="4.6399946"
+         rx="4.6399941"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.86171335;marker:none;enable-background:accumulate"
+         id="path874"
+         cx="112.82141"
+         cy="394.54932" />
+      <circle
+         id="path816"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#7700ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.03199996;marker:none;enable-background:accumulate"
+         cx="111.70142"
+         cy="395.66931"
+         r="2.8799956" />
+      <path
+         style="fill:#d6b1ff;fill-opacity:1;stroke:#000000;stroke-width:0.090311px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0"
+         d="m 122.68892,394.31322 -14.4921,1.03575 c -0.01,0.10573 -0.0141,0.21353 -0.0141,0.32173 0,0.10821 0.005,0.21602 0.0141,0.32174 l 13.33781,0.95108 c 0.53228,-0.78788 0.92935,-1.6766 1.15429,-2.6303 z"
+         id="path2995"
+         inkscape:connector-curvature="0" />
+      <circle
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#d6b1ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.03199996;marker:none;enable-background:accumulate"
+         id="path784-4-9"
+         cx="111.70142"
+         cy="395.66931"
+         r="3.5199947" />
+      <path
+         style="fill:#d6b1ff;fill-opacity:1;stroke:#000000;stroke-width:0.090311px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0"
+         d="m 119.4349,385.8776 -10.41399,12.01419 c 0.14601,0.15825 0.29898,0.31116 0.4572,0.4572 l 12.01419,-10.41117 c -0.55505,-0.80569 -1.25171,-1.50517 -2.0574,-2.06022 z"
+         id="path2999"
+         inkscape:connector-curvature="0" />
+      <circle
+         id="path816-0-4"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#7700ff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.03199996;marker:none;enable-background:accumulate"
+         cx="111.70142"
+         cy="395.66931"
+         r="1.9199969" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:16.42744827px;line-height:2500%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#7700ff;fill-opacity:1;stroke:none;stroke-width:0.41068619px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="127.63779"
+       y="391.35266"
+       id="text4248"
+       sodipodi:linespacing="2500%"><tspan
+         sodipodi:role="line"
+         x="127.63779"
+         y="391.35266"
+         id="tspan4250"
+         style="stroke-width:0.41068619px">jOcular</tspan></text>
+    <ellipse
+       style="opacity:1;fill:#d6b1ff;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:square;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path4245"
+       cx="135.57715"
+       cy="406.58044"
+       rx="6.9447985"
+       ry="6.976366" />
+    <text
+       id="text4256"
+       y="411.39249"
+       x="133.00328"
+       style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:13.93475628px;line-height:22175%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#7700ff;fill-opacity:1;stroke:none;stroke-width:0.36210591px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       xml:space="preserve"
+       sodipodi:linespacing="22175%"><tspan
+         y="411.39249"
+         x="133.00328"
+         sodipodi:role="line"
+         id="tspan4258"
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:13.93475628px;line-height:22175%;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu, Medium';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.36210591px;fill:#7700ff;fill-opacity:1;">?</tspan></text>
+  </g>
+</svg>

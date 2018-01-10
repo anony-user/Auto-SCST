@@ -1,0 +1,4 @@
+#<unique_id>	<display_name>	<Blat_fasta_Genome>	<Bowtie2_Database>	<cgff>	<model>
+TAIR10	TAIR 10	/home/galaxy/galaxy-dist/database/genomeFasta/TAIR10_chr_all.fa	/home/galaxy/galaxy-dist/database/BowtieDB/TAIR10	/home/galaxy/galaxy-dist/database/canonicalGFF/tair10.strand.cgff	/home/galaxy/galaxy-dist/database/canonicalGFF/tair10.strand.model
+Moss1.6	Moss 1.6	/home/galaxy/galaxy-dist/database/genomeFasta/Ppatens_152.fa	null	/home/galaxy/galaxy-dist/database/canonicalGFF/moss1_6.strand.cgff	/home/galaxy/galaxy-dist/database/canonicalGFF/moss1_6.strand.model
+M.Truncatula3.0	Medicago 3.0	/home/galaxy/galaxy-dist/database/genomeFasta/Medicago_3.0_all_sequences.fa	null	null	null

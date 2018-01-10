@@ -1,0 +1,634 @@
+<html>
+	<head><title>RACKJ - An Example for RNAseq Analysis</title>
+	
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-12601445-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	
+	</head>
+	
+	<body>
+		<table border=2 align=right><tr><td><a href="../index.html">home</a></td></tr></table>
+		<h1><a name="top">An Example for RNAseq Analysis</a></h1>
+
+		<h3>Contents</h3>
+		<ol start=0>
+		<li><a href="#preparation">Preparation</a></li>
+		<li><a href="#align">Align reads against the genome sequence</a></li>
+		<li><a href="#cgff">Building genome annotation file: .cgff and .model</a></li>
+		<li><a href="#computation">RPKM computation and exon-level counting</a></li>
+		<li><a href="#comparison">Comparing two samples</a></li>
+		<li><a href="#visualization">Visualization</a></li>
+		</ol>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="preparation">0. Preparation</a></h3>
+		System Requirement:
+		<ul>
+			<li>Java: Be sure that you have Java Runtime Environment (JRE) installed in your computer. You may download it <a href="http://www.java.com/en/download/index.jsp">here</a>.</li>
+			<li>Memory requirement: In practice, we found that RACK<font color="blue"><b>J</b></font> programs work well on 64-bit Linux machines. In 32-bit machines, better run java with <font color="red">-Xmx</font> option.</li>
+		</ul>
+		
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="align">1. Align reads against the genome sequence</a></h3>
+		RACK<font color="blue"><b>J</b></font> is specifically designed for analyzing reads of NGS (Next-Generation Sequencing) technologies longer than 50bps. Taking the advantage of &quot;not-short&quot; lengths, it is no longer a requirement to map reads to an &quot;expanded genome&quot;. All we have to do in the mapping stage is to align reads against the genome using a tool like BLAT -- just be sure that (1) the genome and the genome annotation file (in GFF3 or a seq_gene.md file) are of the same version, and (2) the chromosome sequence names are the same with those in the genome annotation file.</p>
+		
+		Suppose that we are using BLAT to align reads against the genome, the commands we would apply are:</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; WIDTH: 90%"><pre>
+blat -q=rna -t=dna -out=pslx &lt;GenomeFasta&gt; &lt;ShortReadFasta&gt; &lt;BlatOutputFile&gt;
+</pre></div></p>
+
+		and</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; WIDTH: 90%"><pre>
+pslReps -minNearTopSize=70 &lt;BlatOutputFile&gt; &lt;BetterOutputFile&gt; &lt;BlatPsrOutputFile&gt;
+</pre></div></p>
+
+		Note that, in the second command, the parameter 70 is for reads of 75bp-long, adjust it if necessary. Also note that, in order to shorten the response time for the first command, you may split the short-read file for mapping them at the same time, and then merge the output files. This kind of tasks now can be easily done using our <a href="../Mapping/index.html">mapping scripts</a>. For example, with Bowtie2 index built and <a href="../Mapping/index.html#target"><i>mapping table</i></a> written.</p>
+		
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example$ cat DB/MappingTable
+#target	bowtie2	blat
+tair10	/RAID2/Projects/20130503_example/DB/TAIR10_chr_all	/RAID2/Projects/20130503_example/DB/TAIR10_chr_all.fas
+
+wdlin@head2:/RAID2/Projects/20130503_example$ Mapping.pl -table DB/MappingTable tair10 ES.fastq ES.bam MappingBowtieBlat.pl -bowtie -p 10 --sensitive -k 10 -ID 0.95 -blat -q=rna -t=dna
+Total query reads: 5925048
+([Bowtie]68257_Query1.fasta) SAM ID filter (0.95) reads: 5925048 -> 4232249
+(SAM to FASTA) 69031_bowtieTmp.sam -> 69031_BlatQuery.fas
+Loaded 119667750 letters in 7 sequences
+Searched 126959925 bases in 1692799 sequences
+[samopen] SAM header is present: 7 sequences.
+[bam_sort_core] merging from 2 files...
+Total SAM output reads: 5852391
+</pre></div></p>
+
+		This command runs <a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">Bowtie2</a> for mapping, filters alignments with identity threshold 0.95, and then maps filtered reads using <a href="http://genome.ucsc.edu/FAQ/FAQblat.html#blat3">BLAT</a> for mapping them with intronic gaps. In this example, 10 <a href="http://en.wikipedia.org/wiki/Thread_%28computing%29">threads</a> were created by Bowtie2 for mapping and only one <a href="http://en.wikipedia.org/wiki/Process_%28computing%29">process</a> was used by BLAT. To speed up, you may try the faster commands as in our <a href="../Mapping/index.html#example2">example</a>, which create multiple processes for BLAT. Or, alternatively, the following command gives exactly the same output by creating 8 processes for running Bowtie and then BLAT separately.</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: scroll; HEIGHT: 30%; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example$ Mapping.pl -split 8 -table DB/MappingTable tair10 ES.fastq ES.bam MappingBowtieBlat.pl -bowtie --sensitive -k 10 -ID 0.95 -blat -q=rna -t=dna
+Split processing...done
+Total query reads: 5925048
+([Bowtie]89437_Query3.fasta) SAM ID filter (0.95) reads: 740631 -> 531480
+([Bowtie]89437_Query8.fasta) SAM ID filter (0.95) reads: 740631 -> 521930
+(SAM to FASTA) 90233_bowtieTmp.sam -> 90233_BlatQuery.fas
+Loaded 119667750 letters in 7 sequences
+(SAM to FASTA) 90238_bowtieTmp.sam -> 90238_BlatQuery.fas
+([Bowtie]89437_Query5.fasta) SAM ID filter (0.95) reads: 740631 -> 539655
+Loaded 119667750 letters in 7 sequences
+(SAM to FASTA) 90235_bowtieTmp.sam -> 90235_BlatQuery.fas
+Loaded 119667750 letters in 7 sequences
+([Bowtie]89437_Query1.fasta) SAM ID filter (0.95) reads: 740631 -> 511117
+([Bowtie]89437_Query2.fasta) SAM ID filter (0.95) reads: 740631 -> 523996
+([Bowtie]89437_Query7.fasta) SAM ID filter (0.95) reads: 740631 -> 530496
+([Bowtie]89437_Query4.fasta) SAM ID filter (0.95) reads: 740631 -> 537080
+(SAM to FASTA) 90231_bowtieTmp.sam -> 90231_BlatQuery.fas
+([Bowtie]89437_Query6.fasta) SAM ID filter (0.95) reads: 740631 -> 536495
+(SAM to FASTA) 90232_bowtieTmp.sam -> 90232_BlatQuery.fas
+Loaded 119667750 letters in 7 sequences
+(SAM to FASTA) 90237_bowtieTmp.sam -> 90237_BlatQuery.fas
+(SAM to FASTA) 90234_bowtieTmp.sam -> 90234_BlatQuery.fas
+Loaded 119667750 letters in 7 sequences
+Loaded 119667750 letters in 7 sequences
+(SAM to FASTA) 90236_bowtieTmp.sam -> 90236_BlatQuery.fas
+Loaded 119667750 letters in 7 sequences
+Loaded 119667750 letters in 7 sequences
+Searched 15073200 bases in 200976 sequences
+Searched 15686325 bases in 209151 sequences
+Searched 16402575 bases in 218701 sequences
+Searched 15266325 bases in 203551 sequences
+Searched 15310200 bases in 204136 sequences
+Searched 15760125 bases in 210135 sequences
+Searched 16247625 bases in 216635 sequences
+Searched 17213550 bases in 229514 sequences
+[samopen] SAM header is present: 7 sequences.
+[samopen] SAM header is present: 7 sequences.
+[samopen] SAM header is present: 7 sequences.
+[samopen] SAM header is present: 7 sequences.
+[samopen] SAM header is present: 7 sequences.
+[samopen] SAM header is present: 7 sequences.
+[samopen] SAM header is present: 7 sequences.
+[samopen] SAM header is present: 7 sequences.
+[bam_sort_core] merging from 2 files...
+Total SAM output reads: 5852391
+</pre></div></p>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="cgff">2. Building genome annotation file: .cgff and .model</a></h3>
+		Instead of GFF3 files and seq_gene.md files, RACK<font color="blue"><b>J</b></font> uses a very simple data format for storing genome annotations, namely, where is the range of one gene and where are its exons. RACK<font color="blue"><b>J</b></font> includes two modlues that translate GFF3 files and seq_gene.md files into this very simple data format, respectively. In this section, we show the GFF3 case for <i>Arabidopsis thaliana</i>. For the case of seq_gene.md files, please refer the <a href="../Manual/index.html#misc.SeqGeneMd"> SeqGeneMd</a> program or download <a href="../PrebuildCGFF/PrebuildCGFF.htm">prebuild files</a>.</p>
+		
+		Because a GFF3 file downloaded anywhere would contain any kind of values like &quot;transposable_element_gene&quot; analog to &quot;gene&quot and and any kind of values like &quot;ncRNA&quot; analog to &quot;mRNA&quot; in the &quot;type&quot; field (column 3), we do not expect to have a fully-automatic program that correctly processes all kinds of GFF3 files. Instead of a fully-automatic solution, we give a semi-automatic solution. The first thing we have to do is to &quot;observe&quot; the contents of the GFF3 file we have.</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example/DB$ java -classpath /home/wdlin/Project1/rackJ/rackj.jar misc.GffTree -I TAIR10_GFF3_genes_transposons.gff
+ID attribute (-idAttr) not assigned, using default: ID
+parent attribute list (-parentAttr) not assigned, using default: [Parent, Derives_from]
+program: GffTree
+input GFF file (-I): TAIR10_GFF3_genes_transposons.gff
+ID attribute (-idAttr): ID
+parent attribute list (-parentAttr): [Parent, Derives_from]
+
+wdlin@head2:/RAID2/Projects/20130503_example/DB$
+</pre></div></p>
+
+		In the above example, the GffTree program reads file TAIR10_GFF3_genes_transposons.gff and outputs a .features file, which tells the <i>type-hierarchy</i> in the GFF3 file. By observing the .features file, it is much easier to find which types are corresponding to genes, mRNA, and exon.</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example/DB$ cat TAIR10_GFF3_genes_transposons.gff.features
+GffRoot
+  chromosome*
+  gene*
+    mRNA*
+      protein*
+      exon
+      five_prime_UTR
+      CDS
+      three_prime_UTR
+    miRNA*
+      exon
+    tRNA*
+      exon
+    ncRNA*
+      exon
+    snoRNA*
+      exon
+    snRNA*
+      exon
+    rRNA*
+      exon
+  pseudogene*
+    pseudogenic_transcript*
+      pseudogenic_exon
+  transposable_element_gene*
+    mRNA*
+      exon
+  transposable_element*
+    transposon_fragment
+</pre></div></p>
+
+		Note that, in a .features file, asterisked type names are records with ID attributes. It means that records of these types are feasible to be something like genes or transcripts.
+		
+		After observing the GFF3 file using GffTree, for this example, we decide to generate a .cgff file using the following command, where a .cgff file records genomic location of a &quot;gene&quot; and locations of its exons.</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example/DB$ java -classpath /home/wdlin/Project1/rackJ/rackj.jar misc.CanonicalGFF -I TAIR10_GFF3_genes_transposons.gff -O tair10.strand.cgff -GE gene exon -GE pseudogene pseudogenic_exon -GE transposable_element_gene exon
+ID attribute (-idAttr) not assigned, using default: ID
+parent attribute list (-parentAttr) not assigned, using default: [Parent, Derives_from]
+program: CanonicalGFF
+input GFF file (-I): TAIR10_GFF3_genes_transposons.gff
+output filename (-O): tair10.strand.cgff
+gene-exon feature pairs (-GE): [[gene, exon], [pseudogene, pseudogenic_exon], [transposable_element_gene, exon]]
+ID attribute (-idAttr): ID
+parent attribute list (-parentAttr)): [Parent, Derives_from]
+
+wdlin@head2:/RAID2/Projects/20130503_example/DB$
+</pre></div></p>
+
+		This command treats records of type gene (pseudogene, transposable_element_gene) as genes, and exon (pseudogenic_exon, exon) as corresponding exons. For every gene-exon assignment (by -GE option), the <a href="../Manual/index.html#misc.CanonicalGFF">CanonicalGFF</a> program traverses the entire hierarchy described by the input GFF3 file, and looks for defined genes and their defined exon regions. Similarly, a .model file, which records defined transcripts and their defined exon regions, can be generated using the following command.</p>
+		
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example/DB$ java -classpath /home/wdlin/Project1/rackJ/rackj.jar misc.CanonicalGFF -I TAIR10_GFF3_genes_transposons.gff -O tair10.strand.model -GE mRNA:miRNA:tRNA:ncRNA:snoRNA:snRNA:rRNA exon -GE pseudogenic_transcript pseudogenic_exon
+ID attribute (-idAttr) not assigned, using default: ID
+parent attribute list (-parentAttr) not assigned, using default: [Parent, Derives_from]
+program: CanonicalGFF
+input GFF file (-I): TAIR10_GFF3_genes_transposons.gff
+output filename (-O): tair10.strand.model
+gene-exon feature pairs (-GE): [[mRNA:miRNA:tRNA:ncRNA:snoRNA:snRNA:rRNA, exon], [pseudogenic_transcript, pseudogenic_exon]]
+ID attribute (-idAttr): ID
+parent attribute list (-parentAttr)): [Parent, Derives_from]
+
+wdlin@head2:/RAID2/Projects/20130503_example/DB$
+</pre></div></p>
+
+		Note that the input option <i>-GE mRNA:miRNA:tRNA:ncRNA:snoRNA:snRNA:rRNA exon</i> equals to <i>-GE mRNA exon -GE miRNA exon -GE tRNA exon -GE ncRNA exon -GE snoRNA exon -GE snRNA exon -GE rRNA exon</i>, you may just shrink a number of input options like this if you find some types got the same type-mate. Also note that the major difference between a .cgff file and a .model file described here is that, a .model file describes transcripts and their exons, and a .cgff file &quot;combines&quot; multiple transcripts if they belong to the same gene. In the following picture, the two blue transcripts are separately recorded in the .model file, and the gray gene they belong to is recorded in the .cgff file with &quot;combined&quot; exons.
+
+		<table border=0 align=center>
+			<tr><td>
+					<image src="GeneTranscriptExample.png">
+			</td></tr>
+		</table>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="computation">3. RPKM computation and exon-level read counting</a></h3>
+		RPKM computation and exon-level read counting are pretty easy if mapping results (in this example, file <a href="#align">ES.bam</a>), the .cgff file, and the .model file are available. Just use the following command.</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example$ java -classpath /home/wdlin/Project1/rackJ/rackj.jar:/home/wdlin/Tools/sam-1.89.jar rnaseq.RPKMComputer -GFF DB/tair10.strand.cgff -model DB/tair10.strand.model -M SAM ES.bam -O ES
+program: RPKMComputer
+canonical GFF filename (-GFF): DB/tair10.strand.cgff
+mapping method/filename (-M):
+  SAM : ES.bam
+output prefix (-O): ES
+block join factor (-J): 2
+identity cutoff (-ID): 0.95
+use exon region (-exon): true
+check by containing (-contain, FALSE for by intersecting): false
+minimum overlap (-min): 8
+check all alignment blocks (-ALL): true
+model filename (-model): DB/tair10.strand.model
+
+#uniq reads: 5030009
+#multi reads: 172286
+#mapped reads: 5353305
+wdlin@head2:/RAID2/Projects/20130503_example$
+</pre></div></p>
+
+		The most important task of the <a href="../Manual/index.html#rnaseq.RPKMComputer">PRKMComputer</a> program is to see which read belongs to which gene based on mapping results and genome annotation, and compute RPKM values (proposed by <a href="http://woldlab.caltech.edu/rnaseq/">ERANGE</a>). RACK<font color="blue"><b>J</b></font> considers a read as mapped to the genome if its best alignment identity of its alignments is above the <i>identify cutoff</i> (defined by -ID), and only alignments with the best identity are involved in the following computation. RACK<font color="blue"><b>J</b></font> also considers an alignment as a combination of alignment blocks without insertion/deletion, and two nearby blocks will be joined if the distance between them are less than or equal to the <i>block join factor</i> (defined by -J). Then, each alignment is examined using the following four parameters:
+		
+		<ol>
+			<li>-exon: using either only exonic regions or gene regions (including intronic region) to qualify alignments.</li>
+			<li>-contain: qualifying alignments based on containment- or intersection-relationships between alignment blocks and qualifying regions.</li>
+			<li>-min: minimum overlapping size for defining containment or intersection.</li>
+			<li>-ALL: require all alignment blocks to be qualified?</li>
+		</ol>
+		
+		For genomes of model organisms that are considered as with trustworthy genome annotations, the default setting of the above four parameters (respectively true, false, 8, and true) sould be enough. And we exemplify each option by visual comparison.</p>
+		
+		<table border=1 align=center>
+			<tr><td>
+				<b>parameters:</b> -exon true -contain true -min 6 -ALL true
+			</td></tr>
+			<tr><td align=center>
+					<a href="lerEC6A.AT1G36390.jpg"><image src="lerEC6A.AT1G36390t.jpg" alt="click to enlarge"></a>
+			</td></tr>
+			<tr><td>
+				<b>parameters:</b> -exon false -contain true -min 6 -ALL true
+			</td></tr>
+			<tr><td align=center>
+					<a href="lerGC6A.AT1G36390.jpg"><image src="lerGC6A.AT1G36390t.jpg" alt="click to enlarge"></a>
+			</td></tr>
+			<tr><td>
+				<b>description:</b> red-circled reads are included because changing qualifying regions from exonic regions to gene regions.
+			</td></tr>
+		</table></p>
+		
+		<table border=1 align=center>
+			<tr><td>
+				<b>parameters:</b> -exon true -contain true -min 6 -ALL true
+			</td></tr>
+			<tr><td align=center>
+					<a href="lerEC6A.AT1G36390.jpg"><image src="lerEC6A.AT1G36390t.jpg" alt="click to enlarge"></a>
+			</td></tr>
+			<tr><td>
+				<b>parameters:</b> -exon true -contain false -min 6 -ALL true
+			</td></tr>
+			<tr><td align=center>
+					<a href="lerEI6A.AT1G36390.jpg"><image src="lerEI6A.AT1G36390t.jpg" alt="click to enlarge"></a>
+			</td></tr>
+			<tr><td>
+				<b>description:</b> red-circled reads are included because qualifying alignments by intersection but not by containment.
+			</td></tr>
+		</table></p>
+		
+		<table border=1 align=center>
+			<tr><td>
+				<b>parameters:</b> -exon true -contain true -min 6 -ALL true
+			</td></tr>
+			<tr><td align=center>
+					<a href="lerEC6A.AT1G36380.jpg"><image src="lerEC6A.AT1G36380t.jpg" alt="click to enlarge"></a>
+			</td></tr>
+			<tr><td>
+				<b>parameters:</b> -exon true -contain true -min 10 -ALL true
+			</td></tr>
+			<tr><td align=center>
+					<a href="lerEC10A.AT1G36380.jpg"><image src="lerEC10A.AT1G36380t.jpg" alt="click to enlarge"></a>
+			</td></tr>
+			<tr><td>
+				<b>description:</b> blue-circled reads are excluded because the minimum overlapping size is extended from 6 to 10.
+			</td></tr>
+		</table></p>
+		
+		<table border=1 align=center>
+			<tr><td>
+				<b>parameters:</b> -exon true -contain true -min 6 -ALL true
+			</td></tr>
+			<tr><td align=center>
+					<a href="pphy2.EC6A.Pp1s97_68V2.1.jpg"><image src="pphy2.EC6A.Pp1s97_68V2.1t.jpg" alt="click to enlarge"></a>
+			</td></tr>
+			<tr><td>
+				<b>parameters:</b> -exon true -contain true -min 6 -ALL false
+			</td></tr>
+			<tr><td align=center>
+					<a href="pphy2.EC6S.Pp1s97_68V2.1.jpg"><image src="pphy2.EC6S.Pp1s97_68V2.1t.jpg" alt="click to enlarge"></a>
+			</td></tr>
+			<tr><td>
+				<b>description:</b> blue-circled reads are included because they have at least one alignment block contained by the exons.
+			</td></tr>
+		</table></p>
+				
+		The RPKMComputer computes not only RPKM values but also counts for exons and splicing events. In this example, these outputs will be stored in three tab-delimited text files: ES.geneRPKM, ES.exonCount, and ES.spliceCount, where these files are prefixed by the string &quot;ES&quot; (specified by the -O option).</p>
+		
+		A .geneRPKM file contains data of five columns, i.e., GeneID, Length(in Kbps), Number of reads, the RPKM value, and the ratio of multi-reads versus all reads. All computations follow the procedure described in the paper of <a href="http://woldlab.caltech.edu/rnaseq/">ERANGE</a>.</p>
+
+		<table border=0 align=center>
+			<tr><td><b>An example of .geneRPKM file</b></td></tr>
+		</table>		
+		<table border=1 align=center>
+			<tr><td>GeneID</td><td>Length(Kbps)</td><td>#Reads</td><td>RPKM</td><td>multi/ALL</td></tr>
+			<tr><td>AT1G01010</td><td>1.688</td><td>119.00</td><td>13.38</td><td>0</td></tr>
+			<tr><td>AT1G01020</td><td>1.774</td><td>56.00</td><td>5.99</td><td>0</td></tr>
+			<tr><td>AT1G01030</td><td>1.905</td><td>0.00</td><td>0.00</td><td>0</td></tr>
+			<tr><td>AT1G01040</td><td>6.254</td><td>265.99</td><td>8.07</td><td>0.003732696</td></tr>
+			<tr><td>AT1G01046</td><td>0.207</td><td>1.10</td><td>1.01</td><td>0.092840284</td></tr>
+			<tr><td>AT1G01050</td><td>0.976</td><td>393.90</td><td>76.60</td><td>0.002296971</td></tr>
+			<tr><td>AT1G01060</td><td>3.234</td><td>255.00</td><td>14.96</td><td>0</td></tr>
+			<tr><td>AT1G01070</td><td>1.45</td><td>84.00</td><td>10.99</td><td>0</td></tr>
+			<tr><td>AT1G01073</td><td>0.111</td><td>0.00</td><td>0.00</td><td>0</td></tr>
+			<tr><td>AT1G01080</td><td>1.322</td><td>27.00</td><td>3.88</td><td>0</td></tr>
+			<tr><td>AT1G01090</td><td>1.627</td><td>1153.00</td><td>134.49</td><td>0</td></tr>
+			<tr><td>AT1G01100</td><td>0.679</td><td>1677.54</td><td>468.89</td><td>3.23E-04</td></tr>
+			<tr><td>AT1G01110</td><td>1.851</td><td>52.00</td><td>5.33</td><td>0</td></tr>
+		</table></p>
+
+		In addition to RPKM values, the .exonCount and the .spliceCount files record counts of reads that are belonging to exons and splicing events in exon level, respectively. Their formats are quite common, the first three columns are GeneID, exon (or exon pair), and read count. For the .exonCount file, we append the exon length and the ratio of multi-reads versus all reads for each exon.</p>
+
+		<table border=0 align=center>
+			<tr><td><b>An example of .exonCount file</b></td></tr>
+		</table>		
+		<table border=1 align=center>
+			<tr><td>GeneID</td><td>exonNo</td><td>#reads</td><td>exonLen</td><td>multi/ALL</td></tr>
+			<tr><td>AT1G05350</td><td>1</td><td>28.0</td><td>362</td><td>0.0</td></tr>
+			<tr><td>AT1G05350</td><td>2</td><td>22.0</td><td>53</td><td>0.0</td></tr>
+			<tr><td>AT1G05350</td><td>3</td><td>34.0</td><td>119</td><td>0.0</td></tr>
+			<tr><td>AT1G05350</td><td>4</td><td>35.0</td><td>87</td><td>0.0</td></tr>
+			<tr><td>AT1G05350</td><td>5</td><td>30.0</td><td>75</td><td>0.0</td></tr>
+			<tr><td>AT1G05350</td><td>6</td><td>25.0</td><td>75</td><td>0.0</td></tr>
+			<tr><td>AT1G05350</td><td>7</td><td>30.0</td><td>83</td><td>0.0</td></tr>
+			<tr><td>AT1G05350</td><td>8</td><td>18.0</td><td>37</td><td>0.0</td></tr>
+			<tr><td>AT1G05350</td><td>9</td><td>42.0</td><td>156</td><td>0.0</td></tr>
+			<tr><td>AT1G05350</td><td>10</td><td>21.0</td><td>69</td><td>0.0</td></tr>
+			<tr><td>AT1G05350</td><td>11</td><td>38.0</td><td>129</td><td>0.0</td></tr>
+			<tr><td>AT1G05350</td><td>12</td><td>26.0</td><td>114</td><td>0.0</td></tr>
+			<tr><td>AT1G05350</td><td>13</td><td>15.0</td><td>69</td><td>0.0</td></tr>
+			<tr><td>AT1G05350</td><td>14</td><td>17.0</td><td>199</td><td>0.0</td></tr>
+		</table></p>
+
+		For the .spliceCount file, we append the &quot;jumping&quot; column for checking whether the splicing event is crossing some other exon, and the &quot;novel&quot; column for checking whether the splicing event is recorded in the given .model file (this column will be appended if the .model file is given).</p>
+
+		<table border=0 align=center>
+			<tr><td><b>An example of .spliceCount file.</b></td></tr>
+		</table>		
+		<table border=1 align=center>
+			<tr><td>GeneID</td><td>exonPair</td><td>#reads</td><td>jumping</td><td>novel</td></tr>
+			<tr><td>AT5G23020</td><td>1<=>2</td><td>41.0</td></tr>
+			<tr><td>AT5G23020</td><td>2<=>3</td><td>46.0</td></tr>
+			<tr><td>AT5G23020</td><td>3<=>4</td><td>34.0</td></tr>
+			<tr><td>AT5G23020</td><td>4<=>5</td><td>34.0</td></tr>
+			<tr><td>AT5G23020</td><td>5<=>6</td><td>41.0</td></tr>
+			<tr><td>AT5G23020</td><td>6<=>7</td><td>64.0</td></tr>
+			<tr><td>AT5G23020</td><td>7<=>8</td><td>39.0</td></tr>
+			<tr><td>AT5G23020</td><td>8<=>9</td><td>34.0</td></tr>
+			<tr><td>AT5G23020</td><td>8<=>10</td><td>3.0</td><td>V</td><td>V</td></tr>
+			<tr><td>AT5G23020</td><td>9<=>10</td><td>57.0</td></tr>
+		</table></p>
+		
+		The following command outputs read counts of splicing events in nucleotide level in a .fineSplice file in addition to the .spliceCount file.</p>
+		
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example$ java -classpath /home/wdlin/Project1/rackJ/rackj.jar:/home/wdlin/Tools/sam-1.89.jar rnaseq.FineSpliceCounter -GFF DB/tair10.strand.cgff -model DB/tair10.strand.model -M SAM ES.bam -O ES
+program: FineSpliceCounter
+canonical GFF filename (-GFF): DB/tair10.strand.cgff
+mapping method/filename (-M):
+  SAM : ES.bam
+output prefix (-O): ES
+block join factor (-J): 2
+identity cutoff (-ID): 0.95
+use exon region (-exon): false
+check by containing (-contain, FALSE for by intersecting): false
+minimum overlap (-min): 8
+check all alignment blocks (-ALL): false
+model filename (-model): DB/tair10.strand.model
+
+#uniq reads: 5100972
+wdlin@head2:/RAID2/Projects/20130503_example$
+</pre></div></p>
+		
+		The format of the output .fineSplice file is very similar with that of the .exonCount and .spliceCount files except that the second column is for <a href="../Manual/index.html#rnaseq.FineSpliceCounter">splicing pattern</a> and the fourth column is for checking whether the splicing pattern is novel or not.</p>
+
+		<table border=0 align=center>
+			<tr><td><b>An example of .fineSplice file.</b></td></tr>
+		</table>		
+		<table border=1 align=center>
+			<tr><td>GeneID</td><td>splice</td><td>#reads</td><td>novel</td></tr>
+			<tr><td>AT5G23020</td><td>1(0)-2(0)</td><td>41.0</td></tr>
+			<tr><td>AT5G23020</td><td>2(0)-3(0)</td><td>46.0</td></tr>
+			<tr><td>AT5G23020</td><td>3[106-109]</td><td>1.0</td><td>V</td></tr>
+			<tr><td>AT5G23020</td><td>3(0)-4(0)</td><td>33.0</td></tr>
+			<tr><td>AT5G23020</td><td>3(+3)-4(-3)</td><td>1.0</td><td>V</td></tr>
+			<tr><td>AT5G23020</td><td>4(0)-5(0)</td><td>34.0</td></tr>
+			<tr><td>AT5G23020</td><td>5(0)-6(0)</td><td>39.0</td></tr>
+			<tr><td>AT5G23020</td><td>5(+1)-6(-2)</td><td>2.0</td><td>V</td></tr>
+			<tr><td>AT5G23020</td><td>6(0)-7(0)</td><td>64.0</td></tr>
+			<tr><td>AT5G23020</td><td>7(0)-8(0)</td><td>39.0</td></tr>
+			<tr><td>AT5G23020</td><td>8(0)-9(0)</td><td>34.0</td></tr>
+			<tr><td>AT5G23020</td><td>8(0)-10(0)</td><td>3.0</td><td>V</td></tr>
+			<tr><td>AT5G23020</td><td>9(-1)-10(+2)</td><td>1.0</td><td>V</td></tr>
+			<tr><td>AT5G23020</td><td>9(0)-10(0)</td><td>56.0</td></tr>
+		</table></p>
+		
+		Also with the following command, we may compute a .intronCount file that gives read numbers related with intron retention, and is like a .exonCount file. Note that, with default parameters <i>-exon false -contain false</i>, an intron read which overlaps some other gene regions will not be considered as uniq to the intron. This can facilitate downstream computation.</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example$ java -classpath /home/wdlin/Project1/rackJ/rackj.jar:/home/wdlin/Tools/sam-1.89.jar rnaseq.ExonCounter -GFF DB/tair10.strand.cgff -M SAM ES.bam -O ES -intronic true
+program: ExonCounter
+canonical GFF filename (-GFF): DB/tair10.strand.cgff
+mapping method/filename (-M):
+  SAM : ES.bam
+output prefix (-O): ES
+block join factor (-J): 2
+identity cutoff (-ID): 0.95
+use exon region (-exon): false
+check by containing (-contain, FALSE for by intersecting): false
+minimum overlap (-min): 8
+check all alignment blocks (-ALL): true
+count for intron (-intronic): true
+
+#uniq reads: 5041042
+#multi reads: 178070
+#mapped reads: 5353305
+wdlin@head2:/RAID2/Projects/20130503_example$
+</pre></div></p>
+		
+		<table border=0 align=center>
+			<tr><td><b>An example of .intronCount file</b></td></tr>
+		</table>		
+		<table border=1 align=center>
+			<tr><td>GeneID</td><td>intronNo</td><td>#reads</td><td>intronLen</td><td>multi/ALL</td></tr>
+			<tr><td>AT1G05350</td><td>1</td><td>0.0</td><td>103</td><td>0</td></tr>
+			<tr><td>AT1G05350</td><td>2</td><td>0.0</td><td>117</td><td>0</td></tr>
+			<tr><td>AT1G05350</td><td>3</td><td>0.0</td><td>105</td><td>0</td></tr>
+			<tr><td>AT1G05350</td><td>4</td><td>0.0</td><td>120</td><td>0</td></tr>
+			<tr><td>AT1G05350</td><td>5</td><td>0.0</td><td>134</td><td>0</td></tr>
+			<tr><td>AT1G05350</td><td>6</td><td>0.0</td><td>177</td><td>0</td></tr>
+			<tr><td>AT1G05350</td><td>7</td><td>0.0</td><td>81</td><td>0</td></tr>
+			<tr><td>AT1G05350</td><td>8</td><td>0.0</td><td>172</td><td>0</td></tr>
+			<tr><td>AT1G05350</td><td>9</td><td>0.0</td><td>278</td><td>0</td></tr>
+			<tr><td>AT1G05350</td><td>10</td><td>0.0</td><td>84</td><td>0</td></tr>
+			<tr><td>AT1G05350</td><td>11</td><td>0.0</td><td>96</td><td>0</td></tr>
+			<tr><td>AT1G05350</td><td>12</td><td>0.0</td><td>78</td><td>0</td></tr>
+			<tr><td>AT1G05350</td><td>13</td><td>1.0</td><td>274</td><td>0.0</td></tr>
+		</table></p>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="comparison">4. Comparing two samples</a></h3>
+		Given two samples, suppose that corresponding .geneRPKM, .exonCount, .spliceCount, and .fineSplice files are ready. It is usually very easy to compare RPKM values of each gene in the two samples using software like Excel: just combine the two RPKM table and use some formula to compare two RPKM values for each gene. For example, we may apply the Z-statistic (p1-p2)/SQRT(p0*(1-p0)/500,000), where p0, p1, and p2 are (RPKM1+RPKM2)/2,000,000, RPKM1/1,000,000, and PRKM2/1,000,000, respectively (see Kal et al. 1999, PubMed ID: PMC25383). This Z-statistic should follow the standard normal distribution and the corresponding P-value can be easily computed using Excel with a formula like 2*(1-NORMSDIST(ABS(Z))).</p>
+
+		In addition to comparing RPKM values, RACK<font color="blue"><b>J</b></font> provides a set of scripts that compare alternative splicing events in specified samples and thus find sample-sensitive alternative splicing events. In this example, we assume that the two samples are named ES and Fe, respectively. We also assume that these .geneRPKM, .exonCount, .spliceCount, and .fineSplice files are placed at the same directory and prefixed by &quot;ES&quot; and &quot;Fe&quot;, respectively. The following command computes sample-sensitive exon-skipping events using <a href="../Scripts/index.html#SSEScompare">SSEScompare.pl</a>.</p>
+		
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example$ SSEScompare.pl SSES.xls 75 ES Fe
+</pre></div></p>
+
+		This command outputs records like the following one, which means an exon-skipping event on exon 3 (count from 5' end of the genome, not gene) could be preferred in the &quot;Fe&quot; sample.</p>
+
+		<table border=1 align=center>
+			<tr><td>GeneID</td><td>exonPair</td><td>ES</td><td>Fe</td><td>depthES</td><td>depthFe</td><td>chiSquared</td><td>xES</td><td>xFe</td><td>xChiSquared</td></tr>
+			<tr><td>AT5G59610</td><td>2<=>4</td><td>0</td><td>3</td><td>2.44</td><td>2.75</td><td>2.38</td><td>2</td><td>0</td><td>56.95</td></tr>
+		</table></p>
+
+		The following command computes sample-sensitive intron-retention events using <a href="../Scripts/index.html#SSIRcompare">SSIRcompare.pl</a>.</p>
+				
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example$ SSIRcompare.pl SSIR.xls ES ES Fe Fe
+</pre></div></p>
+
+		This command outputs records like the following one, which means an intron-retention event on intron 2 (count from 5' end of the genome, not gene) could be preferred in the &quot;Fe&quot; sample.</p>
+
+		<table border=1 align=center>
+			<tr><td>GeneID</td><td>intronNo</td><td>intronLength</td><td>intronES</td><td>intronFe</td><td>exonES</td><td>exonFe</td><td>chiSquared</td><td>uniqES</td><td>uniqFe</td><td>uniChiSquared</td><td>spliceES</td><td>spliceFe</td><td>spliceChiSquared</td></tr>
+			<tr><td>AT5G15630</td><td>2</td><td>90</td><td>0</td><td>6</td><td>33</td><td>40</td><td>4.95</td><td>70</td><td>86</td><td>4.88</td><td>6</td><td>3</td><td>12.00</td></tr>
+		</table></p>
+
+		Finally, the following command computes sample-sensitive alternative donor/acceptor events using <a href="../Scripts/index.html#SSDAcompare">SSDAcompare.pl</a>.</p>
+				
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example$ SSDAcompare.pl SSDA.xls ES.fineSplice ES.geneRPKM ES Fe.fineSplice Fe.geneRPKM Fe /home/wdlin/Project1/rackJ/rackj.jar 0.2 DB/tair10.strand.cgff
+</pre></div></p>
+
+		Its output records is like the following one, which means a donor change event on intron 1 (count from 5' end of the genome, not gene) could be preferred in the &quot;Fe&quot; sample.</p>
+
+		<table border=1 align=center>
+			<tr><td>Gene</td><td>Splice1</td><td>Database</td><td>Splice2</td><td>Database</td><td>Donor/Acceptor Change</td><td>ES Splice1</td><td>ES Splice2</td><td>Fe Splice1</td><td>Fe Splice2</td><td>p-value</td><td>ES Uniq</td><td>Fe Uniq</td><td>p-value</td></tr>
+			<tr><td>AT3G23090</td><td>1(0)-2(-12)</td><td>V</td><td>1(0)-2(0)</td><td>V</td><td>D</td><td>34</td><td>4</td><td>39</td><td>23</td><td>0.0048</td><td>549</td><td>745</td><td>0.0048</td></tr>
+		</table></p>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="visualization">5. Visualization</a></h3>
+		One of the simplest ways to visualize read mapping on the genome with genome annotation is to use a visualization tool like <a href="http://www.broadinstitute.org/igv/">IGV</a> to browse SAM files sorted and indexed using <a href="http://samtools.sourceforge.net/">SAMtools</a>. Alternatively, RACK<font color="blue"><b>J</b></font> provide <a href="../Manual/index.html#visualization">two data generation programs and one visualization program</a> that enable mapping visualizations <a href="../Scripts/index.html#Visualization">in a batch</a>.</p>
+		
+		After surveying potentially sample-sensitive alternative splicing events in last section, the first thing we may want to do is to see how reads mapped to those alternatively spliced genes. The visualization component of RACK<font color="blue"><b>J</b></font> contains two steps: data generation and visualization.</p>
+
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example$ java -classpath /home/wdlin/Project1/rackJ/rackj.jar:/home/wdlin/Tools/sam-1.89.jar rnaseq.GeneTracer -GFF DB/tair10.strand.cgff -model DB/tair10.strand.model -exon false -M SAM ES.bam -O Plot/ES -trace AT5G59610 -trace AT5G15630 -trace AT3G23090
+program: GeneTracer
+canonical GFF filename (-GFF): DB/tair10.strand.cgff
+mapping method/filename (-M):
+  SAM : ES.bam
+output prefix (-O): Plot/ES
+block join factor (-J): 2
+identity cutoff (-ID): 0.95
+use exon region (-exon): false
+check by containing (-contain, FALSE for by intersecting): false
+minimum overlap (-min): 8
+check all alignment blocks (-ALL): true
+model filename (-model): DB/tair10.strand.model
+tracing gene list (-trace): [AT5G59610, AT5G15630, AT3G23090]
+traceing gene list in file (-traceFile): null
+buffer size per gene (-buffer): 10240
+
+#uniq reads: 5041042
+#multi reads: 178070
+#mapped reads: 5353305
+wdlin@head2:/RAID2/Projects/20130503_example$
+</pre></div></p>
+
+		In this example, the <a href="../Manual/index.html#rnaseq.GeneTracer">GeneTracer</a> program reads the mapping results (ES.bam) and records mapping locations of &quot;qualified&quot; reads for the three specified genes (AT5G59610, AT5G15630, and AT3G23090) at the same time. You may use option <i>-trace</i> to specify as many genes as you like, or use option <i>-traceFile</i> to specify a file that contains genes to be traced. Note that reads will be &quot;qualified&quot; as described in <a hrEf="#computation">the RPKM computation section</a>, and the default values of the four key parameters are true, false, 8, and true, respectively. In this example, we set <i>-exon false</i> for getting intronic reads as well as exonic reads.</p>
+		
+		Next, the <a href="../Manual/index.html#graphics.ReadViz">ReadViz</a> program reads a file outputted by GeneTracer and makes a picture of all gene models and all collected reads.</p>
+		
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example$ java -classpath /home/wdlin/Project1/rackJ/rackj.jar:/home/wdlin/Tools/sam-1.89.jar graphics.ReadViz  -I Plot/ES.AT5G59610 -O Plot/AT5G59610.ES.jpg
+program: ReadViz
+input filename (-I): Plot/ES.AT5G59610
+output filename (-O): Plot/AT5G59610.ES.jpg
+output mode (-mode): mapping
+read height (-h): 2
+include splice reads (-splice): true
+include uniq reads (-uniq): true
+include multi reads (-multi): true
+direction (-direction): forward
+auto setting (-auto): true
+        use first model (-F): true
+plot size (-size): 1000
+font (-font): Courier
+
+auto start (-start): 24013100
+auto stop (-stop): 24015100
+auto plot scale (-scale): 200
+wdlin@head2:/RAID2/Projects/20130503_example$
+</pre></div></p>
+
+		<table border=0 align=center>
+			<tr><td>
+					<image src="AT5G59610.ES.jpg">
+			</td></tr>
+		</table>
+		
+		By doing the same steps for the Fe sample, we may visually compare the pictures of the same gene in the two samples and find an exon-skipping event in one sample.</p>
+
+		<table border=0 align=center>
+			<tr><td>
+					<image src="AT5G59610.Fe.jpg">
+			</td></tr>
+		</table>
+
+		Similarly, we shall see the second intron of one other gene is retained in the Fe sample.</p>
+		
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+wdlin@head2:/RAID2/Projects/20130503_example$ java -classpath /home/wdlin/Project1/rackJ/rackj.jar:/home/wdlin/Tools/sam-1.89.jar graphics.ReadViz -mode depthlog -I Plot/Fe.AT5G15630 -O Plot/AT5G15630.Fe.jpg
+program: ReadViz
+input filename (-I): Plot/Fe.AT5G15630
+output filename (-O): Plot/AT5G15630.Fe.jpg
+output mode (-mode): depthlog
+read height (-h): 2
+include splice reads (-splice): true
+include uniq reads (-uniq): true
+include multi reads (-multi): true
+direction (-direction): forward
+auto setting (-auto): true
+        use first model (-F): true
+plot size (-size): 1000
+font (-font): Courier
+
+auto start (-start): 5084500
+auto stop (-stop): 5087000
+auto plot scale (-scale): 500
+wdlin@head2:/RAID2/Projects/20130503_example$
+</pre></div></p>
+
+		<table border=0 align=center>
+			<tr><td>
+					<image src="AT5G15630.Fe.jpg">
+			</td></tr>
+		</table>
+		
+
+	</body>
+
+</html>

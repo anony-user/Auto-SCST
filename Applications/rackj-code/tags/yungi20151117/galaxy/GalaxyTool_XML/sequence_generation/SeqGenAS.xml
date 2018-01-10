@@ -1,0 +1,52 @@
+<tool id="seqgen_as_id"  name="Sequence generation for alternative spliceing">
+  <description>Generate sequences around splicing sites</description>
+  <command>SeqGenAS.pl ${spliceList} ${w1} ${w2} ${w3} ${w4} ${overlapMerge} ${species.fields.cgffFilePath} ${species.fields.genome} ${outputPrefix} &amp;&amp; mv ${outputPrefix} ${outputFilename}
+  </command>
+  
+  <inputs>
+  
+    <!-- $species -->
+    <param name="species" type="select" optional="false" label="species">
+      <options from_file="rackj.loc">
+        <column name="value" index="0"/>
+        <column name="name" index="1"/>
+        <column name="genome" index="2"/>
+        <column name="cgffFilePath" index="4"/>
+        <filter type="static_value" value="null" keep="false" column="2"/>
+        <filter type="static_value" value="null" keep="false" column="4"/>
+      </options>
+    </param>
+    
+    <param name ="spliceList" type="data" optional="false" label="Splice list file"/>
+    
+    <param name ="w1" type="integer" size="5" optional="false" value="100" label="w1 - 5' range of the 5' splicing point" help="">
+        <validator type="in_range" message="w1 should not less than 0" min="0"/>
+    </param>
+    
+    <param name ="w2" type="integer" size="5" optional="false" value="100" label="w2 - 3' range of the 5' splicing point" help="">
+        <validator type="in_range" message="w2 should not be less than -1" min="-1"/>
+    </param>
+    
+    <param name ="w3" type="integer" size="5" optional="false" value="100" label="w3 - 5' range of the 3' splicing point" help="">
+        <validator type="in_range" message="w3 should not be less than -1" min="-1"/>
+    </param>
+    
+    <param name ="w4" type="integer" size="5" optional="false" value="100" label="w4 - 3' range of the 3' splicing point" help="">
+        <validator type="in_range" message="w4 should not less than 0" min="0"/>
+    </param>
+    
+    <!-- $overlapMerge-->
+  <param name="overlapMerge" type="boolean" truevalue="1" falsevalue="0" checked="False" label="Merge if two sequences overlapping"/>
+    
+    <!-- $outputPrefix -->
+    <param name="outputPrefix" value="" type="text" optional="false" size="10" label="Prefix of output filename">
+      <validator type="regex" message="This field cannot be empty nor contain any whitespace character">^\S+$</validator>
+    </param>
+  
+  </inputs>
+  
+  <outputs>
+    <data format="fasta" name="outputFilename" label="${outputPrefix}.fasta"/>
+  </outputs>
+    
+</tool>

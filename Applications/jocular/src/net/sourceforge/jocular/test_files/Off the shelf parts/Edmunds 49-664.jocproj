@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<opticsProject version="0.038">
+	<ROOT_GROUP id="-1292857881">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<OPTICS_GROUP id="2089896322">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<SPHERICAL_LENS id="-512860768">
+				<property key="NAME">L3</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="DIAMETER">L1>dia</property>
+				<property key="THICKNESS">150nm</property>
+				<property key="FRONT_SHAPE">CONVEX</property>
+				<property key="FRONT_RADIUS">L1>front rad + L3>thick</property>
+				<property key="BACK_SHAPE">CONCAVE</property>
+				<property key="BACK_RADIUS">L1>front rad</property>
+				<property key="INSIDE_MATERIAL">MAGNESIUM_FLUORIDE</property>
+				<positioner id="-140231322" type="OFFSET">
+					<property key="DIR_OFFSET">-L1>thick/2-L3>thick/2</property>
+				</positioner>
+			</SPHERICAL_LENS>
+			<SPHERICAL_LENS id="1911056136">
+				<property key="NAME">L1</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="DIAMETER">25mm</property>
+				<property key="THICKNESS">9mm</property>
+				<property key="FRONT_SHAPE">CONVEX</property>
+				<property key="FRONT_RADIUS">24.8mm</property>
+				<property key="BACK_SHAPE">CONVEX</property>
+				<property key="BACK_RADIUS">37.6mm</property>
+				<property key="INSIDE_MATERIAL">N_SK14</property>
+				<positioner id="1026177567" type="OFFSET">
+					<property key="DIR_OFFSET">0.0</property>
+				</positioner>
+			</SPHERICAL_LENS>
+			<SPHERICAL_LENS id="-1656040471">
+				<property key="NAME">L2a</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="DIAMETER">L1>dia</property>
+				<property key="THICKNESS">0.5mm</property>
+				<property key="FRONT_SHAPE">CONCAVE</property>
+				<property key="FRONT_RADIUS">L1>back rad</property>
+				<property key="BACK_SHAPE">FLAT</property>
+				<property key="BACK_RADIUS">20cm</property>
+				<property key="INSIDE_MATERIAL">N_SF57</property>
+				<positioner id="-408252908" type="OFFSET">
+					<property key="DIR_OFFSET">L1>thick/2+L2a>thick/2</property>
+				</positioner>
+			</SPHERICAL_LENS>
+			<PLANO_ASPHERIC_LENS id="2087944935">
+				<property key="NAME">L2b</property>
+				<property key="SUPPRESSED">false</property>
+				<property key="THICKNESS">2mm</property>
+				<property key="DIAMETER">25mm</property>
+				<property key="RADIUS">102.33mm</property>
+				<property key="COEFF_UNITS">MM</property>
+				<property key="CONIC_COEFF">0</property>
+				<property key="POLY_COEFFS">0,9.5779808E-006, -1.436447E-008</property>
+				<property key="INSIDE_MATERIAL">N_SF57</property>
+				<positioner id="132140153" type="REVERSE_OFFSET">
+					<property key="DIR_OFFSET">L1>thick/2+L2a>thick+L2b>thick/2+1nm</property>
+				</positioner>
+			</PLANO_ASPHERIC_LENS>
+			<positioner id="-1653891309" type="OFFSET">
+				<property key="DIR_OFFSET">L2a>thick/2 + L2b>thick/2</property>
+			</positioner>
+		</OPTICS_GROUP>
+		<positioner id="1974631485" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

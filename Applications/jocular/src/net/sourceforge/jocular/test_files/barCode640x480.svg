@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="640"
+   height="480"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48+devel r13149"
+   viewBox="0 0 640 480.00001"
+   sodipodi:docname="barCode640x480.svg"
+   inkscape:export-filename="C:\Users\kmaccallum\git\code\src\net\sourceforge\jocular\test_files\barCode640x480.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="259.2482"
+     inkscape:cy="260.46393"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:object-nodes="true"
+     inkscape:object-paths="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4062"
+       units="px"
+       spacingx="10px"
+       spacingy="10px" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-572.36219)">
+    <rect
+       style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.54330707;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect4064"
+       width="10"
+       height="480.00003"
+       x="-6.6666666e-006"
+       y="572.36218" />
+    <rect
+       y="572.36218"
+       x="9.9999933"
+       height="480.00003"
+       width="10"
+       id="rect4084"
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.54330707;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <g
+       id="g4443">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(20.000001,-1.3134766e-5)"
+         id="use4431"
+         xlink:href="#rect4064"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(20.000001,-1.3134766e-5)"
+         id="use4433"
+         xlink:href="#rect4084"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       id="g4439">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(30,0)"
+         id="use4435"
+         xlink:href="#use4431"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(10,0)"
+         id="use4437"
+         xlink:href="#use4433"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       id="g4447"
+       transform="translate(40,0)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4064"
+         id="use4449"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4084"
+         id="use4451"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       transform="translate(60.000001,0)"
+       id="g4453">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(20.000001,-1.3134766e-5)"
+         id="use4455"
+         xlink:href="#rect4064"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(20.000001,-1.3134766e-5)"
+         id="use4457"
+         xlink:href="#rect4084"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       id="g4459"
+       transform="translate(80.000001,0)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4064"
+         id="use4461"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4084"
+         id="use4463"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       id="g4465"
+       transform="translate(80.000002,0)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4431"
+         id="use4467"
+         transform="translate(30,0)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4433"
+         id="use4469"
+         transform="translate(10,0)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       transform="translate(100,0)"
+       id="g4471">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(30,0)"
+         id="use4473"
+         xlink:href="#use4431"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(10,0)"
+         id="use4475"
+         xlink:href="#use4433"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       transform="translate(140,0)"
+       id="g4477">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(20.000001,-1.3134766e-5)"
+         id="use4479"
+         xlink:href="#rect4064"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(20.000001,-1.3134766e-5)"
+         id="use4481"
+         xlink:href="#rect4084"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       transform="translate(140,0)"
+       id="g4483">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(30,0)"
+         id="use4485"
+         xlink:href="#use4431"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(10,0)"
+         id="use4487"
+         xlink:href="#use4433"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       id="g4489"
+       transform="translate(180,2.0517579e-5)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4431"
+         id="use4491"
+         transform="translate(30,0)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4433"
+         id="use4493"
+         transform="translate(10,0)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       transform="translate(180,2.0517578e-5)"
+       id="g4495">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(20.000001,-1.3134766e-5)"
+         id="use4497"
+         xlink:href="#rect4064"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(20.000001,-1.3134766e-5)"
+         id="use4499"
+         xlink:href="#rect4084"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       transform="translate(200,0)"
+       id="g4501">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(30,0)"
+         id="use4503"
+         xlink:href="#use4431"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(10,0)"
+         id="use4505"
+         xlink:href="#use4433"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       id="g4507"
+       transform="translate(240.00001,2.0517579e-5)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4431"
+         id="use4509"
+         transform="translate(30,0)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4433"
+         id="use4511"
+         transform="translate(10,0)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       id="g4513"
+       transform="translate(240,2.0517579e-5)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4064"
+         id="use4515"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4084"
+         id="use4517"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       transform="translate(260.00001,0)"
+       id="g4519">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(30,0)"
+         id="use4521"
+         xlink:href="#use4431"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(10,0)"
+         id="use4523"
+         xlink:href="#use4433"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       id="g4525"
+       transform="translate(280,0)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4431"
+         id="use4527"
+         transform="translate(30,0)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4433"
+         id="use4529"
+         transform="translate(10,0)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       id="g4531"
+       transform="translate(320,0)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4064"
+         id="use4533"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4084"
+         id="use4535"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       id="g4537"
+       transform="translate(320,0)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4431"
+         id="use4539"
+         transform="translate(30,0)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4433"
+         id="use4541"
+         transform="translate(10,0)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       transform="translate(340,0)"
+       id="g4543">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(30,0)"
+         id="use4545"
+         xlink:href="#use4431"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(10,0)"
+         id="use4547"
+         xlink:href="#use4433"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       id="g4549"
+       transform="translate(380,0)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4064"
+         id="use4551"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4084"
+         id="use4553"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       id="g4555"
+       transform="translate(380.00001,0)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4431"
+         id="use4557"
+         transform="translate(30,0)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4433"
+         id="use4559"
+         transform="translate(10,0)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       id="g4561"
+       transform="translate(420.00001,0)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4064"
+         id="use4563"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4084"
+         id="use4565"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       id="g4567"
+       transform="translate(420.00001,0)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4431"
+         id="use4569"
+         transform="translate(30,0)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4433"
+         id="use4571"
+         transform="translate(10,0)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       transform="translate(460.00001,2.0517579e-5)"
+       id="g4573">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(30,0)"
+         id="use4575"
+         xlink:href="#use4431"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(10,0)"
+         id="use4577"
+         xlink:href="#use4433"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       id="g4579"
+       transform="translate(460.00001,2.0517578e-5)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4064"
+         id="use4581"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#rect4084"
+         id="use4583"
+         transform="translate(20.000001,-1.3134766e-5)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       id="g4585"
+       transform="translate(480.00001,0)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4431"
+         id="use4587"
+         transform="translate(30,0)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4433"
+         id="use4589"
+         transform="translate(10,0)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       transform="translate(520.00002,2.0517579e-5)"
+       id="g4591">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(30,0)"
+         id="use4593"
+         xlink:href="#use4431"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(10,0)"
+         id="use4595"
+         xlink:href="#use4433"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       transform="translate(520.00001,2.0517579e-5)"
+       id="g4597">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(20.000001,-1.3134766e-5)"
+         id="use4599"
+         xlink:href="#rect4064"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(20.000001,-1.3134766e-5)"
+         id="use4601"
+         xlink:href="#rect4084"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       id="g4603"
+       transform="translate(540.00001,0)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4431"
+         id="use4605"
+         transform="translate(30,0)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4433"
+         id="use4607"
+         transform="translate(10,0)"
+         width="100%"
+         height="100%" />
+    </g>
+    <g
+       transform="translate(560.00001,0)"
+       id="g4609">
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(30,0)"
+         id="use4611"
+         xlink:href="#use4431"
+         y="0"
+         x="0" />
+      <use
+         height="100%"
+         width="100%"
+         transform="translate(10,0)"
+         id="use4613"
+         xlink:href="#use4433"
+         y="0"
+         x="0" />
+    </g>
+    <g
+       id="g4615"
+       transform="translate(580.00001,0)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4431"
+         id="use4617"
+         transform="translate(30,0)"
+         width="100%"
+         height="100%" />
+      <use
+         x="0"
+         y="0"
+         xlink:href="#use4433"
+         id="use4619"
+         transform="translate(10,0)"
+         width="100%"
+         height="100%" />
+    </g>
+  </g>
+</svg>

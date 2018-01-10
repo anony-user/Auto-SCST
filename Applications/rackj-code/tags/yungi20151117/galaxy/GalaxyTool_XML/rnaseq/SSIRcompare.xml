@@ -1,0 +1,35 @@
+<tool id="ssircompare_id"  name="SSIR">
+  <description>Sample-Sensitive Intron Retention</description>
+  <command>SSIRcompare_ex.pl
+
+           ${outputPrefix}
+                      
+           #for $fileSet in $inputFiles
+             ${fileSet.intronCntFile} ${fileSet.exonCntFile} ${fileSet.rpkmFile} ${fileSet.spliceCntFile} ${fileSet.alias}
+           #end for
+           
+           &amp;&amp; mv ${outputPrefix} ${outputFilename}
+  </command>
+  
+  <inputs>
+    <!-- $geneRPKM and $spliceCnt -->
+    <repeat name="inputFiles" title="Set of input file" min="2">
+      <param name="rpkmFile" type="data" format="generpkm" optional="false" label="RPKM file"/>
+      <param name="spliceCntFile" format="splicecount" type="data" optional="false" label="SpliceCount file"/>
+      <param name="exonCntFile" format="exoncount" type="data" optional="false" label="ExonCount file"/>
+      <param name="intronCntFile" format="introncount" type="data" optional="false" label="IntronCount file"/>
+      <param name="alias" type="text" optional="false" value="" label="Alias">
+        <validator type="regex" message="This field cannot be empty or contain any whitespace character">^\S+$</validator>
+      </param>
+    </repeat>
+    <!-- $outputPrefix -->
+    <param name="outputPrefix" value="" type="text" optional="false" size="10" label="Prefix of output filename">
+      <validator type="regex" message="This field cannot be empty or contain any whitespace character">^\S+$</validator>
+    </param>
+  </inputs>
+  
+  <outputs>
+    <data format="xls" name="outputFilename" label="${outputPrefix}.SSIR.xls"/>
+  </outputs>
+    
+</tool>

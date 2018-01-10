@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="setting">
+	<!--MUST modify the following lines-->
+	<property name="jdk.home" value="/usr/lib/jvm/java-7-oracle"/>
+	<property name="gobuJAR" value="/home/galaxy/Documents/workspace/gobu/gobu.jar"/>
+	<property name="picardJAR" value="/home/galaxy/galaxy_exec/sam.jar"/>
+	<property name="svnEXEC" value="/usr/bin/svn"/>
+	<property name="svnURL" value="http://svn.code.sf.net/p/rackj/code/"/>
+</project>

@@ -1,0 +1,14 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <jnlp codebase="$$codebase">
+     <information>
+         <title>jOcular 1</title>
+         <vendor>jOcular</vendor>
+         <description>Optics Design Software</description>
+         <icon href="/net/sourceforge/jocular/icons/jocular-icon48.png"/>
+     </information>
+     <resources>
+       <j2se version="1.2+"/>
+       <jar href="https://sourceforge.net/p/jocular/code/ci/master/tree/jocular.jar?format=raw"/>
+     </resources>
+     <application-desc/>
+   </jnlp>

@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<opticsProject version="0.029">
+	<ROOT_GROUP id="-299184132">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<property key="OUTSIDE_MATERIAL">VACUUM</property>
+		<POINT_SOURCE id="722587862">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<property key="WAVELENGTH_MEAN">600nm</property>
+			<property key="WAVELENGTH_FWHM">10nm</property>
+			<property key="PHASE_FWHM">10deg</property>
+			<property key="TRANS_ANGLE">5deg</property>
+			<property key="ORTHO_ANGLE">5deg</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<positioner id="517238609" type="OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<SPECTROPHOTOMETER id="-589788718">
+			<property key="NAME">Pre lens</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">10cm</property>
+			<property key="WAVELENGTH_MIN">500nm</property>
+			<property key="WAVELENGTH_MAX">700nm</property>
+			<property key="NUM_BINS">100</property>
+			<positioner id="1268284178" type="OFFSET">
+				<property key="DIR_OFFSET">10cm</property>
+			</positioner>
+		</SPECTROPHOTOMETER>
+		<SPHERICAL_LENS id="2033975751">
+			<property key="NAME">coating1</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">5cm</property>
+			<property key="THICKNESS">150nm</property>
+			<property key="FRONT_SHAPE">CONCAVE</property>
+			<property key="FRONT_RADIUS">lens1>front radius</property>
+			<property key="BACK_SHAPE">CONVEX</property>
+			<property key="BACK_RADIUS">lens1>front radius</property>
+			<property key="INSIDE_MATERIAL">MAGNESIUM_FLUORIDE</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<positioner id="1408663453" type="OFFSET">
+				<property key="DIR_OFFSET">20cm - lens1>thickness/2 + coating1>thickness/2</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<SPHERICAL_LENS id="894510266">
+			<property key="NAME">lens1</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">5cm</property>
+			<property key="THICKNESS">5mm</property>
+			<property key="FRONT_SHAPE">CONCAVE</property>
+			<property key="FRONT_RADIUS">20cm</property>
+			<property key="BACK_SHAPE">CONCAVE</property>
+			<property key="BACK_RADIUS">lens1>front radius</property>
+			<property key="INSIDE_MATERIAL">BOROSILICATE</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<positioner id="-2077492796" type="OFFSET">
+				<property key="DIR_OFFSET">20cm</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<SPHERICAL_LENS id="932804982">
+			<property key="NAME">coating2</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">5cm</property>
+			<property key="THICKNESS">150nm</property>
+			<property key="FRONT_SHAPE">CONCAVE</property>
+			<property key="FRONT_RADIUS">lens1>front radius</property>
+			<property key="BACK_SHAPE">CONVEX</property>
+			<property key="BACK_RADIUS">lens1>back radius</property>
+			<property key="INSIDE_MATERIAL">MAGNESIUM_FLUORIDE</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<positioner id="1155907778" type="REVERSE_OFFSET">
+				<property key="DIR_OFFSET">20cm + lens1>thickness/2 + coating1>thickness/2</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<SPECTROPHOTOMETER id="-1298950819">
+			<property key="NAME">post lens</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">10cm</property>
+			<property key="WAVELENGTH_MIN">500nm</property>
+			<property key="WAVELENGTH_MAX">700nm</property>
+			<property key="NUM_BINS">100</property>
+			<positioner id="-981603299" type="OFFSET">
+				<property key="DIR_OFFSET">30cm</property>
+			</positioner>
+		</SPECTROPHOTOMETER>
+		<positioner id="-688290653" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

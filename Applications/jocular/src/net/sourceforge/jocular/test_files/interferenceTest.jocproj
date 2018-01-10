@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<opticsProject version="0.027">
+	<ROOT_GROUP id="921617514">
+		<property key="NAME"></property>
+		<property key="OUTSIDE_MATERIAL">VACUUM</property>
+		<POINT_SOURCE id="1448341010">
+			<property key="NAME"></property>
+			<property key="WAVELENGTH_MEAN">500nm</property>
+			<property key="WAVELENGTH_FWHM">0</property>
+			<property key="PHASE_FWHM">0</property>
+			<property key="TRANS_ANGLE">1deg</property>
+			<property key="ORTHO_ANGLE">1deg</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<positioner id="1588897204" type="TRANSVERSE_OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+				<property key="TRANS_OFFSET">100um</property>
+				<property key="ORTHO_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<POINT_SOURCE id="1625529020">
+			<property key="NAME"></property>
+			<property key="WAVELENGTH_MEAN">500nm</property>
+			<property key="WAVELENGTH_FWHM">0</property>
+			<property key="PHASE_FWHM">0</property>
+			<property key="TRANS_ANGLE">1deg</property>
+			<property key="ORTHO_ANGLE">1deg</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<positioner id="-812352348" type="TRANSVERSE_OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+				<property key="TRANS_OFFSET">-100um</property>
+				<property key="ORTHO_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<IMAGER id="1095265344">
+			<property key="NAME"></property>
+			<property key="TRANS_SIZE">5mm</property>
+			<property key="ORTHO_SIZE">5mm</property>
+			<property key="TRANS_DIM">200</property>
+			<property key="ORTHO_DIM">200</property>
+			<property key="ABSORBS_PHOTONS">true</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<property key="IMAGE">iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAIAAAAiOjnJAAAAiklEQVR42u3BAQEAAACCIP+vbkhAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwYNWXAAFLRgwhAAAAAElFTkSuQmCC</property>
+			<positioner id="1546169797" type="OFFSET">
+				<property key="DIR_OFFSET">20cm</property>
+			</positioner>
+		</IMAGER>
+		<positioner id="-1491049937" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

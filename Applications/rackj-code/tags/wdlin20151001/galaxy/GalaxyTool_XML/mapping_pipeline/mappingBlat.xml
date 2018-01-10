@@ -1,0 +1,256 @@
+<tool id="mappingblat_id"  name="BLAT">
+  <description>Mapping sequences using BLAT</description>
+  <version_command>blat | head -1</version_command>
+  <command>Mapping.pl 
+    #if $user_db_opts.optsType == 'user':
+      x
+    #else if $user_db_opts.optsType == 'buildin':
+       ${user_db_opts.species.fields.value}
+    #end if
+    
+    ${readFormat_opts.queryFile}
+    
+    #if $adv_opts.adv_opts_selector == "advanced":
+      #if str($adv_opts.filtering_opt.gen_filtered) == "true":
+        ${outputPrefix}.tmp.sam
+        -nosort
+      #else
+        ${outputPrefix}.${adv_opts.outputFormat}
+      #end if
+    #else
+      ${outputPrefix}.${adv_opts.outputFormat}
+    #end if
+    
+    -table $__tool_data_path__/rackj.loc
+    
+    -showcmd
+    
+    -split 8
+    
+    MappingBlat.pl
+    
+    #if $user_db_opts.optsType == 'user':
+       -target ${user_db_opts.genomeFasta}
+    #end if
+    -t=dna
+    -q=${queryType}
+    
+    #if $adv_opts.adv_opts_selector == "basic":
+      #if str($adv_opts.ID) == "-1":
+          -ID -1
+        #elif str($adv_opts.ID) == "100":
+          -ID 1
+        #elif int(str($adv_opts.ID)) &lt; 10:
+          -ID 0.0${adv_opts.ID}
+        #else
+          -ID 0.${adv_opts.ID}
+        #end if
+      -minIdentity=${adv_opts.minIdentity}
+    #elif $adv_opts.adv_opts_selector == "advanced":
+      #if str($adv_opts.minIdentity) != "":
+        -minIdentity=${adv_opts.minIdentity}
+      #end if
+      #if str($adv_opts.tileSize) != "":
+        -tileSize=${adv_opts.tileSize}
+      #end if
+      #if str($adv_opts.stepSize) != "":
+        -stepSize=${adv_opts.stepSize}
+      #end if
+      #if str($adv_opts.minMatch) != "":
+        -minMatch=${adv_opts.minMatch}
+      #end if
+      #if str($adv_opts.minScore) != "":
+        -minScore=${adv_opts.minScore}
+      #end if
+      #if str($adv_opts.maxIntron) != "":
+        -maxIntron=${adv_opts.maxIntron}
+      #end if
+      #if str($adv_opts.sortby) != "":
+        ${adv_opts.sortby}
+      #end if
+      #if str($adv_opts.mdTag) == "true":
+        -md
+      #end if
+      
+      #if str($adv_opts.filtering_opt.includeUnaligned) == "true":
+        -unmap
+      #elif str($adv_opts.filtering_opt.filter) == "True":
+        #if str($adv_opts.filtering_opt.gen_filtered) == "true":
+          -unmap
+        #else
+          #if str($adv_opts.filtering_opt.ID) == "-1":
+            -ID -1
+          #elif str($adv_opts.filtering_opt.ID) == "100":
+          -ID 1
+          #elif int($adv_opts.filtering_opt.ID) &lt; 10:
+            -ID 0.0${adv_opts.filtering_opt.ID}
+          #else
+            -ID 0.${adv_opts.filtering_opt.ID}
+          #end if
+        #end if
+      #end if
+    #end if
+    
+    &gt;&gt; ${logFile}
+    
+    #if $adv_opts.adv_opts_selector == "advanced":
+      #if str($adv_opts.filtering_opt.gen_filtered) == "true":
+        &amp;&amp; cat ${outputPrefix}.tmp.sam | sam_filter.pl -msg [Blat]${outputPrefix}.tmp.sam
+        #if str($adv_opts.filtering_opt.ID) == "-1":
+          -ID -1
+        #elif str($adv_opts.filtering_opt.ID) == "100":
+          -ID 1
+        #elif int($adv_opts.filtering_opt.ID) &lt; 10:
+          -ID 0.0${adv_opts.filtering_opt.ID}
+        #else
+          -ID 0.${adv_opts.filtering_opt.ID}
+        #end if
+        ${outputPrefix}.sam ${outputPrefix}.unaln.sam &gt;&gt; ${logFile}
+        &amp;&amp; MergeSam2.pl ${adv_opts.sortby} -format ${adv_opts.outputFormat} ${outputPrefix} ${outputPrefix}.sam &gt;&gt; ${logFile}
+        &amp;&amp; sam2fas.pl ${outputPrefix}.unaln.sam ${unalnFasta} &gt;&gt; ${logFile}
+      #end if
+    #end if
+    
+    &amp;&amp; mv ${outputPrefix}.${adv_opts.outputFormat} ${outputFile}
+  </command>
+  
+  <inputs>
+    <!-- $dbType and $genomeFasta-->
+    <conditional name="user_db_opts">
+      <param name="optsType" type="select" label="Select subject type" >
+        <option value="user">FASTA File</option>
+        <option value="buildin" selected="true">BLAT Database</option>
+      </param>
+      <when value="user">
+        <param name ="genomeFasta" format="fasta" type="data" optional="false" label="FASTA file"/>
+      </when>
+      <when value="buildin">
+        <param name="species" type="select" optional="false" label="Database">
+          <options from_file="rackj.loc">
+            <column name="value" index="0"/>
+            <column name="name" index="1"/>
+            <column name="blat" index="2"/>
+            <filter type="static_value" value="null" keep="false" column="2"/>
+          </options>
+        </param>
+      </when>
+    </conditional>
+    
+    <!-- $queryType-->
+    <param name="queryType" type="select" label="Type of query">
+      <option value="dna">dna</option>
+      <option value="rna" selected="true">rna</option>
+    </param>
+    <!-- $readFasta-->
+    <conditional name="readFormat_opts">
+      <param name="readFormat" type="select" label="Format of query file">
+        <option value="fasta" selected="true">fasta</option>
+        <option value="fastq">fastq</option>
+      </param>
+      <when value="fasta">
+        <param name ="queryFile" format="fasta" type="data" optional="false" label="FASTA query file"/>
+      </when>
+      <when value="fastq">
+        <param name ="queryFile" format="fastq" type="data" optional="false" label="FASTQ query file"/>
+      </when>
+    </conditional>
+    <!-- $outputPrefix-->
+    <param name="outputPrefix" value="" type="text" size="10" label="Output prefix">
+      <validator type="regex" message="This field cannot be empty nor contain any whitespace character">^\S+$</validator>
+    </param>
+    
+    <conditional name="adv_opts">
+      <param name="adv_opts_selector" type="select" label="Advanced Options">
+        <option value="basic" selected="True">Hide advanced options</option>
+        <option value="advanced">Show advanced options</option>
+      </param>
+
+      <when value="basic">
+        <param name="outputFormat" type="hidden" value="bam"/>
+        <param name="ID" type="hidden" value="-1"/>
+        <param name="minIdentity" type="hidden" value="90"/>
+      </when>
+
+      <when value="advanced">
+        <!-- $minIdentity-->
+        <param name ="minIdentity" type="integer" size="5" optional="true" value="" label="BLAT minimum sequence identity (minIdentity, in percent)" help="default is 90.">
+          <validator type="in_range" message="BLAT minimum identity should be between 0 and 100" min="0" max="100"/>
+        </param>
+        <!-- $tileSize-->
+        <param name ="tileSize" type="integer" size="5" optional="true" value="" label="Size of match that triggers an alignment (tileSize)" help="default is 11.">
+          <validator type="in_range" message="tileSize should be between 6 and 18" min="6" max="18"/>
+        </param>
+        <!-- $stepSize-->        
+        <param name ="stepSize" type="integer" size="5" optional="true" value="" label="Spacing between tiles (stepSize)" help="default is tileSize.">
+          <validator type="in_range" message="stepSize should be greater than 0" min="1"/>
+        </param>
+        <!-- $minMatch-->
+        <param name ="minMatch" type="integer" size="5" optional="true" value="" label="The number of tile matches (minMatch)" help="default is 2.">
+          <validator type="in_range" message="minMatch should be greater than 0" min="1"/>
+        </param>
+        <!-- $minScore-->
+        <param name ="minScore" type="integer" size="5" optional="true" value="" label="Minimum score (minScore)" help="default is 30.">
+          <validator type="in_range" message="minScore should greater than or equal to 0" min="0"/>
+        </param>
+        <!-- $maxIntron-->
+        <param name ="maxIntron" type="integer" size="8" optional="true" value="" label="Maximum intron size (maxIntron)" help="default is 750000.">
+          <validator type="in_range" message="maxIntron should be greater than or equal to 0" min="0"/>
+        </param>
+        
+        <!-- result filtering-->
+        <conditional name="filtering_opt">
+            <param name="filter" type="boolean" checked="False" truevalue="true" falsevalue="false" label="Filter mapping results"/>
+            <when value="true">
+              <!-- default parameter-->
+              <param name="includeUnaligned" type="hidden" value="False"/>
+              <!-- $ID-->
+              <param name ="ID" type="integer" size="5" optional="false" value="" label="Minimum sequence identity (ID, in percent)">
+                  <validator type="in_range" message="Minimum identity should be between -1 and 100" min="-1" max="100"/>
+              </param>
+              <!-- $gen_filtered-->
+              <param name ="gen_filtered" type="boolean" checked="False" truevalue="true" falsevalue="false" label="Collect filtered sequences"/>
+            </when>
+            <when value="false">
+              <param name="gen_filtered" type="hidden" value="false"/>
+              <param name="ID" type="hidden" value="-1"/>
+              <param name ="includeUnaligned" type="boolean" checked="False" truevalue="true" falsevalue="false" label="Include unaligned reads"/>
+            </when>
+        </conditional>
+        <!-- $mdTag-->
+        <param name ="mdTag" type="boolean" checked="False" truevalue="true" falsevalue="false" label="Add MD tag to mapping results"/>
+        <!-- $outputformat-->
+        <param name="outputFormat" type="select" display="radio" label="Output format">
+          <option value="bam" selected="true">BAM</option>
+          <option value="sam">SAM</option>
+        </param>
+        <!-- $sortby-->
+        <param name="sortby" type="select" display="radio" label="Sort alignment file by">
+          <option value="-sortname">Name</option>
+          <option value="-sortpos">Position</option>
+        </param>
+      </when>
+    </conditional>
+  </inputs>
+  
+  <outputs>
+    <data format="sam" name="outputFile" label="${outputPrefix}.${adv_opts.outputFormat}">
+      <change_format>
+        <when input="adv_opts.outputFormat" value="bam" format="bam" />
+      </change_format>
+    </data>
+    
+    <data format="fasta" name="unalnFasta" label="${outputPrefix}.unaln.fasta">
+      <filter>adv_opts['adv_opts_selector'] == 'advanced'</filter>
+      <filter>adv_opts['filtering_opt']['gen_filtered'] is True</filter>
+    </data>
+    
+    <data format="txt" name="logFile" label="${outputPrefix}.log"/>
+  </outputs>
+  
+  <help>
+For detailed information on Blat, click here_.
+
+.. _here: http://genome.ucsc.edu/FAQ/FAQblat.html
+  </help>
+  
+</tool>

@@ -1,0 +1,39 @@
+<tool id="ssescompare_id"  name="SSES">
+   <description>Sample-Sensitive Exon Skipping</description>
+  <command>SSEScompare_ex.pl
+
+           ${outputPrefix}
+           
+           ${readLen}
+           
+           #for $setFile in $inputFiles
+             ${setFile.spliceCntFile} ${setFile.rpkmFile} ${setFile.alias}
+           #end for
+           
+           &amp;&amp; mv ${outputPrefix} ${outputFilename}
+  </command>
+  
+  <inputs>
+    <!-- $geneRPKM and $spliceCnt -->
+    <repeat name="inputFiles" title="Set of input file" min="2">
+      <param name="rpkmFile" format="generpkm" type="data" optional="false" label="RPKM file"/>
+      <param name="spliceCntFile" format="splicecount" type="data" optional="false" label="SpliceCount file"/>
+      <param name="alias" type="text" optional="false" value="" label="Alias">
+        <validator type="regex" message="This field cannot be empty or contain any whitespace character">^\S+$</validator>
+      </param>
+    </repeat>
+    <!-- $readLen -->
+    <param name ="readLen" type="integer" size="5" optional="false" value="" label="Length of query reads">
+      <validator type="in_range" message="Length should not be less than 1" min="1"/>
+    </param>
+    <!-- $outputPrefix -->
+    <param name="outputPrefix" value="" type="text" optional="false" size="10" label="Prefix of output filename">
+      <validator type="regex" message="This field cannot be empty or contain any whitespace character">^\S+$</validator>
+    </param>
+  </inputs>
+  
+  <outputs>
+    <data format="xls" name="outputFilename" label="${outputPrefix}.SSES.xls"/>
+  </outputs>
+    
+</tool>

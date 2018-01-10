@@ -1,0 +1,30 @@
+<tool id="seqgen_id"  name="Sequence generator">
+  <description>Generate sequences from a given CGFF file</description>
+  <command>SeqGen.pl ${outputPrefix} ${genomeFasta.fields.path} ${cgffFile} &amp;&amp; mv ${outputPrefix} ${outputFilename}
+  </command>
+  
+  <inputs>
+  
+    <!-- $cgffFile -->
+    <param name="cgffFile" format="cgff" type="data" optional="false" label="CGFF file"/>
+    <!-- $genomeFasta -->
+    <param name="genomeFasta" type="select" optional="false" label="Genome fasta file">
+      <options from_file="rackj.loc">
+        <column name="value" index="0"/>
+        <column name="name" index="1"/>
+        <column name="path" index="2"/>
+        <filter type="static_value" value="null" keep="false" column="2"/>
+      </options>
+    </param>
+    <!-- $outputPrefix -->
+    <param name="outputPrefix" value="" type="text" optional="false" size="10" label="Prefix of output filename">
+      <validator type="regex" message="This field cannot be empty nor contain any whitespace character">^\S+$</validator>
+    </param>
+  
+  </inputs>
+  
+  <outputs>
+    <data format="fasta" name="outputFilename" label="${outputPrefix}.fasta"/>
+  </outputs>
+    
+</tool>

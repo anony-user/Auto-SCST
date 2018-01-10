@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<opticsProject version="0.036">
+	<ROOT_GROUP id="1281521062">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<TRIANGULAR_PRISM id="1699508245">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<property key="INSIDE_MATERIAL">SF18</property>
+			<property key="WIDTH">15mm</property>
+			<property key="LENGTH">15mm</property>
+			<property key="ANGLE_1">60deg</property>
+			<property key="ANGLE_2">60deg</property>
+			<positioner id="-682525005" type="OFFSET">
+				<property key="DIR_OFFSET">-15mm*tan(30deg)/2</property>
+			</positioner>
+		</TRIANGULAR_PRISM>
+		<positioner id="-1476064347" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

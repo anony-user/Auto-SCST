@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="UnicodewRewriter">
+
+<property file="build.properties"/>
+
+<path id="compile.classpath">
+    <fileset dir="${lib}">
+       <include name="*.jar"/>
+    </fileset>
+</path>
+
+<!-- =================================================================== -->
+<!-- Init                                                           	 -->
+<!-- =================================================================== -->
+<target name="init">
+    <tstamp/>
+</target>
+
+<!-- =================================================================== -->
+<!-- Webstart                                                           	 -->
+<!-- =================================================================== -->
+<target name="webstart" description="Prepare webstart packages" depends="dist">
+
+  <!-- Generate key -->
+  <genkey alias="UnicodeRewriter" storepass="eghcw000" validity="365" keystore="${webstart}/UnicodeRewriter-key">
+    <dname>
+      <param name="CN" value="ChiWai"/>
+      <param name="O"  value="Sourceforge"/>
+      <param name="L"  value="Hong Kong"/>      
+      <param name="C"  value="HK"/>
+    </dname>
+  </genkey>
+
+  <!-- Sign JAR -->
+  <signjar jar="${lib}/org.netbeans.lib.awtextra.jar"  signedjar="${webstart}/org.netbeans.lib.awtextraS.jar" alias="UnicodeRewriter" storepass="eghcw000" keystore="${webstart}/UnicodeRewriter-key"/>
+  <signjar jar="${bin}/UnicodeRewriter.jar"  signedjar="${webstart}/UnicodeRewriterS.jar" alias="UnicodeRewriter" storepass="eghcw000" keystore="${webstart}/UnicodeRewriter-key"/>
+
+
+  <!-- Remove key -->
+   <delete>
+      	<fileset dir="${webstart}">
+            <include name="**/UnicodeRewriter-key"/>
+        </fileset>
+   </delete>
+</target>
+
+<!-- =================================================================== -->
+<!-- Clean Webstart                                             	 -->
+<!-- =================================================================== -->
+<target name="clean-webstart" description="Remove webstart packages" depends="init">
+     <delete>
+      		<fileset dir="${webstart}">
+       		  <include name="**/*S.jar"/>
+       		  <include name="**/UnicodeRewriter-key"/>
+    		</fileset>
+     </delete>
+</target>
+
+<!-- =================================================================== -->
+<!-- Build Installer                                             	 -->
+<!-- =================================================================== -->
+<target name="installer" description="Build installer package" depends="dist">
+ <!-- What about FreeBSD, Linux, SCO Unix, HP-UX, OpenBSD, NetBSD, AIX, IRIX, Solaris ? -->
+ <exec dir="${packaging}" executable="/bin/sh" os="Mac OS X">
+    <arg line="compile.sh ${compile} ${kind} ${jar}"/>
+ </exec>
+</target>
+ 
+<!-- =================================================================== -->
+<!-- Clean Builder                                                	 -->
+<!-- =================================================================== -->
+<target name="clean-installer" description="Remove installer packages" depends="init">
+     <delete>
+      		<fileset dir="${packaging}">
+       		  <include name="**/*.jar"/>
+    		</fileset>
+     </delete>
+</target>
+
+<!-- =================================================================== -->
+<!-- Compile                                                           	 -->
+<!-- =================================================================== -->
+<target depends="init" description="Compile Java sources" name="compile">
+    <mkdir dir="${build}"/>
+    
+	<!-- Check which source files need to be compiled -->
+	<depend destdir="${build}" srcdir="${src}"/>
+	
+        <mkdir dir="${lib}"/>
+	<!-- Compile the source files -->
+	<javac debug="${compile.debug}" deprecation="${compile.deprecation}" destdir="${build}" optimize="${compile.optimize}" srcdir="${src}">
+     	    <classpath refid="compile.classpath"/>
+	</javac>
+
+        
+        <!-- Copy class files -->
+ 	<copy todir="${build}">
+   		<fileset dir="${src}">
+       		  <include name="**/org/**/*.class"/>
+   		</fileset>
+	</copy>
+
+</target>
+
+<!-- =================================================================== -->
+<!-- Clean Build                                                       	 -->
+<!-- =================================================================== -->
+<target depends="init" name="clean-build">
+
+    <delete file="${lib}/${jar}.jar"/>
+    <delete dir="${build}"/>
+
+</target>
+
+
+<!-- =================================================================== -->
+<!-- Dist                                                      -->
+<!-- =================================================================== -->
+<target depends="compile" description="Prepare distribution files" name="dist">
+	<!-- Package the classes -->	
+	<jar basedir="${build}" jarfile="${bin}/${jar}.jar" manifest="${src}/MANIFEST.MF"/>
+	
+</target>
+
+<!-- =================================================================== -->
+<!-- Clean Dist                                             	 -->
+<!-- =================================================================== -->
+<target depends="init" description="Clean distribution" name="clean-dist">
+    <delete file="${bin}/${jar}.jar"/>
+</target>
+
+<!-- =================================================================== -->
+<!-- API Docs                                                       	 -->
+<!-- =================================================================== -->
+<target description="Preparing Java documents" name="doc">
+
+    <javadoc classpathref="compile.classpath" destdir="${apidoc}" packagenames="${package_name1}" sourcepath="${src}"/>
+
+    <javadoc classpathref="compile.classpath" destdir="${apidoc}" packagenames="${package_name2}" sourcepath="${src}"/>
+
+
+    <javadoc classpathref="compile.classpath" destdir="${apidoc}" packagenames="${package_name3}" sourcepath="${src}"/>
+        
+    <javadoc classpathref="compile.classpath" destdir="${apidoc}" packagenames="${package_name4}" sourcepath="${src}"/>
+
+    <javadoc classpathref="compile.classpath" destdir="${apidoc}" packagenames="${package_name5}" sourcepath="${src}"/>
+        
+    <javadoc classpathref="compile.classpath" destdir="${apidoc}" packagenames="*" sourcepath="${src}"/>
+
+</target>
+
+<!-- =================================================================== -->
+<!-- Clean API Docs                                                 	 -->
+<!-- =================================================================== -->
+<target description="Clean Java documents" name="clean-doc">
+    <delete dir="${apidoc}"/>
+</target>
+
+<!-- =================================================================== -->
+<!-- All                                                        	 -->
+<!-- =================================================================== -->
+<target depends="compile, dist, webstart, installer, doc" name="all">
+</target>
+
+<!-- =================================================================== -->
+<!-- Clean All                                                           -->
+<!-- =================================================================== -->
+<target depends="clean-build, clean-dist, clean-webstart, clean-installer, clean-doc" name="clean-all">
+</target>
+
+</project>

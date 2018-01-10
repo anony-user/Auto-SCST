@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<shortcuts>
+   <programGroup defaultName='Unicode Rewriter' location='applications'/>
+  <shortcut
+     name='Unicode Rewriter'
+     programGroup='yes'
+     desktop='yes'
+     applications='no'
+     startMenu='no'
+     startup='no'
+     target='java'
+     commandLine='-jar "$INSTALL_PATH/bin/UnicodeRewriter.jar"'
+     workingDirectory='$INSTALL_PATH/bin'
+     description='Unicode Rewriter'
+     iconFile='$INSTALL_PATH/images/sheep.ico'
+     initialState='noShow'>
+     <createForPack name='Base'/>
+   </shortcut>
+    <shortcut
+     name='Uninstall'
+     programGroup='yes'
+     desktop='no'
+     applications='no'
+     startMenu='no'
+     startup='no'
+     target='java'
+     commandLine='-jar "$INSTALL_PATH/Uninstaller/uninstaller.jar"'
+     workingDirectory='$INSTALL_PATH/Uninstaller'
+     description='Uninstall Unicode Rewriter'
+     iconFile='$INSTALL_PATH/images/chicken.ico'
+     initialState='noShow'>
+     <createForPack name='Base'/>
+   </shortcut>
+  </shortcuts>
+

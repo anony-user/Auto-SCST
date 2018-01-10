@@ -1,0 +1,29 @@
+<tool id="mastcompare_id"  name="Compare MAST results">
+  <description>Compare two MAST results</description>
+  <command>MastCompareWrapper.pl ${targetMast} ${backgroundMast} ${containing} \$rackjPath &gt; ${outputPrefix}
+           &amp;&amp; mv ${outputPrefix} ${outputFilename}
+  </command>
+  
+  <inputs>
+  
+    <!-- $targetMast -->
+    <param name="targetMast" format="mast" type="data" optional="false" label="Target MAST file"/>
+    
+    <!-- $backgroundMast -->
+    <param name="backgroundMast" format="mast" type="data" optional="false" label="Background MAST file"/>
+    
+    <!-- $containing-->
+    <param name="containing" type="boolean" truevalue="1" falsevalue="0" checked="False" label="Background containing Target"/>
+    
+    <!-- $outputPrefix -->
+    <param name="outputPrefix" value="" type="text" optional="false" size="20" label="Prefix of output filename">
+      <validator type="regex" message="This field cannot be empty nor contain any whitespace character">^\S+$</validator>
+    </param>
+  
+  </inputs>
+  
+  <outputs>
+    <data format="xls" name="outputFilename" label="${outputPrefix}.xls"/>
+  </outputs>
+    
+</tool>

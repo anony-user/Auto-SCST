@@ -1,0 +1,44 @@
+Roadmap for javageom Library
+----------------------------
+
+0.7.0 	
+- (done) remove dependency from Shape2D
+- (done) deprecate all EMPTY_SHAPES
+- (done) deprecate setters for 'simple shapes': vectors, points, transforms.
+- (done) move polygon algos into polygon subpackage
+- (done) move Polylines into polygon package
+
+0.8.0
+- remove all EMPTY_SHAPES
+- make simple classes (like Point2D, Vector2D, StraightLine2D...) immutable
+- remove inheritance of Point2D from java Point, as this introduces too many
+	bug potentialities.
+
+1.0
+- (?) complete implementation for lines, polygons and conics in 2D
+- Additional algorithms can be provided, as well as additional shapes.
+- Partial support of 3D (lines, polygons) can be provided
+
+
+Decisions:
+- simple shapes and objects should be immutable
+- equality tests for complex objects: point order is relevant
+
+
+Other pending questions:
+- should Ring2D extends Polyline2D ?
+- keep double methods (one with x,y, other with point2D) when using points ?
+- introduce finite grids
+- introduce points in homogeneous coordinates ?
+- introduce Direction2D ?
+- introduce exception for parallel line ?
+
+
+Version numbering:
+pattern: javaGeom-x.y.z, or javaGeom-x.y.z-dd
+first digit incremented following major refactoring of the code
+second digit incremented when many new features are added, or when many
+	classes or methods have been changed
+third digit is incremented for bug fixes, and addition of small new features
+two additional digits can be added for the addition of few bug fixes compared
+	to the previous version

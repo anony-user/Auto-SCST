@@ -1,0 +1,17 @@
+1.05
+	(1) Revised GffTree for non-parent-first GFF3 files
+0.95
+	(1) MappingInfoRecover & TranscriptomeRecover for novel region detection
+	(2) A set of scripts for cooperation with the MEME suite
+	(3) A set of scripts for sample-sensitive alternative splicing detection
+	(4) A framework of scripts for read mapping using Bowtie2 & BLAT
+	(5) mapping translation functionality of AlignmentFilter
+0.75
+	(1) FineSpliceCounter for information of detailed splice sites
+	(2) multiply applicable -M option for RPKMComputer / GeneTracer / FineSpliceCounter
+	(3) option -traceFile for GeneTracer
+	(4) unlimited number of traced genes for GeneTracer
+	(5) (changed) default paramters of RPKMComputer: -J 2 -contain false -min 8
+0.61
+	(1) (fixed) java classpath separator problem (: for UN*X, ; for Windows)
+	(2) (fixed) possible stack overflow when using SAMReader

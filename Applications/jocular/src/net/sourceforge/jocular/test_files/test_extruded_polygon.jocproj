@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<opticsProject version="0.035">
+	<ROOT_GROUP id="341562324">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<OPTICS_GROUP id="-793491373">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<EXTRUDED_SPLINE id="533320243">
+				<property key="NAME"></property>
+				<property key="SUPPRESSED">false</property>
+				<property key="INSIDE_MATERIAL">VACUUM</property>
+				<property key="SIMPLIFY_THRESHOLD">0.0</property>
+				<property key="POINTS_X">6.047618mm,0mm,0mm,-18.41369mm,-6mm,-4.25223200000001mm,1.22842299999999mm,6.047618mm</property>
+				<property key="THICKNESS">5.84mm</property>
+				<property key="POINTS_Y">0.0,-1mm,0mm,2.92931999999999mm,8.78817000000001mm,5mm,8.78817000000001mm,7.18154999999999mm,2.92931999999999mm,0mm</property>
+				<property key="POINTS_TYPES">CUSP,CUSP,CUSP,CUSP,CUSP,CUSP,CUSP,CUSP,CUSP,CUSP</property>
+				<positioner id="633081623" type="ANGLE">
+					<property key="ROT_AXIS">TRANS_AXIS</property>
+					<property key="ANGLE">90deg</property>
+					<property key="DIR_OFFSET">2mm</property>
+				</positioner>
+			</EXTRUDED_SPLINE>
+			<POINT_SOURCE id="-1547255441">
+				<property key="NAME"></property>
+				<property key="SUPPRESSED">false</property>
+				<property key="WAVELENGTH_MEAN">600nm</property>
+				<property key="WAVELENGTH_FWHM">10nm</property>
+				<property key="PHASE_FWHM">10deg</property>
+				<property key="TRANS_ANGLE">30deg</property>
+				<property key="ORTHO_ANGLE">30deg</property>
+				<positioner id="-1926800272" type="OFFSET">
+					<property key="DIR_OFFSET">0.0</property>
+				</positioner>
+			</POINT_SOURCE>
+			<positioner id="641931376" type="OFFSET">
+				<property key="DIR_OFFSET">50mm</property>
+			</positioner>
+		</OPTICS_GROUP>
+		<positioner id="10459861" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

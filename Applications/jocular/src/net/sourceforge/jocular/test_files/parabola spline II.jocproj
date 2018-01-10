@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<opticsProject version="0.035">
+	<ROOT_GROUP id="84899317">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<OPTICS_GROUP id="-325305489">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<POINT_SOURCE id="-1684517583">
+				<property key="NAME"></property>
+				<property key="SUPPRESSED">false</property>
+				<property key="WAVELENGTH_MEAN">600nm</property>
+				<property key="WAVELENGTH_FWHM">10nm</property>
+				<property key="PHASE_FWHM">10deg</property>
+				<property key="TRANS_ANGLE">120deg</property>
+				<property key="ORTHO_ANGLE">120deg</property>
+				<positioner id="963640511" type="REVERSE_OFFSET">
+					<property key="DIR_OFFSET">2.5mm</property>
+				</positioner>
+			</POINT_SOURCE>
+			<ROTATED_SPLINE id="-1379175748">
+				<property key="NAME"></property>
+				<property key="SUPPRESSED">false</property>
+				<property key="INSIDE_MATERIAL">SHINYMETAL</property>
+				<property key="SIMPLIFY_THRESHOLD">1e-10</property>
+				<property key="POINTS_X">-1mm,-1mm,0.0,10mm,40mm,40mm</property>
+				<property key="POINTS_Y">21mm,0.0,0.0,10mm,20mm,21mm</property>
+				<property key="POINTS_TYPES">CUSP,CUSP,SQUARE,SMOOTH,CUSP,CUSP</property>
+				<positioner id="1813682588" type="OFFSET">
+					<property key="DIR_OFFSET">0.0</property>
+				</positioner>
+			</ROTATED_SPLINE>
+			<IMAGER id="1955543887">
+				<property key="NAME"></property>
+				<property key="SUPPRESSED">false</property>
+				<property key="PIXEL_TYPE">COLOUR</property>
+				<property key="TRANS_SIZE">50mm</property>
+				<property key="ORTHO_SIZE">50mm</property>
+				<property key="TRANS_DIM">100</property>
+				<property key="ORTHO_DIM">100</property>
+				<property key="ABSORBS_PHOTONS">true</property>
+				<property key="IMAGE">iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAADZklEQVR42u2ay3ITMRBFW/O0x/EjtnHAZgGGLIEFBJawDXwBhP//BYoqqqAlWe2WZhz2mnuqyyVPzIJbt1st9RABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAYYiKoTAuwIBGZW8B1U70ZSplYdS6p9p4DVVKGKrMaRGFezJSvdLUcxo9HqKmqGZGpZRYRotSu5CFfD1JFow2Cr0GlRJ1mvDJ0RZuUUR6aWeJZDkrlVSoSgnEMSlstMVZLPn0v/T/Kv/6FZXzoJT4qHUyTV10YTF1Dxv310sWKzJOQA5dnrxrvExdSbOSrlTwE5HMey3SK9f+62wrVbC9p7xSXqZFZWPpghfz6iRZF/RK/JWhuUwsltR1rZTX6LqmTU3bxgYv+Cs/nDvHnVJyyFwZiqWrVa1s1TlPsSjrmm4aetbaOEzsJ3/dxnq1xWmLlA42tzKvm3WdgF1QauGUeuo0ejGl2xm97ujllJ5P6Ka1f/J6dWqj1M1qVubql3Yvlt/45k6pXWOledXRmzl9WNLHlV2wZFavxv6ABfXmalQyZpiJibPq0Cvw/5xttQq2Yk+9ndOXDT3s6eFgF+8W1l+cjxtnrqtgrvzF0gWrDs6auWrFhWnfWh+xoX4e6M9X+n1vF++XNiX3E1vvV25z5N9Lmc+z2zofcXpp6J3FxmH7cA7eLa1Gv+7p7zf6vqdPKzp2tpBtg7OmoWyNyFmNctbCOYvT8OgKFmcfy/RjT5/XNiv5IevIzloEsfoNRLYFvozbUS/WqqYnrsDfOr3uXIHnguUL/M4VeM7BrkxbeX1HmG3rUIdjcxfKlt8QdetwDFvhubr73dCo1iG/mmVisUollj8SzsOeuGvOHalvStf9plTnYJZ3D5c2RDnuiF4bFdfVeROUatXkfdxJ7meia6wiunKQU/TKH6TL9GA4mIO53TqYoYsHfS/q9ZJbmlkIL5NXSjqGKvv75f7Fg24j2nBvNY1johqr/O9nHknGMh5MtEV0ayp3pE1veDGKsZi5cLksWjRqbFEPzXiSI07mA55kYpik5GBUcZ3SA+r8Mf2RvfnPqDWZGI50KC2j+WRkX8Wz+/GO7xO99Psg0WDxwus048VcfjNr8F0tkBqtiL/ifTYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAED4BypuLB6QZiNqAAAAAElFTkSuQmCC</property>
+				<positioner id="-1876800351" type="OFFSET">
+					<property key="DIR_OFFSET">100mm</property>
+				</positioner>
+			</IMAGER>
+			<positioner id="-990429985" type="OFFSET">
+				<property key="DIR_OFFSET">20mm</property>
+			</positioner>
+		</OPTICS_GROUP>
+		<positioner id="449135719" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

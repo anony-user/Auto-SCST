@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<opticsProject version="0.027">
+	<ROOT_GROUP id="2097765806">
+		<property key="NAME"></property>
+		<property key="OUTSIDE_MATERIAL">VACUUM</property>
+		<POINT_SOURCE id="-1101858111">
+			<property key="NAME"></property>
+			<property key="WAVELENGTH_MEAN">600nm</property>
+			<property key="WAVELENGTH_FWHM">10nm</property>
+			<property key="PHASE_FWHM">10deg</property>
+			<property key="TRANS_ANGLE">30deg</property>
+			<property key="ORTHO_ANGLE">0deg</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<positioner id="851833998" type="TRANSVERSE_OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+				<property key="TRANS_OFFSET">6.5mm</property>
+				<property key="ORTHO_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<POINT_SOURCE id="1638481890">
+			<property key="NAME"></property>
+			<property key="WAVELENGTH_MEAN">600nm</property>
+			<property key="WAVELENGTH_FWHM">10nm</property>
+			<property key="PHASE_FWHM">10deg</property>
+			<property key="TRANS_ANGLE">30deg</property>
+			<property key="ORTHO_ANGLE">0deg</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<positioner id="414197034" type="TRANSVERSE_OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+				<property key="TRANS_OFFSET">-6.5mm</property>
+				<property key="ORTHO_OFFSET">0.0</property>
+			</positioner>
+		</POINT_SOURCE>
+		<IMAGER id="-518583378">
+			<property key="NAME"></property>
+			<property key="TRANS_SIZE">10cm</property>
+			<property key="ORTHO_SIZE">10cm</property>
+			<property key="TRANS_DIM">100</property>
+			<property key="ORTHO_DIM">100</property>
+			<property key="ABSORBS_PHOTONS">true</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<property key="IMAGE">iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAANElEQVR42u3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgx1lAABLpXWfAAAAABJRU5ErkJggg==</property>
+			<positioner id="1815105257" type="OFFSET">
+				<property key="DIR_OFFSET">25cm</property>
+			</positioner>
+		</IMAGER>
+		<OPTICS_GROUP id="1178743754">
+			<property key="NAME"></property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<SPHERICAL_LENS id="-1102392724">
+				<property key="NAME"></property>
+				<property key="DIAMETER">24mm</property>
+				<property key="THICKNESS">3mm</property>
+				<property key="FRONT_SHAPE">CONVEX</property>
+				<property key="FRONT_RADIUS">87.2mm</property>
+				<property key="BACK_SHAPE">CONCAVE</property>
+				<property key="BACK_RADIUS">21.17mm</property>
+				<property key="INSIDE_MATERIAL">SF10</property>
+				<property key="OUTSIDE_MATERIAL">VACUUM</property>
+				<positioner id="1720796611" type="OFFSET">
+					<property key="DIR_OFFSET">0.0</property>
+				</positioner>
+			</SPHERICAL_LENS>
+			<SPHERICAL_LENS id="-988206327">
+				<property key="NAME"></property>
+				<property key="DIAMETER">24mm</property>
+				<property key="THICKNESS">9mm</property>
+				<property key="FRONT_SHAPE">CONVEX</property>
+				<property key="FRONT_RADIUS">21.17mm</property>
+				<property key="BACK_SHAPE">CONVEX</property>
+				<property key="BACK_RADIUS">28.44mm</property>
+				<property key="INSIDE_MATERIAL">BOROSILICATE</property>
+				<property key="OUTSIDE_MATERIAL">VACUUM</property>
+				<positioner id="-233731916" type="OFFSET">
+					<property key="DIR_OFFSET">6mm</property>
+				</positioner>
+			</SPHERICAL_LENS>
+			<positioner id="-1908292160" type="REVERSE_OFFSET">
+				<property key="DIR_OFFSET">39.3mm</property>
+			</positioner>
+		</OPTICS_GROUP>
+		<positioner id="-1649864052" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

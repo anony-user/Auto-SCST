@@ -1,0 +1,21 @@
+25a26,27
+> #include "perl_math_int64.h"
+> 
+278a281,283
+> BOOT:
+> 	PERL_MATH_INT64_LOAD_OR_CROAK;
+> 
+361c366
+< char*
+---
+> int64_t
+367,369c372
+<     char    string[128];
+<     sprintf(string,"%llu",t);
+<     RETVAL = string;
+---
+>     RETVAL = t;
+376c379
+<     int pos
+---
+>     int64_t pos

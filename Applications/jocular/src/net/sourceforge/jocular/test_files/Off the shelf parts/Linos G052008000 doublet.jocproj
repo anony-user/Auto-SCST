@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<opticsProject version="0.036">
+	<ROOT_GROUP id="1221305281">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<SPHERICAL_LENS id="998865251">
+			<property key="NAME">L1</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">12.5mm</property>
+			<property key="THICKNESS">2.3mm</property>
+			<property key="FRONT_SHAPE">CONVEX</property>
+			<property key="FRONT_RADIUS">49.403mm</property>
+			<property key="BACK_SHAPE">CONCAVE</property>
+			<property key="BACK_RADIUS">17.783mm</property>
+			<property key="INSIDE_MATERIAL">N_SF5</property>
+			<positioner id="872445174" type="OFFSET">
+				<property key="DIR_OFFSET">0.75mm</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<SPHERICAL_LENS id="-2051305577">
+			<property key="NAME">L2</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">L1>Diameter</property>
+			<property key="THICKNESS">4mm</property>
+			<property key="FRONT_SHAPE">CONVEX</property>
+			<property key="FRONT_RADIUS">L1>back radius</property>
+			<property key="BACK_SHAPE">CONVEX</property>
+			<property key="BACK_RADIUS">25.119mm</property>
+			<property key="INSIDE_MATERIAL">N_BK7</property>
+			<positioner id="-1968848973" type="OFFSET">
+				<property key="DIR_OFFSET">L1>thick/2+L2>thick/2+0.75mm+100nm</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<positioner id="-1308265027" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

@@ -1,0 +1,49 @@
+<tool id="rpkmcorrelation_id"  name="RPKM correlation">
+  <description></description>
+  <command>RPKMcorrelation.pl
+           
+           ${calcType}
+           
+           ${calc_log}
+           
+           #if str($multi_cut) != "":
+             -multiratio_cutoff ${multi_cut}
+           #else
+             -multiratio_cutoff 0.96
+           #end if
+           
+           #for $fileSet in $inputFiles
+             ${fileSet.rpkmFile}
+           #end for
+           &gt; ${outputPrefix}
+           &amp;&amp; mv ${outputPrefix} ${outputFilename}
+  </command>
+  
+  <inputs>
+    <!-- $geneRPKM -->
+    <repeat name="inputFiles" title="Set of input file" min="2">
+      <param name="rpkmFile" type="data" format="generpkm" optional="false" label="RPKM file"/>
+    </repeat>
+    <param name="calcType" type="select" display="radio" label="Calculate data with">
+        <option value="">RPKM</option>
+        <option value="-read">Read count</option>
+        <option value="-uniq">Unique read count</option>
+    </param>
+    
+    <!-- $multi_cut -->
+    <param name ="multi_cut" type="float" size="5" optional="true" value="" label="Multiratio cutoff" help="(Default if 0.96)"/>
+    
+    <!-- $calc_log -->
+    <param name ="calc_log" type="boolean" checked="False" truevalue="-log" falsevalue="" label="Take log value before computation"/>
+    
+    <!-- $outputPrefix -->
+    <param name="outputPrefix" value="" type="text" optional="false" size="10" label="Prefix of output filename">
+      <validator type="regex" message="This field cannot be empty or contain any whitespace character">^\S+$</validator>
+    </param>
+  </inputs>
+  
+  <outputs>
+    <data format="xls" name="outputFilename" label="${outputPrefix}.xls"/>
+  </outputs>
+    
+</tool>

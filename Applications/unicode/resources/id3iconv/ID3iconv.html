@@ -1,0 +1,147 @@
+<html><head><title>ID3iconv</title>
+
+<link rel="stylesheet" href="ID3iconv%20Files/blue.css" type="text/css"></head>
+<body>
+<h2>
+ID3iconv
+</h2>
+
+<p>ID3iconv is a little Java command line tool to convert ID3 tags in
+mp3 files from whatever machine encoding you have (GB2312/GBK for
+Chinese, etc) to Unicode.  It convert both ID3v1 tags and ID3v2 tags
+to Unicode-encoded ID3v2 (v2.3 or v2.4). This is sometimes useful because,
+
+</p><ul>
+
+<li> ID3v1 or v2 don't really supports multi-byte encodings such as GBK or Big5.  Most
+existing files falsely pretend they are ISO-8859-1 encoded.  This
+means the softwares handle them in all kinds of weird ways.</li>
+
+<li> Even if the user can force the encoding in some players, it is then
+impossible to display tags of several international languages at the same time
+if files are so encoded.
+
+</li></ul>
+
+<p>I wrote this to convert all my mp3 files with Chinese (both simplified and traditional Chinese) tags to
+Unicode and play them using <a href="http://www.rhythmbox.org/">Rhythmbox</a> under Linux.  This is after much
+struggle with XMMS and other players that either cannot handle the large charsets
+GBK/GB18030 or cannot handle Chinese at all.
+
+</p><p>CAUTION: The tool updates mp3 files in place.  So backup if you
+don't want to lose your precious music...
+
+Author: Feng Zhou, zhouf _at_ berkeley.edu
+
+</p><h3>News</h3>
+<ul>
+<li>2/20/2004, repacked binary package available.
+
+  <br>The old 0.2.1 binary package failed to run under Blackdown 1.4.1 VM.  This should fix the problem.
+
+</li><li>2/16/2004, ID3iconv 0.2.1 available.
+
+  <br>Bug fix: conversion speed very slow sometimes because
+  non-buffered I/O used.
+
+</li><li>2/14/2004, ID3iconv 0.2 available.  Added the following features,
+  <br>Option to force using id3v1 tag even if v2 tag exists
+  <br>Option to remove v1 tag after convertion
+</li></ul>
+
+<h3>Download</h3>
+
+<a href="http://www.cs.berkeley.edu/%7Ezf/id3iconv/download/id3iconv-0.2.1.jar">ID3iconv 0.2.1 Binary</a> <br>
+Make sure you have a recent <a href="http://www.java.com/">Java Virtual Machine</a>.  Then use
+
+<pre>java -jar &lt;ID3iconv jar file&gt; &lt;mp3 files&gt;</pre>
+
+to convert your mp3 files.
+
+<p><a href="http://www.cs.berkeley.edu/%7Ezf/id3iconv/download/id3iconv-0.2.1.src.zip">ID3iconv 0.2.1 Source Code</a> <br>
+It uses the <a href="http://www.rabbitfarm.com/id3.html">Java MP3 library</a>.
+
+</p><p><a href="http://www.cs.berkeley.edu/%7Ezf/id3iconv/download/">All version</a>
+
+</p><h3>FAQ</h3>
+
+<p><b>What does it actually do to my files?</b>
+
+</p><blockquote>
+ID3iconv takes all text fields of your tag, assume they are in a certain encoding (specified by -e or 
+using system default), and convert them to their Unicode equivalence as supported by ID3 v2.3.
+If the file has only v1 tag before, a v2 tag will be prepended to the beginning of the file.
+If the file has non-unicode v2 tag before, it will be converted to unicode format.
+You also have the option to remove any existing v1 tag after conversion is done.
+The output encoding is Unicode little endian, which seems to be the most compatible.
+</blockquote>
+
+<p><b>Does it convert all fields of the tag?</b>
+
+</p><blockquote>It converts all text fields (fields with name Txxx in
+ID3v2), except those marked as numerical text, such as TYER, as defined
+in ID3 v2.3 text.</blockquote>
+
+<p><b>What encoding does ID3iconv assume the original tags are in?</b>
+
+</p><blockquote>The encoding can be specified via the -e option, using Java encoding names, as 
+listed <a href="http://java.sun.com/j2se/1.3/docs/guide/intl/encoding.doc.html">here</a>. 
+If no encoding is specified, the default OS encoding will be used.  This is normally determined 
+by the local setting of your operating system.  E.g., on *NIX, look at LC_CTYPE output of 'locale'.
+</blockquote>
+
+<p><b>What players can view tags in converted mp3 files?</b> <br>
+
+</p><blockquote>
+
+Unfortunately a lot of players don't handle Unicode tags well, mostly because these
+files are rare, although there should be more.  Here's my results.
+<br><b>Players that handle unicode tags correctly</b>
+
+<ul>
+<li>Rhythmbox 0.6.5.  Gnome's default music player.</li>
+<li>iTunes for windows.</li>
+<li>Windows explorer's file property dialog for MP3 files</li>
+</ul>
+
+<b>Players that I haven't got working with Unicode tags</b>
+<ul>
+<li>Winamp 5.  It seems to be treating all tags as the machine's native encoding, even if they are 
+clearly marked as in Unicode</li>
+
+<li>Foobar 0.7.7b w and w/o id3v2 component.  The Id3v2 component also generates
+wrongly-formatted Unicode tags (missing leading BOM characters), which only itself can
+recognize. :(</li>
+
+<li>XMMS (One workaround is to use id3v1 tags by disabling v2 tag
+support, Open options -&gt; preferences -&gt; Audio I/O plugins -&gt;
+MPEG Layer 1/2/3 Player and click on "configure" at the "title" tab you
+will have an option "Disable ID3V2 tag" - chek it and xmms will use old
+ID3V1 tags. Thanks go to Alexandr Dmitrijev for pointing this out).</li>
+</ul>
+</blockquote>
+
+Last modified: $Date: 2004/06/14 20:11:53 $ 
+<!-- Begin Nedstat Basic code -->
+<!-- Title: ID3iconv -->
+<!-- URL: http://www.cs.berkeley.edu/~zf/id3iconv/ -->
+<script language="JavaScript" type="text/javascript" src="ID3iconv%20Files/basic.js">
+</script>
+<script language="JavaScript" type="text/javascript">
+<!--
+  nedstatbasic("ACspFAGk7rMyYEyG/pd/HkYo4edw", 0);
+// -->
+</script><a target="_blank" href="http://www.nedstatbasic.net/stats?ACspFAGk7rMyYEyG/pd/HkYo4edw"><img src="ID3iconv%20Files/n.gif" alt="Nedstat Basic - Free web site statistics" border="0" height="18" width="18"></a>
+<noscript>
+<a target="_blank" href="http://www.nedstatbasic.net/stats?ACspFAGk7rMyYEyG/pd/HkYo4edw"><img
+src="http://m1.nedstatbasic.net/n?id=ACspFAGk7rMyYEyG/pd/HkYo4edw"
+border="0" width="18" height="18"
+alt="Nedstat Basic - Free web site statistics
+Personal homepage website counter"></a><br>
+<a target="_blank" href="http://www.nedstatbasic.net/">Free counter</a>
+</noscript>
+<!-- End Nedstat Basic code -->
+
+<p><small><a href="http://www.cs.berkeley.edu/%7Ezf/">Back to homepage</a></small>
+
+</p></body></html>

@@ -1,0 +1,97 @@
+<tool id="promoterseqgen_id"  name="Promoter sequence generator">
+  <description>Generate promoter sequences from a given gene list file</description>
+  <command>java -classpath \$rackjPath special.PromoterCGFF
+    
+    -GFF ${species.fields.cgffpath}
+    
+    -I ${geneList}
+    
+    -L1 ${front}
+    
+    -L2 ${rear}
+    
+    -intergenic ${intergenic_opt.intergenic}
+    
+    #if str($intergenic_opt.intergenic) == "true":
+      -min ${intergenic_opt.min}
+    #end if
+    
+    -fromTSS ${fromTSS}
+    
+    -O ${outputPrefix}.cgff
+    
+    &gt;&gt; ${logFile}
+    
+    &amp;&amp;
+    
+    SeqGen.pl ${outputPrefix}.unfix ${species.fields.genome} ${outputPrefix}.cgff
+    
+    &amp;&amp;
+    
+    fixFasta.pl -min 8 ${outputPrefix}.unfix ${outputPrefix}
+    
+    &amp;&amp; mv ${outputPrefix} ${outputFilename}
+  </command>
+  
+  <inputs>
+  
+    <!-- $geneList -->
+    <param name="geneList" type="data" optional="false" label="Gene list file"/>
+    
+    <!-- $species -->
+    <param name="species" type="select" optional="false" label="Species">
+      <options from_file="rackj.loc">
+        <column name="value" index="0"/>
+        <column name="name" index="1"/>
+        <column name="genome" index="2"/>
+        <column name="cgffpath" index="4"/>
+        <filter type="static_value" value="null" keep="false" column="2"/>
+        <filter type="static_value" value="null" keep="false" column="4"/>
+      </options>
+    </param>
+
+    <!-- $fromTSS -->
+    <param name="fromTSS" type="select" display="radio" label="Retrieve region around TSS (Off for stop site)">
+      <option value="true" selected="true">On</option>
+      <option value="false">Off</option>
+    </param>
+
+    <!-- $front -->
+    <param name="front" type="integer" value="0" optional="false" label="Front region length">
+      <validator type="in_range" message="This field should not less than 1" min="1"/>    
+    </param>
+    
+    <!-- $rear -->
+    <param name="rear" type="integer" value="0" optional="true" label="Rear region length">
+      <validator type="in_range" message="This field should not less than 0" min="0"/>
+    </param>
+    
+    <conditional name="intergenic_opt">
+        <param name="intergenic" type="select" label="Restrict region to be intergenic">
+            <option value="true">On</option>
+            <option value="false" selected="true">Off</option>
+        </param>
+        <when value="true">
+            <!-- $min -->
+            <param name="min" type="integer" value="" optional="true" label="Minimum length" help="default is 10.">
+                <validator type="in_range" message="This field should not less than 8" min="8"/>
+            </param>
+        </when>
+        <when value="false">
+            <param name="min" type="hidden" value="0"/>
+        </when>
+    </conditional>
+    
+    <!-- $outputPrefix -->
+    <param name="outputPrefix" value="" type="text" optional="false" size="10" label="Prefix of output filename">
+      <validator type="regex" message="This field cannot be empty nor contain any whitespace character">^\S+$</validator>
+    </param>
+  
+  </inputs>
+  
+  <outputs>
+    <data format="txt" name="logFile" label="${outputPrefix}_promoterSeqGen.log"/>
+    <data format="fasta" name="outputFilename" label="${outputPrefix}.fasta"/>
+  </outputs>
+    
+</tool>

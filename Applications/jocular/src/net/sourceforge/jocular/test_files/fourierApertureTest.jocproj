@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<opticsProject version="0.038">
+	<ROOT_GROUP id="1970360041">
+		<property key="NAME"></property>
+		<property key="SUPPRESSED">false</property>
+		<IMAGE_SOURCE id="-1741460604">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<property key="TRANS_SIZE">2cm</property>
+			<property key="ORTHO_SIZE">2cm</property>
+			<property key="IMAGE">iVBORw0KGgoAAAANSUhEUgAAACAAAAAgAQAAAABbAUdZAAAAF0lEQVR42mNgYPj/n4GKxP//xBFEGgcAillPsa2TajIAAAAASUVORK5CYII=</property>
+			<property key="GREY_SCALE">true</property>
+			<property key="WAVELENGTH_MEAN">500nm</property>
+			<property key="WAVELENGTH_FWHM">10nm</property>
+			<property key="PHASE_FWHM">10deg</property>
+			<property key="PIXEL_TYPE">MONO</property>
+			<property key="EMISSION_PATTERN">ANGLE</property>
+			<property key="APERTURE_DIAMETER">1cm</property>
+			<property key="APERTURE_DISTANCE">10cm</property>
+			<property key="TRANS_ANGLE">0.00001deg</property>
+			<property key="ORTHO_ANGLE">0.00001deg</property>
+			<positioner id="-475344871" type="OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+			</positioner>
+		</IMAGE_SOURCE>
+		<SPHERICAL_LENS id="427571657">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">5cm</property>
+			<property key="THICKNESS">1.41cm</property>
+			<property key="FRONT_SHAPE">CONVEX</property>
+			<property key="FRONT_RADIUS">6.9cm</property>
+			<property key="BACK_SHAPE">CONVEX</property>
+			<property key="BACK_RADIUS">6.9cm</property>
+			<property key="INSIDE_MATERIAL">BOROSILICATE</property>
+			<positioner id="2134540798" type="OFFSET">
+				<property key="DIR_OFFSET">7.5cm</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<SIMPLE_APERTURE id="-1504101840">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">50um</property>
+			<property key="OUTER_DIAMETER">20cm</property>
+			<positioner id="-2041320096" type="OFFSET">
+				<property key="DIR_OFFSET">15cm</property>
+			</positioner>
+		</SIMPLE_APERTURE>
+		<SPHERICAL_LENS id="-749163703">
+			<property key="NAME"></property>
+			<property key="SUPPRESSED">false</property>
+			<property key="DIAMETER">5cm</property>
+			<property key="THICKNESS">1.41cm</property>
+			<property key="FRONT_SHAPE">CONVEX</property>
+			<property key="FRONT_RADIUS">6.9cm</property>
+			<property key="BACK_SHAPE">CONVEX</property>
+			<property key="BACK_RADIUS">6.9cm</property>
+			<property key="INSIDE_MATERIAL">BOROSILICATE</property>
+			<positioner id="-1577956258" type="OFFSET">
+				<property key="DIR_OFFSET">22.5cm</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<IMAGER id="-1950845287">
+			<property key="NAME">O</property>
+			<property key="SUPPRESSED">false</property>
+			<property key="PIXEL_TYPE">MONO</property>
+			<property key="TRANS_SIZE">2.6cm</property>
+			<property key="ORTHO_SIZE">2.6cm</property>
+			<property key="TRANS_DIM">200</property>
+			<property key="ORTHO_DIM">200</property>
+			<property key="ABSORBS_PHOTONS">true</property>
+			<property key="IMAGE">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</property>
+			<positioner id="1230927608" type="OFFSET">
+				<property key="DIR_OFFSET">30cm</property>
+			</positioner>
+		</IMAGER>
+		<positioner id="-908740406" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

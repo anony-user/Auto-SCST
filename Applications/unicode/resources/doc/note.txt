@@ -1,0 +1,11 @@
+Test plan wanted
+Test scripts wanted
+Developer wanted
+
+-r for recursive mode
+
+Screenshot wanted
+Linux
+Solaris
+HP-UX
+Unixware

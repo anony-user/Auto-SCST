@@ -1,0 +1,5 @@
+Manifest-Version: 2.0
+Main-Class: net.chiwai.UnicodeRewriter
+Created-By: ChiWai
+Class-Path: ../lib/org.netbeans.lib.awtextra.jar
+Specification-Title: UnicodeRewriter

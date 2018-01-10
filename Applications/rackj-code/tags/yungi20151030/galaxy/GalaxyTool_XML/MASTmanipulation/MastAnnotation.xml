@@ -1,0 +1,27 @@
+<tool id="mastannotation_id"  name="Simple MAST Annotation">
+  <description>Annotation of MAST output</description>
+  <command>MastAnnotation.pl ${mastIn} ${fastaIn} ${outputPrefix}
+           
+           &amp;&amp; mv ${outputPrefix} ${outputFilename}
+  </command>
+  
+  <inputs>
+  
+    <!-- $mastIn -->
+    <param name="mastIn" format="mast" type="data" optional="false" label="MAST output file"/>
+    
+    <!-- $fastaIn -->
+    <param name="fastaIn" format="fasta" type="data" optional="false" label="Sequence FASTA"/>
+    
+    <!-- $outputPrefix -->
+    <param name="outputPrefix" value="" type="text" optional="false" size="10" label="Prefix of output filename">
+      <validator type="regex" message="This field cannot be empty nor contain any whitespace character">^\S+$</validator>
+    </param>
+  
+  </inputs>
+  
+  <outputs>
+    <data format="xls" name="outputFilename" label="${outputPrefix}.xls"/>
+  </outputs>
+    
+</tool>

@@ -1,0 +1,138 @@
+## The following installation steps were based on ubuntu linux distribution 12.04.
+## Your linux distribution may lack some required software packages, please install these packages before installing galaxy.
+## Required packages "csh zlib1g-dev mercurial postgresql bioperl apache2 proftpd proftpd-basic proftpd-mod-pgsql proftpd-doc **oracle-java6"
+   ** Oracle Java 6 may install via PPA Repository, http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html
+
+#1. Galaxy Installation with Production mode
+[1]. get Galaxy distribution
+hg clone https://bitbucket.org/galaxy/galaxy-dist/
+## at "galaxy-dist" direcroty 
+hg update -r security_2013.04.08
+
+[2]. PostgreSQL configuration
+sudo su - postgres
+createdb galaxy_prod
+psql galaxy_prod
+## at psql command line [galaxy_prod=#]
+## create database user/password, PLEASE modify password xxxx .
+CREATE USER galaxy WITH PASSWORD 'xxxxx';  
+GRANT ALL PRIVILEGES ON DATABASE galaxy_prod to galaxy;
+\q
+
+[3]. set galaxy production mode
+## duplicate galaxy setting sample file "universe_wsgi.ini.sample" to "universe_wsgi.ini", and edit universe_wsgi.ini
+## "universe_wsgi.ini" editing, add following lines after "[app:main]"
+filter-with = proxy-prefix
+cookie_path = /galaxy
+
+## mark the line with "#"
+filter-with = gzip
+
+#database_connection = postgres://[username]:[password]@localhost:5432/[database name]
+database_connection = postgres://xxx:yyy@localhost:5432/galaxy_prod
+
+## unmark and edit this option "True"
+database_engine_option_server_side_cursors = True
+
+## edit these options
+debug = False
+use_interactive = False
+
+[4]. apache2 configuration
+## Apache2 configuration sample files are place at "Configuration_files/apache2"
+1. link modules
+@/etc/apache2/mods-enabled# ln -s ../mods-available/rewrite.load rewrite.load
+@/etc/apache2/mods-enabled# ln -s ../mods-available/proxy.load proxy.load
+@/etc/apache2/mods-enabled# ln -s ../mods-available/proxy_http.load proxy_http.load
+2. create apache2/conf.d/galaxy.conf with configuration sample file "galaxy.conf"
+3. create a directory "/var/www/galaxy" and copy configuration sample file ".htaccess" to /var/www/galaxy diretrocy,
+
+[5]. set galaxy FTP upload
+## Proftpd configuration sample files are place at "Configuration_files/proftpd"
+1. edit two settings at "universe_wsgi.ini", the value depends on your galaxy environment.
+ftp_upload_dir =  database/ftp  # means directory "galaxy-dist/database/ftp"
+ftp_upload_site = [Galaxy host name/IP]  # This value only indicate user where to upload files, not affect galaxy system working.
+2. edit proftpd/proftpd.conf with instruction "proftpd.patch"
+3. edit proftpd/modules.conf with instruction "modules.patch"
+4. edit proftpd/sql.conf ,mark all lines
+5. create proftpd/conf.d/galaxy.conf with the sample configuration file "galaxy.conf", edit two places with indicator ##!.
+
+## execute "run.sh" to generate necessary directories and files
+## after galaxy server stand by, press "Ctrl+C" to terminate server and continue following installation
+
+#2. Galaxy configuration
+## Galaxy related configuration sample files are place at "Configuration_files/galaxy-dist"
+[1]. install executable tools file to user directory ,default directory: /home/user/galaxy_exec
+    ## Tool list:
+    Blat (site: http://genome.ucsc.edu/FAQ/FAQblat.html)
+    Blast+ (site: http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download)
+    bowtie2 (site: http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
+    mdust (site: http://sourceforge.net/projects/gicl/files/other/)
+    meme (site: http://meme.nbcr.net/meme/downloads.html)
+    rackj scripts (site: http://rackj.sourceforge.net/)
+    rackj jarfile (site: http://rackj.sourceforge.net/)
+    sam jarfile (site: http://sourceforge.net/projects/picard/files/sam-jdk/)
+[2]. edit and copy file ".bash_profile" to galaxy user home directory
+[3]. copy tools menu files "tool_conf.xml" and "integrated_tool_panel.xml" to galaxy-dist directory
+[4]. create directory [myTools] at path [galaxy-dist/tools], and copy all "GalaxyTool_XML" files into [myTools] directory
+    ## Tool-xml list:
+    annotation_manipulation
+    mapping_pipeline
+    MEME_suite
+    ncbi_blast_plus
+    rnaseq
+    samtools
+    sequence_generation
+[5]. add "tabular_py.patch" content to tabular datatype configuration file "galaxy-dist/lib/galaxy/datatypes/tabular.py" 
+[6]. edit "galaxy-dist/datatypes_conf.xml"
+    ## at <datatypes> paragraph, add the following settings
+    <datatype extension="cgff" type="galaxy.datatypes.tabular:Cgff" display_in_upload="true"/>
+    <datatype extension="generpkm" type="galaxy.datatypes.tabular:Generpkm" display_in_upload="true"/>
+    <datatype extension="exoncount" type="galaxy.datatypes.tabular:Exoncount" display_in_upload="true"/>
+    <datatype extension="introncount" type="galaxy.datatypes.tabular:Introncount" display_in_upload="true"/>
+    <datatype extension="splicecount" type="galaxy.datatypes.tabular:Splicecount" display_in_upload="true"/>
+    <datatype extension="finesplice" type="galaxy.datatypes.tabular:Finesplice" display_in_upload="true"/>
+    <datatype extension="pslx" type="galaxy.datatypes.tabular:Pslx" display_in_upload="true"/>
+    <datatype extension="psl" type="galaxy.datatypes.tabular:Psl" display_in_upload="true"/>
+    <datatype extension="mast" type="galaxy.datatypes.tabular:Mast" display_in_upload="true"/>
+    ## at <sniffers> paragraph, add the following settings
+    <sniffer type="galaxy.datatypes.tabular:Cgff"/>
+    <sniffer type="galaxy.datatypes.tabular:Generpkm"/>
+    <sniffer type="galaxy.datatypes.tabular:Exoncount"/>
+    <sniffer type="galaxy.datatypes.tabular:Introncount"/>
+    <sniffer type="galaxy.datatypes.tabular:Splicecount"/>
+    <sniffer type="galaxy.datatypes.tabular:Finesplice"/>
+    <sniffer type="galaxy.datatypes.tabular:Mast"/>
+    
+#3. Galaxy genome database construction
+## Galaxy uses dbkey and lookup table to provide galaxy tools genome informations
+[1]. rackj.loc - RackJ tools genome data table, file path [galaxy-dist/tool-data/rackj.loc]
+     RackJ tools genome data table contains "fasta, bowtie2 DB, canonical GFF, canonical GFF model" data columns
+     ## data columns,[<unique_id>	<display_name>	<Blat_fasta_Genome>	<Bowtie2_Database>	<cgff>	<model>]
+     ## A. thaliana RackJ data sample
+     TAIR10	TAIR10	genomeFasta/TAIR10_chr_all.fa	BowtieDB/TAIR10	canonicalGFF/tair10.strand.cgff	canonicalGFF/tair10.strand.model
+    
+     ## RackJ genome data recommand path
+     fasta = galaxy-dist/database/genomeFasta
+     bowtie2 DB = galaxy-dist/database/BowtieDB
+     canonical GFF = galaxy-dist/database/canonicalGFF
+     canonical GFF model = galaxy-dist/database/canonicalGFF
+     
+[2]. builds.txt - Galaxy genome dbkey and key annotation, file path [galaxy-dist/tool-data/shared/ucsc/builds.txt]
+     ## data columns, [<dbkey>	<annotation>]
+     ## A. thaliana dbkey and annotation example
+     tair10	A. thaliana Nov. 2010 (TAIR/tair10) (tair10)
+    
+[3]. sam_fa_indices.loc - Samtools genome index lookup table, file path [galaxy-dist/tool-data/sam_fa_indices.loc]
+     genome index format is "fai", generate fai file with samtools before using it.
+     ## data columns, [index	<seq>	<location>]
+     ## A. thaliana fasta index example
+     index	tair10	/home/galaxy/galaxy-dist/database/genomeFasta/TAIR10_chr_all.fa
+
+[4]. blastdb.loc - BLAST nucleotide databases lookup table, file path [galaxy-dist/tool-data/blastdb.loc]
+     ## blastdb.loc data columns, [<unique_id>	<database_caption>	<base_name_path>]
+     nt_06_Aug_2011	nt(06 Aug 2013)	/home/galaxy/galaxy-dist/database/blastDB/nt/nt
+     
+[5]. blastdb_p.loc - BLAST protein databases lookup table, file path [galaxy-dist/tool-data/blastdb_p.loc]
+     ## blastdb_p.loc data columns, [<unique_id>	<database_caption>	<base_name_path>]
+     nr_06_Aug_2013	nr(06 Aug 2013)	/home/galaxy/galaxy-dist/database/blastDB/nr/nr

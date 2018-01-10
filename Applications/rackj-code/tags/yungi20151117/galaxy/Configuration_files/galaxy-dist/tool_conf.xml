@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+
+<toolbox>
+  
+  <section name="Upload Data" id="getext">
+    <tool file="data_source/upload.xml"/>
+  </section>
+  
+  <label text="RACKJ" id="1"/>  
+    <section name="Mapping" id="mappingID">
+    <tool file="myTools/mapping_pipeline/mappingBlat.xml" />
+    <tool file="myTools/mapping_pipeline/mappingBowtie.xml" />
+    <tool file="myTools/mapping_pipeline/mappingBowtieBlat.xml" />
+  </section>
+  
+  <section name="Compute" id="ComputeID">
+    <tool file="myTools/rnaseq/RPKMcomputer.xml" />
+    <tool file="myTools/rnaseq/GenIntronCount.xml" />
+    <tool file="myTools/rnaseq/GenFineSpliceCount.xml" />
+  </section>
+  
+  <section name="Compare" id="CompareID">
+    <tool file="myTools/rnaseq/SSIRcompare.xml" />
+    <tool file="myTools/rnaseq/SSEScompare.xml" />
+    <tool file="myTools/rnaseq/SSDAcompare.xml" />
+    <tool file="myTools/rnaseq/SSDAcompareChi.xml" />
+  </section>
+  
+  <section name="Sequence Generation" id="sequenceGenerationID">
+    <tool file="myTools/sequence_generation/SeqGenAS.xml"/>
+    <tool file="myTools/sequence_generation/mdust.xml" />
+    <tool file="myTools/sequence_generation/PromoterSeqGen.xml"/>
+  </section>
+  
+  <section name="Mast Manipulation" id="MastManipulationID">
+    <tool file="myTools/MASTmanipulation/MastAnnotation.xml"/>
+    <tool file="myTools/MASTmanipulation/MastAnnotationAS.xml"/>
+    <tool file="myTools/MASTmanipulation/MastCompare.xml"/>
+  </section>
+  
+  <label text="BAM/SAM Manipulation" id="2"/>
+  <section name="SAMtools" id="SAMtoolsID">
+    <tool file="myTools/samtools/bam_sort.xml"/>
+    <tool file="samtools/sam_to_bam.xml" />
+    <tool file="samtools/bam_to_sam.xml" />
+    <tool file="samtools/sam_merge.xml" />
+  </section>
+
+  <label text="Feature Extraction" id="3"/>
+  <section name="MEME Suite" id="motifs">
+    <tool file="myTools/MEME_suite/meme.xml"/>
+    <!-- multiProcess version <tool file="myTools/MEME_suite/meme_p.xml"/> -->
+    <tool file="myTools/MEME_suite/mast.xml" />
+  </section>
+  
+  <label text="Sequence Search Tools" id="4"/>
+  <section name="NCBI BLAST+" id="ncbi_blast_plus_tools">
+    <tool file="myTools/ncbi_blast_plus/ncbi_blastn_wrapper.xml" />
+    <tool file="myTools/ncbi_blast_plus/ncbi_blastp_wrapper.xml" />
+    <tool file="myTools/ncbi_blast_plus/ncbi_blastx_wrapper.xml" />
+    <tool file="myTools/ncbi_blast_plus/ncbi_tblastn_wrapper.xml" />
+    <tool file="myTools/ncbi_blast_plus/ncbi_tblastx_wrapper.xml" />
+    <tool file="myTools/ncbi_blast_plus/blastxml_to_tabular.xml" />
+  </section>
+
+</toolbox>

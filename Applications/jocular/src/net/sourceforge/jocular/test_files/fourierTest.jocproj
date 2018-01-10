@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<opticsProject version="0.027">
+	<ROOT_GROUP id="1153856345">
+		<property key="NAME"></property>
+		<property key="OUTSIDE_MATERIAL">VACUUM</property>
+		<IMAGE_SOURCE id="-1741460604">
+			<property key="NAME"></property>
+			<property key="TRANS_SIZE">2cm</property>
+			<property key="ORTHO_SIZE">2cm</property>
+			<property key="IMAGE">iVBORw0KGgoAAAANSUhEUgAAACAAAAAgAQAAAABbAUdZAAAAF0lEQVR42mNgYPj/n4GKxP//xBFEGgcAillPsa2TajIAAAAASUVORK5CYII=</property>
+			<property key="GREY_SCALE">true</property>
+			<property key="WAVELENGTH_MEAN">500nm</property>
+			<property key="WAVELENGTH_FWHM">0</property>
+			<property key="PHASE_FWHM">1</property>
+			<property key="TRANS_ANGLE">0</property>
+			<property key="ORTHO_ANGLE">0.00001deg</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<positioner id="-475344871" type="OFFSET">
+				<property key="DIR_OFFSET">0.0</property>
+			</positioner>
+		</IMAGE_SOURCE>
+		<SPHERICAL_LENS id="427571657">
+			<property key="NAME"></property>
+			<property key="DIAMETER">5cm</property>
+			<property key="THICKNESS">1.41cm</property>
+			<property key="FRONT_SHAPE">CONVEX</property>
+			<property key="FRONT_RADIUS">6.9cm</property>
+			<property key="BACK_SHAPE">CONVEX</property>
+			<property key="BACK_RADIUS">6.9cm</property>
+			<property key="INSIDE_MATERIAL">BOROSILICATE</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<positioner id="2134540798" type="OFFSET">
+				<property key="DIR_OFFSET">7.5cm</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<IMAGER id="1886276776">
+			<property key="NAME">F</property>
+			<property key="TRANS_SIZE">2cm</property>
+			<property key="ORTHO_SIZE">2cm</property>
+			<property key="TRANS_DIM">100</property>
+			<property key="ORTHO_DIM">100</property>
+			<property key="ABSORBS_PHOTONS">false</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<property key="IMAGE">iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAANElEQVR42u3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfgx1lAABLpXWfAAAAABJRU5ErkJggg==</property>
+			<positioner id="1019026511" type="OFFSET">
+				<property key="DIR_OFFSET">15cm</property>
+			</positioner>
+		</IMAGER>
+		<SPHERICAL_LENS id="-749163703">
+			<property key="NAME"></property>
+			<property key="DIAMETER">5cm</property>
+			<property key="THICKNESS">1.41cm</property>
+			<property key="FRONT_SHAPE">CONVEX</property>
+			<property key="FRONT_RADIUS">6.9cm</property>
+			<property key="BACK_SHAPE">CONVEX</property>
+			<property key="BACK_RADIUS">6.9cm</property>
+			<property key="INSIDE_MATERIAL">BOROSILICATE</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<positioner id="-1577956258" type="OFFSET">
+				<property key="DIR_OFFSET">22.5cm</property>
+			</positioner>
+		</SPHERICAL_LENS>
+		<IMAGER id="-1950845287">
+			<property key="NAME">O</property>
+			<property key="TRANS_SIZE">2.6cm</property>
+			<property key="ORTHO_SIZE">2.6cm</property>
+			<property key="TRANS_DIM">200</property>
+			<property key="ORTHO_DIM">200</property>
+			<property key="ABSORBS_PHOTONS">true</property>
+			<property key="OUTSIDE_MATERIAL">VACUUM</property>
+			<property key="IMAGE">iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAIAAAAiOjnJAAAAiklEQVR42u3BAQEAAACCIP+vbkhAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwYNWXAAFLRgwhAAAAAElFTkSuQmCC</property>
+			<positioner id="1230927608" type="OFFSET">
+				<property key="DIR_OFFSET">30cm</property>
+			</positioner>
+		</IMAGER>
+		<positioner id="1148985617" type="AXIS">
+			<property key="AXIS">Z</property>
+		</positioner>
+	</ROOT_GROUP>
+</opticsProject>

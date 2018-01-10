@@ -1,0 +1,498 @@
+class Psl( Tabular ):
+    file_ext = 'psl'
+    def __init__(self, **kwd):
+        """Initialize taxonomy datatype"""
+        Tabular.__init__( self, **kwd )
+        self.column_names = ['matches', 'misMatches', 'repMatches', 'nCount', 'qNumInsert', 'qBaseInsert',
+                             'tNumInsert', 'tBaseInsert', 'strand', 'qName', 'qSize', 'qStart', 'qEnd',
+                             'tName', 'tSize', 'tStart', 'tEnd', 'blockCount', 'blockSizes', 'qStarts',
+                             'tStarts'
+                             ]
+                             
+    def display_peek( self, dataset ):
+        """Returns formated html of peek"""
+        return Tabular.make_html_table( self, dataset, column_names=self.column_names )
+        
+    def sniff( self, filename ):
+        """
+        Determines whether the file is in PSL format
+        
+        A file in PSL format consists of lines of tab-separated data.
+        The following header line may be the first line:
+        @matches	misMatches	repMatches	nCount	qNumInsert	qBaseInsert  tNumInsert	tBaseInsert	strand	qName	qSize	qStart	qEnd	tName	tSize	tStart	tEnd	blockCount	blockSizes	qStarts	tStarts
+    
+
+        For complete details see http://genome.ucsc.edu/FAQ/FAQformat.html#format2
+        
+        Rules for sniffing as True:
+            There must be 21 columns of data on each line
+            Columns 0~7, Columns 10~12, and Columns 14~17 must be numbers
+            We will only check that up to the first 5 alignments are correctly formatted.
+        """
+        try:
+            fh = open( filename )
+            count = 0
+            count2 = 0
+            while True:
+                line = fh.readline()
+                line = line.strip()
+                if not line:
+                   count2 += 1
+                   if count2 == 2:
+                      break                    
+                if line:
+                    if line[0].isdigit():
+                        linePieces = line.split('\t')
+                        if len(linePieces) != 21:
+                            return False
+                        try:
+                            check = int(linePieces[0])
+                            check = int(linePieces[1])
+                            check = int(linePieces[2])
+                            check = int(linePieces[3])
+                            check = int(linePieces[4])
+                            check = int(linePieces[5])
+                            check = int(linePieces[6])
+                            check = int(linePieces[7])
+                            check = int(linePieces[10])
+                            check = int(linePieces[11])
+                            check = int(linePieces[12])
+                            check = int(linePieces[14])
+                            check = int(linePieces[15])
+                            check = int(linePieces[16])
+                            check = int(linePieces[17])
+                        except ValueError:
+                            return False
+                        count += 1
+                        if count == 5:
+                            return True
+            fh.close()
+            if count < 5 and count > 0:
+                return True
+        except:
+            pass
+        return False
+
+
+class Pslx( Tabular ):
+    file_ext = 'pslx'
+    def __init__(self, **kwd):
+        """Initialize taxonomy datatype"""
+        Tabular.__init__( self, **kwd )
+        self.column_names = ['matches', 'misMatches', 'repMatches', 'nCount', 'qNumInsert', 'qBaseInsert',
+                             'tNumInsert', 'tBaseInsert', 'strand', 'qName', 'qSize', 'qStart', 'qEnd',
+                             'tName', 'tSize', 'tStart', 'tEnd', 'blockCount', 'blockSizes', 'qStarts',
+                             'tStarts', 'qStartsContent', 'tStartsContent'
+                             ]
+                             
+    def display_peek( self, dataset ):
+        """Returns formated html of peek"""
+        return Tabular.make_html_table( self, dataset, column_names=self.column_names )
+        
+    def sniff( self, filename ):
+        """
+        Determines whether the file is in PSLX format
+        
+        A file in PSLX format consists of lines of tab-separated data.
+        The following header line may be the first line:
+        @matches	misMatches	repMatches	nCount	qNumInsert	qBaseInsert  tNumInsert	tBaseInsert	strand	qName	qSize	qStart	qEnd	tName	tSize	tStart	tEnd	blockCount	blockSizes	qStarts	tStarts	qStartsContent	tStartsContent
+    
+
+        For complete details see http://genome.ucsc.edu/FAQ/FAQformat.html#format2
+        
+        Rules for sniffing as True:
+            There must be 23 columns of data on each line
+            Columns 0~7, Columns 10~12, and Columns 14~17 must be numbers
+            We will only check that up to the first 5 alignments are correctly formatted.
+        """
+        try:
+            fh = open( filename )
+            count = 0
+            count2 = 0
+            while True:
+                line = fh.readline()
+                line = line.strip()
+                if not line:
+                     count2 += 1
+                     if count2 == 2:
+                        break
+                if line:
+                     if line[0].isdigit():
+                        linePieces = line.split('\t')
+                        if len(linePieces) != 23:
+                            return False
+                        try:
+                            check = int(linePieces[0])
+                            check = int(linePieces[1])
+                            check = int(linePieces[2])
+                            check = int(linePieces[3])
+                            check = int(linePieces[4])
+                            check = int(linePieces[5])
+                            check = int(linePieces[6])
+                            check = int(linePieces[7])
+                            check = int(linePieces[10])
+                            check = int(linePieces[11])
+                            check = int(linePieces[12])
+                            check = int(linePieces[14])
+                            check = int(linePieces[15])
+                            check = int(linePieces[16])
+                            check = int(linePieces[17])
+                        except ValueError:
+                            return False
+                        count += 1
+                        if count == 5:
+                            return True
+            fh.close()
+            if count < 5 and count > 0:
+                return True
+        except:
+            pass
+        return False
+    
+class Generpkm( Tabular ):
+    file_ext = 'generpkm'
+    def __init__(self, **kwd):
+        """Initialize taxonomy datatype"""
+        Tabular.__init__( self, **kwd )
+        self.column_names = ['GeneID', 'Length', '#Reads', 'RPKM', 'multi/ALL']
+                             
+    def display_peek( self, dataset ):
+        """Returns formated html of peek"""
+        return Tabular.make_html_table( self, dataset, column_names=self.column_names )
+        
+    def sniff( self, filename ):
+        """
+        Determines whether the file is in .geneRPKM format
+        
+        A file in geneRPKM format consists of lines of tab-separated data.
+        The following header line may be the first line:
+        @GeneID Length Reads RPKM multi/ALL
+        
+        Rules for sniffing as True:
+            There is a symbol at first line, which reveals the format of the file.
+        """
+        try:
+            fh = open( filename )
+
+            while True:
+                line = fh.readline()
+                line = line.strip()
+                if not line:
+                     break
+                if line:
+                     if line[0].startswith( '#' ):
+                        linePieces = line.split('.')
+                        if len(linePieces) != 2:
+                            return False
+                        if linePieces[1] == 'geneRPKM':
+                            return True
+                        else:
+                       	    return False
+                     else:
+                        return False
+            fh.close()
+        except:
+            pass
+        return False
+
+class Exoncount( Tabular ):
+    file_ext = 'exoncount'
+    def __init__(self, **kwd):
+        """Initialize taxonomy datatype"""
+        Tabular.__init__( self, **kwd )
+        self.column_names = ['GeneID', 'exonNo', '#Reads', 'exonLen', 'multi/ALL']
+                             
+    def display_peek( self, dataset ):
+        """Returns formated html of peek"""
+        return Tabular.make_html_table( self, dataset, column_names=self.column_names )
+        
+    def sniff( self, filename ):
+        """
+        Determines whether the file is in .exonCount format
+        
+        A file in exonCount format consists of lines of tab-separated data.
+        The following header line may be the first line:
+        @GeneID exonNo Reads exonLen multi/ALL
+        
+        Rules for sniffing as True:
+            There is a symbol at first line, which reveals the format of the file.
+        """
+        try:
+            fh = open( filename )
+
+            while True:
+                line = fh.readline()
+                line = line.strip()
+                if not line:
+                     break
+                if line:
+                     if line[0].startswith( '#' ):
+                        linePieces = line.split('.')
+                        if len(linePieces) != 2:
+                            return False
+                        if linePieces[1] == 'exonCount':
+                            return True
+                        else:
+                       	    return False
+                     else:
+                        return False
+            fh.close()
+        except:
+            pass
+        return False
+
+class Introncount( Tabular ):
+    file_ext = 'introncount'
+    def __init__(self, **kwd):
+        """Initialize taxonomy datatype"""
+        Tabular.__init__( self, **kwd )
+        self.column_names = ['GeneID', 'IntronNo', '#Reads', 'IntronLen', 'multi/ALL']
+                             
+    def display_peek( self, dataset ):
+        """Returns formated html of peek"""
+        return Tabular.make_html_table( self, dataset, column_names=self.column_names )
+        
+    def sniff( self, filename ):
+        """
+        Determines whether the file is in .intronCount format
+        
+        A file in intronCount format consists of lines of tab-separated data.
+        The following header line may be the first line:
+        @GeneID IntronNo Reads IntronLen multi/ALL
+        
+        Rules for sniffing as True:
+            There is a symbol at first line, which reveals the format of the file.
+        """
+        try:
+            fh = open( filename )
+
+            while True:
+                line = fh.readline()
+                line = line.strip()
+                if not line:
+                     break
+                if line:
+                     if line[0].startswith( '#' ):
+                        linePieces = line.split('.')
+                        if len(linePieces) != 2:
+                            return False
+                        if linePieces[1] == 'intronCount':
+                            return True
+                        else:
+                       	    return False
+                     else:
+                        return False
+            fh.close()
+        except:
+            pass
+        return False
+           
+class Splicecount( Tabular ):
+    file_ext = 'splicecount'
+    def __init__(self, **kwd):
+        """Initialize taxonomy datatype"""
+        Tabular.__init__( self, **kwd )
+        self.column_names = ['GeneID', 'exonPair', '#Reads', 'Jumping', 'Novel', 'splicingPosFreq']
+                             
+    def display_peek( self, dataset ):
+        """Returns formated html of peek"""
+        return Tabular.make_html_table( self, dataset, column_names=self.column_names )
+        
+    def sniff( self, filename ):
+        """
+        Determines whether the file is in .spliceCount format
+        
+        A file in spliceCount format consists of lines of tab-separated data.
+        The following header line may be the first line:
+        @GeneID exonPair Reads Jumping Novel splicingPosFreq
+        
+        Rules for sniffing as True:
+            There is a symbol at first line, which reveals the format of the file.
+        """
+        try:
+            fh = open( filename )
+
+            while True:
+                line = fh.readline()
+                line = line.strip()
+                if not line:
+                     break
+                if line:
+                     if line[0].startswith( '#' ):
+                        linePieces = line.split('.')
+                        if len(linePieces) != 2:
+                            return False
+                        if linePieces[1] == 'spliceCount':
+                            return True
+                        else:
+                       	    return False
+                     else:
+                        return False
+            fh.close()
+        except:
+            pass
+        return False
+        
+class Finesplice( Tabular ):
+    file_ext = 'finesplice'
+    def __init__(self, **kwd):
+        """Initialize taxonomy datatype"""
+        Tabular.__init__( self, **kwd )
+        self.column_names = ['GeneID', 'Splice', '#Reads', 'Novel', 'splicingPosFreq']
+                             
+    def display_peek( self, dataset ):
+        """Returns formated html of peek"""
+        return Tabular.make_html_table( self, dataset, column_names=self.column_names )
+        
+    def sniff( self, filename ):
+        """
+        Determines whether the file is in .fineSplice format
+        
+        A file in fineSplice format consists of lines of tab-separated data.
+        The following header line may be the first line:
+        @GeneID Splice Reads Novel splicingPosFreq
+        
+        Rules for sniffing as True:
+            There is a symbol at first line, which reveals the format of the file.
+        """
+        try:
+            fh = open( filename )
+
+            while True:
+                line = fh.readline()
+                line = line.strip()
+                if not line:
+                     break
+                if line:
+                     if line[0].startswith( '#' ):
+                        linePieces = line.split('.')
+                        if len(linePieces) != 2:
+                            return False
+                        if linePieces[1] == 'fineSplice':
+                            return True
+                        else:
+                       	    return False
+                     else:
+                        return False
+            fh.close()
+        except:
+            pass
+        return False
+
+        
+class Cgff( Tabular ):
+    file_ext = 'cgff'
+    def __init__(self, **kwd):
+        """Initialize taxonomy datatype"""
+        Tabular.__init__( self, **kwd )
+        self.column_names = ['geneName', 'chrName', 'Start', 'Stop', 'Strand']
+                             
+    def display_peek( self, dataset ):
+        """Returns formated html of peek"""
+        return Tabular.make_html_table( self, dataset, column_names=self.column_names )
+        
+    def sniff( self, filename ):
+        """
+        Determines whether the file is in .cgff format
+        
+        A file in cgff format consists of lines of tab-separated data.
+        The following header line may be the first line:
+        @geneName chrName Start Stop Strand
+        
+        Rules for sniffing as True:
+            1. With line started with ">", it must be composed at least four elements:
+               a. gene name
+               b. chromosome name
+               c. start position of gene
+               d. stop position of gene
+               e. strand (optional)
+            2. except for the case above, each line must contain exactly two elements:
+               a. start position of exon
+               b. stop position of exon
+        """
+        try:
+            fh = open( filename )
+            count = 0
+            
+            while True:
+                line = fh.readline()
+                line = line.strip()
+                if not line:
+                     break
+                if line:
+                     if line[0].startswith( '>' ):
+                        linePieces = line.split('\t')
+                        if len(linePieces) < 4 or len(linePieces) > 5:
+                          return False
+                        try:
+                        	check = int(linePieces[2])
+                        	check = int(linePieces[3])
+                        except:
+                        	return False
+                        count += 1
+                        if count == 5:
+                          return True
+                     else:
+                        linePieces = line.split('\t')
+                        if len(linePieces) != 2:
+                        	return False
+                        try:
+                        	check = int(linePieces[0])
+                        	check = int(linePieces[1])
+                        except:
+                        	return False	
+                        count += 1
+                        if count == 5:
+                          return True
+            fh.close()
+            if count < 5 and count > 0:
+                return True
+        except:
+            pass
+        return False                                                     
+
+class Mast( Tabular ):
+    file_ext = 'mast'
+    def __init__(self, **kwd):
+        """Initialize taxonomy datatype"""
+        Tabular.__init__( self, **kwd )
+        self.column_names = ['sequence_name', 'motif', 'hit_start', 'hit_end', 'score', 'hit_p-value']
+                             
+    def display_peek( self, dataset ):
+        """Returns formated html of peek"""
+        return Tabular.make_html_table( self, dataset, column_names=self.column_names )
+        
+    def sniff( self, filename ):
+        """
+        Determines whether the file is in .mast format
+        
+        A file in mast format consists of lines of whitespace-separated data.
+        The following header line may be the first line:
+        #sequence_name motif hit_start hit_end score hit_p-value
+        
+        Rules for sniffing as True:
+            There is a symbol at first line, which reveals the format of the file.
+        """
+        try:
+            fh = open( filename )
+
+            while True:
+                line = fh.readline()
+                line = line.strip()
+                if not line:
+                     break
+                if line:
+                     if line.startswith( '#' ):
+                        linePieces = line.split('\t')[1].split('.')
+                        if len(linePieces) != 2:
+                            return False
+                        if linePieces[1] == 'mast':
+                            return True
+                        else:
+                            return False
+                     else:
+                        return False
+            fh.close()
+        except:
+            pass
+        return False

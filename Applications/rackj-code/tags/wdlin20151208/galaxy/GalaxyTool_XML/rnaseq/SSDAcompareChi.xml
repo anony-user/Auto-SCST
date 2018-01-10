@@ -1,0 +1,70 @@
+<tool id="ssdacompare_chi_id"  name="SSDA-ChiSquared">
+  <description>Sample-Sensitive Donor and Acceptor with Chi-squared test</description>
+  <command>SSDAcompare_chisqr.pl
+           
+           #if str($minSplice) != "":
+             -minSplice ${minSplice}
+           #end if
+           
+           #if str($minDB) != "":
+             -minDB ${minDB}
+           #end if
+           
+           ${outputPrefix}
+           
+		   #if str($chiSqrThreshold) != "":
+			${chiSqrThreshold}
+           #else
+			10
+		   #end if
+           
+           ${genome.fields.cgffFilePath}
+           
+           #for $setFile in $inputFiles
+             ${setFile.fineSpliceFile} ${setFile.rpkmFile} ${setFile.alias}
+           #end for
+           
+           &amp;&amp; mv ${outputPrefix} ${outputFilename}
+  </command>
+  
+  <inputs>
+    <repeat name="inputFiles" title="Set of input file" min="2">
+    <!-- $fineSplice -->
+    <param name="fineSpliceFile" format="finesplice" type="data" optional="false" label="FineSplice file"/>
+    <!-- $geneRPKM -->
+    <param name="rpkmFile" format="generpkm" type="data" optional="false" label="geneRPKM file"/>
+    <!-- $alias -->
+    <param name="alias" type="text" optional="false" value="" label="Alias of file">
+      <validator type="regex" message="This field cannot be empty or contain any whitespace character">^\S+$</validator>
+    </param>
+    </repeat>
+    
+    <!-- $genome-->
+    <param name="genome" type="select" optional="false" label="Genome">
+      <options from_file="rackj.loc">
+       <column name="value" index="0"/>
+       <column name="name" index="1"/>
+       <column name="cgffFilePath" index="4"/>
+       <filter type="static_value" value="null" keep="false" column="4"/>
+      </options>
+    </param>
+    
+	<param name ="chiSqrThreshold" type="integer" size="5" optional="true" value="" label="Chi-squared threshold" help="default is 10.">
+		<validator type="in_range" message="Chi-squared threshold should be at least 1" min="1"/>
+	</param>
+    
+    <param name ="minSplice" type="integer" size="5" optional="true" value="" label="Minimum spliced reads (-minSplice)" help="(optional)"/>
+    
+    <param name ="minDB" type="integer" size="5" optional="true" value="" label="Minimum database splice (-minDB)" help="(optional)"/>
+    
+    <!-- $outputPrefix -->
+    <param name="outputPrefix" value="" type="text" optional="false" size="10" label="Prefix of output filename">
+      <validator type="regex" message="This field cannot be empty or contain any whitespace character">^\S+$</validator>
+    </param>
+  </inputs>
+  
+  <outputs>
+    <data format="xls" name="outputFilename" label="${outputPrefix}.SSDAchi.xls"/>
+  </outputs>
+    
+</tool>

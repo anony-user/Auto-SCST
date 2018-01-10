@@ -1,0 +1,22 @@
+<tool id="mdust_id"  name="mDust">
+  <description>Low-complexity region removal</description>
+  <command>mdust ${inputFasta} &gt; ${outputPrefix} 
+           
+           &amp;&amp; mv ${outputPrefix} ${outputFile}
+  </command>
+  
+  <inputs>
+    <!-- $inputFasta -->
+    <param format="fasta" name="inputFasta" type="data" label="Input FASTA file"/>
+                
+    <!-- $outputPrefix -->
+    <param name="outputPrefix" type="text" optional="false" size="10" label="Prefix of output filename">
+      <validator type="regex" message="This field cannot be empty nor contain any whitespace character">^\S+$</validator>
+    </param>
+  </inputs>
+  
+  <outputs>
+    <data format="fasta" name="outputFile" label="${outputPrefix}.dust.fasta"/>
+  </outputs>
+    
+</tool>

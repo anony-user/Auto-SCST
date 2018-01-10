@@ -1,0 +1,339 @@
+<html>
+	<head><title>RACKJ - Add-On Scripts</title>
+	
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-12601445-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	
+	</head>
+	
+	<body>
+		<table border=2 align=right><tr><td><a href="../index.html">home</a></td></tr></table>
+		<h1><a name="top">Add-On Scripts</a></h1>
+		
+		For scripts placed at RACK<font color="blue"><b>J</b></font> subdirectory &quot;scripts/special&quot;.</p>
+
+		<h2>Contents</h2>
+		<ul>
+		<li><a href="#meme">Cooperation with the MEME suite</a>
+			<ul>
+			<li><a href="#promoters">Generating promoter sequences</a></li>
+			<li><a href="#mast">Using MAST</a></li>
+			<li><a href="#MastAnnotation">MastAnnotation.pl</a></li>
+			<li><a href="#SeqGenAS">SeqGenAS.pl</a></li>
+			<li><a href="#MastAnnotationAS">MastAnnotationAS.pl</a></li>
+			<li><a href="#MastCompare">MastCompare.pl</a></li>
+			</ul>
+		<li><a href="#other">Other scripts</a>
+			<ul>
+			<li><a href="#PTCdetection">PTCdetection.pl</a></li>
+			<li><a href="#Interval2igv">Interval2igv.pl</a></li>
+			</ul>
+		</ul>
+
+
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="meme">Cooperation with the MEME suite</a></h2>
+		One of the next important tasks after comparing gene expression levels and/or alternative splicing events is to find corresponding regulatory motifs in promoter regions or splicing sites. In this section, we describe a set of scripts that cooperate with <a href="http://meme.nbcr.net/meme/">the MEME suite</a>. With these scripts, it shall be easy to generate input sequences for <a href="http://meme.nbcr.net/meme/meme-intro.html">MEME</a> and parse outputs of <a href="http://meme.nbcr.net/meme/mast-intro.html">MAST</a>. Further, the comparison script <a href="#MastCompare">MastCompare.pl</a> is capable of finding important motifs that are enirched in the input dataset against a given background dataset.</p>
+		
+		<h4>Notes</h4>
+		A number of scripts described in this section require BioPerl installed.</p>
+		<hr>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="promoters">Generating promoter sequences</a></h3>
+		Promoter sequences can be generated using the java program <a href="../Manual/index.html#special.PromoterCGFF">special.PromoterCGFF</a> and then the perl script <a href="../Scripts/index.html#SeqGen">SeqGen.pl</a>. Conventionally, the <a href="http://sourceforge.net/projects/gicl/files/other/">mdust</a> program from <a href="http://compbio.dfci.harvard.edu/tgi/software/">the (T)GICL project</a> may be used for low-complexity removal.</p>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="mast">Using MAST</a></h3>
+		After MEME computation, computed motif profiles may be used to scan input sequences (and background sequences, if any) for getting all potential motif sites. The following options of <a href="http://meme.nbcr.net/meme/mast-intro.html">MAST</a> are recommended for generating machine-readable and sufficient results for downstream analysis.
+		<ul>
+			<li>-hit_list: for machine-readable output</li>
+			<li>-mt 0.001: generate motif occurrences with P-value threhold 0.001. Lowering this threshold may cause unreasonably few occurrences of short motifs.</li>
+			<li>-norc: not to scan the reverse complement strands</li>
+		</ul>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="MastAnnotation">MastAnnotation.pl</a></h3>
+		This script is used to append two additional columns, (1) distance between the hit site and squence end and (2) actuall sequence of the hit site, and translate a MAST output file into a tab-delimited file so that the MAST output data can be operated using software like Excel.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; WIDTH: 90%"><pre>
+MastAnnotation.pl &lt;mastIn&gt; &lt;fastaIn&gt; &lt;outFilename&gt;
+</pre></div></p>
+		
+		<h4>Options/Parameters</h4>
+		<ol>
+			<li>&lt;mastIn&gt;: the output file by MAST</li>
+			<li>&lt;fastaIn&gt;: the input FASTA file of MAST for &lt;mastIn&gt;</li>
+			<li>&lt;outFilename&gt;: the output filename</li>
+		</ol>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="SeqGenAS">SeqGenAS.pl</a></h3>
+		This script is used to generate sequences around specified junctions of genes. A junction of a gene here is a pair of genome positions, and its notation is in one of the following forms.</p>
+		
+		<table border=1 align=center>
+			<tr>
+				<td><b>form</b></td><td><b>position1</b></td><td><b>position2</b></td>
+			</tr>
+			<tr>
+				<td align=center>
+					<pre><i>exonA</i>(<i>relativePosA</i>)-<i>exonB</i>(<i>relativePosB</i>)</pre>
+				</td>
+				<td>
+					stop of <i>exonA</i> + <i>relativePosA</i>
+				</td>
+				<td>
+					start of <i>exonB</i> - <i>relativePosB</i>
+				</td>
+			</tr>
+			<tr>
+				<td align=center>
+					<pre><i>exonX</i>[<i>relativePosA</i>-<i>relativePosB</i>]</pre>
+				</td>
+				<td>
+					start of <i>exonX</i> + <i>relativePosA</i>
+				</td>
+				<td>
+					start of <i>exonX</i> + <i>relativePosB</i>
+				</td>
+			</tr>
+			<tr>
+				<td align=center>
+					<pre><i>exonA</i>(<i>relativePosA</i>)-<i>genomicPosB</i></pre>
+				</td>
+				<td>
+					stop of <i>exonA</i> + <i>relativePosA</i>
+				</td>
+				<td>
+					<i>genomicPosB</i>
+				</td>
+			</tr>
+			<tr>
+				<td align=center>
+					<pre><i>genomicPosA</i>-<i>exonB</i>(<i>relativePosB</i>)</pre>
+				</td>
+				<td>
+					<i>genomicPosA</i>
+				</td>
+				<td>
+					start of <i>exonB</i> - <i>relativePosB</i>
+				</td>
+			</tr>
+			<tr>
+				<td align=center>
+					<pre><i>genomicPosA</i>-<i>genomicPosB</i></pre>
+				</td>
+				<td>
+					<i>genomicPosA</i>
+				</td>
+				<td>
+					<i>genomicPosB</i>
+				</td>
+			</tr>
+			<tr>
+				<td align=center>
+					<pre><i>exonA</i>&lt;=&gt;<i>exonB</i></pre>
+				</td>
+				<td>
+					stop of <i>exonA</i>
+				</td>
+				<td>
+					start of <i>exonB</i>
+				</td>
+			</tr>
+			<tr>
+				<td align=center>
+					<pre><i>intronX</i></pre>
+				</td>
+				<td align=center colspan=2>
+					this equals &quot;<i>intronX</i>&lt;=&gt;<i>intronX+1</i>&quot;
+				</td>
+			</tr>
+		</table></p>
+		
+		Note that, in all these forms, the numbering of exons/introns and relative positions follow the genome orientation but not gene orientation. This is for adopting results made by those <a href="../RNAseqExample/index.html#comparison">sample-sensitive alternative splicing scripts</a>, which are based on tables generated by <a href="../Manual/index.html#rnaseq.RPKMComputer">rnaseq.RPKMComputer</a>, <a href="../Manual/index.html#rnaseq.ExonCounter">rnaseq.ExonCounter</a>, and <a href="../Manual/index.html#rnaseq.FineSpliceCounter">rnaseq.FineSpliceCounter</a>.</p>
+		
+		Given a junction defined, sequence extraction following the gene orientation is controlled by five parameters.</p>
+		<ol>
+			<li>The first sequence will be the concatenation of (1) upstream <i>w<sub>1</sub></i> base-pairs (including the 5' junction point) and (2) downstream <i>w<sub>2</sub></i> base-pairs (excluding the 5' junction point).</li>
+			<li>The second sequence will be the concatenation of (1) upstream <i>w<sub>3</sub></i> base-pairs (excluding the 3' junction point) and (2) downstream <i>w<sub>4</sub></i> base-pairs (including the 3' junction point).</li>
+			<li>The two sequences will be merged into one single sequence if (they overlap each other AND the <i>merge option</i> is ON) OR (both <i>w<sub>2</sub></i> and <i>w<sub>3</sub></i> are -1).</li>
+		</ol>
+
+		<table border=0 align=center>
+			<tr><td>
+					<image src="junction.png">
+			</td></tr>
+		</table>
+
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; WIDTH: 90%"><pre>
+SeqGenAS.pl &lt;spliceList&gt; &lt;w1&gt; &lt;w2&gt; &lt;w3&gt; &lt;w4&gt; &lt;overlapMerge&gt; &lt;strandCGFF&gt; &lt;genomeFasta&gt; &lt;outFilename&gt;
+</pre></div></p>
+		
+		<h4>Options/Parameters</h4>
+		<ol>
+			<li>&lt;spliceList&gt;: a text file containing the junction list in two columns. The first column should be gene IDs and the second column should be in one of aforementioned forms.</li>
+			<li>&lt;w1&gt; &lt;w2&gt; &lt;w3&gt; &lt;w4&gt;: the four aforementioned controlling parameters <i>w<sub>1</sub></i>, <i>w<sub>2</sub></i>, <i>w<sub>3</sub></i>, and <i>w<sub>4</sub></i>.</li>
+			<li>&lt;overlapMerge&gt;: the aforementioned <i>merge option</i>. 1 for ON and 0 for OFF.</li>
+			<li>&lt;strandCGFF&gt;: a canonical GFF file with strand information</li>
+			<li>&lt;genomeFasta&gt;: the genome FASTA file</li>
+			<li>&lt;outFilename&gt;: the output FASTA filename</li>
+		</ol>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="MastAnnotationAS">MastAnnotationAS.pl</a></h3>
+		After running MEME with sequences generated using <a href="#SeqGenAS">SeqGenAS.pl</a> and scanning these sequence using MAST with <a href="#mast">recommended options</a>, this script appends the following five columns and saves the output into a tab-delimited file:</p>
+		
+		<ol>
+			<li>actuall sequence of the hit site,</li>
+			<li>start and stop positions of the hit on the genome, and</li>
+			<li>relative position of the hit start(stop) to the 5'(3') junction point.</li>
+		</ol>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; WIDTH: 90%"><pre>
+MastAnnotationAS.pl &lt;spliceList&gt; &lt;w1&gt; &lt;w2&gt; &lt;w3&gt; &lt;w4&gt; &lt;overlapMerge&gt; &lt;mastIn&gt; &lt;strandCGFF&gt; &lt;genomeFasta&gt; &lt;outFilename&gt;
+</pre></div></p>
+		
+		<h4>Options/Parameters</h4>
+		<ol>
+			<li>&lt;spliceList&gt; &lt;w1&gt; &lt;w2&gt; &lt;w3&gt; &lt;w4&gt; &lt;overlapMerge&gt; &lt;strandCGFF&gt; &lt;genomeFasta&gt;: must be the same with those when using <a href="#SeqGenAS">SeqGenAS.pl</a></li>
+			<li>&lt;mastIn&gt;: the output file by MAST</li>
+			<li>&lt;outFilename&gt;: the output filename</li>
+		</ol>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="MastCompare">MastCompare.pl</a></h3>
+		After <a href="#mast">scanning</a> target sequences and background sequences using the same set of motif profiles made by MEME, this script compares the two MAST output files with the following assumption.</p>
+		
+		By selecting reasonable target sequences and background sequences, there should be an appropriate scanning P-value threshold that enriches occurrences of a motif in targets but not backgrounds if the motif does related with targets. By &quot;appropriate&quot; it means looser(more stringent) thresholds would result in more(less) occurrences in targets, and thus worse enrichment levels.</p>
+		
+		With this understanding, we define that a sequence is hit by a motif under MAST P-value threshold <i>X</i> if there is a hit on the sequence with P-value lower than or equal to <i>X</i>. In so doing, this script computs the following four numbers for every motif with a series of thresholds:</p>
+		
+		<ol type=A>
+			<li>number of hit target sequences,</li>
+			<li>number of hit background sequences,</li>
+			<li>number of non-hit target sequences, and</li>
+			<li>number of non-hit background sequences.</li>
+		</ol>
+		
+		With these four numbers, the fisher exact test tells the enrichment levels of a motif under the series of thresholds, and a motif shows low-high-low enirchment levels along the threshold axis should be a &quot;related&quot; motif. The following plot shows one such example (x-axis: MAST P-value threshold, y-axis: fisher exact test P-value), where this motif was found by MEME with E-value 14,000 (Rodri'guez-Celma et al. 2013, PMID:23735511).</p>
+
+		<table border=0 align=center>
+			<tr><td>
+					<image src="motif.png">
+			</td></tr>
+		</table>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; WIDTH: 90%"><pre>
+MastCompare.pl &lt;targetMast&gt; &lt;backgroundMast&gt; &lt;numberTarget&gt; &lt;numberBackground&gt; &lt;backgroundContainingTarget&gt; &lt;rackjJARpath&gt;
+</pre></div></p>
+		
+		<h4>Options/Parameters</h4>
+		<ol>
+			<li>&lt;targetMast&gt;: MAST output file by scanning target sequences</li>
+			<li>&lt;backgroundMast&gt;: MAST output file by scanning background sequences</li>
+			<li>&lt;numberTarget&gt;: number of target sequences</li>
+			<li>&lt;numberBackground&gt;: number of background sequences</li>
+			<li>&lt;backgroundContainingTarget&gt;: 1 for background containing target and 0 for otherwise</li>
+			<li>&lt;rackjJARpath&gt;: the path to RACK<font color="blue"><b>J</b></font> JAR file</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		This script writes output to the standard output, redirecting it would be convenient.</p>
+		
+				
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="other">Other scripts</a></h2>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="PTCdetection">PTCdetection.pl</a></h3>
+		This script computes whether a retained intron would cause premature termination codon (PTC). Its output table contains the following columns:</p>
+		
+		<ol type=A>
+			<li>gene ID,</li>
+			<li>the intron to be retained,</li>
+			<li>transcript,</li>
+			<li>size of retained intron of the isoform (0 for intron not in coding region),</li>
+			<li>intron size modulo 3,</li>
+			<li>whether the intron retention causes PTC,</li>
+			<li>whether a PTC is in the retained intron,</li>
+			<li>AA sequence translated from the transcript with the retained intron, and</li>
+			<li>AA sequence translated from the transcript until the retained intron.</li>
+		</ol>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; WIDTH: 90%"><pre>
+PTCdetection.pl &lt;strandCGFF&gt; &lt;cdsCGFF&gt; &lt;IDtable&gt; &lt;intronList&gt; &lt;genomeFasta&gt; &lt;outFilename&gt;
+</pre></div></p>
+		
+		<h4>Options/Parameters</h4>
+		<ol>
+			<li>&lt;strandCGFF&gt;: a canonical GFF file with strand information</li>
+			<li>&lt;cdsCGFF&gt;: a canonical GFF file gives coding transcripts and their coding regions</li>
+			<li>&lt;IDtable&gt;: a text file gives relationships between transcripts and genes. The first column should be transcripts and the second column should be gene IDs.</li>
+			<li>&lt;intronList&gt;: a text file containing the intron list in two columns. The first column should be gene IDs and the second column should intron numbers.</li>
+			<li>&lt;genomeFasta&gt;: the genome FASTA file</li>
+			<li>&lt;outFilename&gt;: the output filename</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		<ol>
+			<li>This script required BioPerl installed.</li>
+			<li>The numbering of introns follows genome orientation.</li>
+			<li>For example, &lt;cdsCGFF&gt; can be a file generated by <a href="../Manual/index.html#misc.CanonicalGFF">misc.CanonicalGFF</a> with the option <i>-GE mRNA CDS</i>, given the GFF3 file as in <a href="../RNAseqExample/index.html#cgff">our RNAseq example</a>.
+		</ol>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="Interval2igv">Interval2igv.pl</a></h3>
+		This script translates interval data with item names into the <a href="http://www.broadinstitute.org/software/igv/IGV">IGV format</a> for visualization using <a href="http://www.broadinstitute.org/igv/home">IGV</a> so that overlapping intervals are associated with different values and can be viewed separately. The input data should be a tab-delimited file containing the four columns: (1) item name of the interval, (2) chromosome of the interval, (3) start point, and (4) stop point.</p>
+		
+		<h4>Usage</h4>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; WIDTH: 90%"><pre>
+Interval2igv.pl &lt;inFile&gt; &lt;rackjJARpath&gt; &lt;trackName&gt;
+</pre></div></p>
+		
+		<h4>Options/Parameters</h4>
+		<ol>
+			<li>&lt;inFile&gt;: the input interval file</li>
+			<li>&lt;rackjJARpath&gt;: the path to RACK<font color="blue"><b>J</b></font> JAR file</li>
+			<li>&lt;trackName&gt;: track name to be shown in IGV</li>
+		</ol>
+		
+		<h4>Notes</h4>
+		This script writes output to the standard output, redirecting it would be convenient.</p>
+
+
+	</body>
+
+</html>

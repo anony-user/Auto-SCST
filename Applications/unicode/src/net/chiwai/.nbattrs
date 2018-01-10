@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="UnicodeRewriter.java">
+        <attr name="class_dependency_javax.swing.JFrame" stringvalue="UnicodeRewriter"/>
+    </fileobject>
+    <fileobject name="PacketFilter.java">
+        <attr name="class_dependency_javax.swing.filechooser.FileFilter" stringvalue="PacketFilter"/>
+    </fileobject>
+</attributes>

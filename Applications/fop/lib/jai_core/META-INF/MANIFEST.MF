@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Sealed: true
+Implementation-Version: 1.1.2
+Specification-Title: Java Advanced Imaging
+Specification-Version: 1.1-mr
+Implementation-Title: javax.media.jai
+Extension-Name: javax.media.jai
+Created-By: 1.3.1_03 (Sun Microsystems Inc.)
+Implementation-Vendor: Sun Microsystems, Inc.
+Specification-Vendor: Sun Microsystems, Inc.
+

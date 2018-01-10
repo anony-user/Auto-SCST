@@ -1,0 +1,122 @@
+jOcular Release Notes
+2016-05-12 - jOcular 0.039
+- Fixed tooltip rendering issue over canvas
+- Improved equation calculation speed and process
+
+2016-04-29 - jOcular 0.038
+Summary:
+- Added new translate & rotate positioner
+- A bunch of test file updates
+- Fixed refractive index of MgF2
+- Fixed photon trajectory rendering that caused photons to not update always after another generate
+- Fixed a source of exception in Vector3D angle concatenation
+
+2016-04-25 - jOcular 0.037
+Summary:
+- Added "add" submenu to the edit menu
+- Fixed parts so their positioners work correctly
+- Fixed equation parser
+
+2016-04-16 - jOcular 0.036
+Summary:
+- Added part import
+- Updated toolbars and menus
+Bug fixes:
+- fixed native library loading issue with 35 jar file
+
+2016-04-12 - jOcular 0.035
+Summary:
+- Aspheric lenses
+Bug fixes:
+- none
+2016-03-05 - jOcular 0.034
+Summary:
+- splines are now working
+
+Bug fixes:
+- none
+jOcular Release Notes
+2016-02-27 - jOcular 0.033
+Summary:
+- removed 2d view.
+- added new pan tool
+
+Bug fixes:
+- none
+
+2016-01-30 - jOcular 0.032
+Summary:
+- switched to newer jReality
+- now runs straight from jar without external libraries
+- 3D improved a bunch
+- etc
+
+Bug fixes:
+- various
+
+
+2014-08-15 - jOcular 0.029
+Summary:
+- Lot's of new stuff
+
+Bug fixes:
+- various
+
+2014-02-22 - jOcular 0.028
+
+Summary:
+- Now has spectrophotometer and beginnings of birefringence
+
+Bug fixes
+- various
+
+
+
+2013-12-16 - jOcular 0.027
+
+Author:
+ - BMatthews
+
+Summary:
+Added new 3D view of optical system that uses jReality.
+ 
+New Features:
+ - 3D view
+   - Able to pan, rotate, zoom using mouse
+   - middle mouse button zooms
+   - left click and hold rotates (Must click on object)
+   - middle click and hold to pan (Must click on object)
+ - Spectrophotomer object
+ - Prompt to save project if it has changed
+ - Hotkeys are now available for common functions
+   - Check out drop-down menus for key combinations
+
+Bug Fixes:
+ - Fixes to undo/redo operations related to type of positioner used
+
+
+
+2013-11-13 - jOcular 0.026
+Author:
+ - BMatthews
+
+Summary:
+Bug fix release
+ 
+New Features:
+ - None
+ 
+Bug Fixes:
+ - Fixed issue where internal resources were not loaded correctly.
+
+2013-11-13 - jOcular 0.025
+Author:
+ - KMacCallum
+
+Summary:
+UI updates
+ 
+New Features:
+
+Bug Fixes:
+

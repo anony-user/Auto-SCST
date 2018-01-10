@@ -1,0 +1,682 @@
+<html>
+	<head><title>RACKJ - Command Line Manual</title>
+	
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12601445-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+	
+	</head>
+	
+	<body>
+		<table border=2 align=right><tr><td><a href="../index.html">home</a></td></tr></table>
+		<h1><a name="top">Command Line Manual</a></h1>
+
+
+		<h2>Contents</h2>
+		<ul>
+		<li><a href="#genomeAnnotation">Genome Annotation Manipulation</a>
+			<ul>
+			<li><a href="#misc.GffTree"><font color="black">misc.</font>GffTree</a></li>
+			<li><a href="#misc.CanonicalGFF"><font color="black">misc.</font>CanonicalGFF</a></li>
+			<li><a href="#misc.SeqGeneMd"><font color="black">misc.</font>SeqGeneMd</a></li>
+			<li><a href="#special.PromoterCGFF"><font color="black">special.</font>PromoterCGFF</a></li>
+			<li><a href="#rnaseq.MappingInfoRecover"><font color="black">rnaseq.</font>MappingInfoRecover</a></li>
+			<li><a href="#rnaseq.TranscriptomeRecover"><font color="black">rnaseq.</font>TranscriptomeRecover</a></li>
+			</ul>
+		<li><a href="#alignment">Alignment Manipulation</a>
+			<ul>
+			<li><a href="#rnaseq.AlignmentFilter"><font color="black">rnaseq.</font>AlignmentFilter</a></li>
+			</ul>
+		<li><a href="#computation">Computation of Numbers</a>
+			<ul>
+			<li><a href="#rnaseq.RPKMComputer"><font color="black">rnaseq.</font>RPKMComputer</a></li>
+			<li><a href="#rnaseq.ExonCounter"><font color="black">rnaseq.</font>ExonCounter</a></li>
+			<li><a href="#rnaseq.FineSpliceCounter"><font color="black">rnaseq.</font>FineSpliceCounter</a></li>
+			<li><a href="#rnaseq.GeneCoverageArray"><font color="black">rnaseq.</font>GeneCoverageArray</a></li>
+			</ul>
+		<li><a href="#statistics">Statistics</a>
+			<ul>
+			<li><a href="#statistics.CountComparator"><font color="black">statistics.</font>CountComparator</a></li>
+			<li><a href="#statistics.GeneCoverageDiff"><font color="black">statistics.</font>GeneCoverageDiff</a></li>
+			<li><a href="#special.ReadStatistics"><font color="black">special.</font>ReadStatistics</a></li>
+			</ul>
+		<li><a href="#visualization">Visualization</a>
+			<ul>
+			<li><a href="#rnaseq.GeneTracer"><font color="black">rnaseq.</font>GeneTracer</a></li>
+			<li><a href="#rnaseq.RegionTracer"><font color="black">rnaseq.</font>RegionTracer</a></li>
+			<li><a href="#graphics.ReadViz"><font color="black">graphics.</font>ReadViz</a></li>
+			</ul>
+		<li><a href="#interactive">Interact with Scripts</a>
+			<ul>
+			<li><a href="#statistics.FisherExactTest"><font color="black">statistics.</font>FisherExactTest</a></li>
+			<li><a href="#special.GeneQuery"><font color="black">special.</font>GeneQuery</a></li>
+			<li><a href="#special.IntervalQuery"><font color="black">special.</font>IntervalQuery</a></li>
+			</ul>
+		<li><a href="#mappingFormats">Supported formats of mapping results</a></li>
+		</ul>
+
+
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="genomeAnnotation">Genome Annotation Manipulation</a></h2>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="misc.GffTree">misc.GffTree</a></h3>
+		This program reads a file in GFF3 format and outputs its <i>type-hierarchy</i>. The output file will be named <i>&lt;inFilename&gt;.features</i>. Type names asterisked mean that records of these types are annotated with <i>ID</i> attributes. The following example was made by using <a href="ftp://ftp.arabidopsis.org/home/tair/Genes/TAIR10_genome_release/TAIR10_gff3/TAIR10_GFF3_genes_transposons.gff">this file</a> as input with default parameters.</p>
+<div style="BACKGROUND-COLOR: wheat; OVERFLOW-Y: hidden; OVERFLOW-X: scroll; WIDTH: 90%"><pre>
+GffRoot
+  chromosome*
+  gene*
+    mRNA*
+      protein*
+      exon
+      five_prime_UTR
+      CDS
+      three_prime_UTR
+    miRNA*
+      exon
+    tRNA*
+      exon
+    ncRNA*
+      exon
+    snoRNA*
+      exon
+    snRNA*
+      exon
+    rRNA*
+      exon
+  pseudogene*
+    pseudogenic_transcript*
+      pseudogenic_exon
+  transposable_element_gene*
+    mRNA*
+      exon
+  transposable_element*
+    transposon_fragment
+</pre></div></p>
+		With this output, it is easy to tell that DNA level objects like loci are annotated with type &quot;gene&quot;, &quot;pseudogene&quot; and &quot;transposable_element_gene&quot;, and RNA level objects like isoforms are annotated with type &quot;*RNA&quot; and &quot;pseudogenic_transcript&quot;.</p>
+		
+		<h4>Parameters</h4>
+		<ul>
+			<li>-I: intput filename of the GFF3 file</li>
+			<li>-idAttr: the <a href="http://www.sequenceontology.org/gff3.shtml"><i>tag</i></a> for IDs. If not assigned, &quot;ID&quot; will be assigned.</li>
+			<li>-parentAttr: <a href="http://www.sequenceontology.org/gff3.shtml"><i>tags</i></a> for parent-child relationships in the GFF3 structure. This option can be mulitply applied. If not assigned, &quot;Parent&quot; and &quot;Derives_from&quot; will be assigned.</li>
+		</ul>
+		
+		<h4>See also</h4>
+		See <a href="../RNAseqExample/index.html#cgff">here</a> for an example in RNAseq analysis.</p>
+		<hr>
+		
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="misc.CanonicalGFF">misc.CanonicalGFF</a></h3>
+		This program is used to read a GFF3 file and output a .cgff(.model) file, which contains gene(transcript) regsions and corresponding exon regions. The option <i>-GE</i> is used for controlling objects to be reported by assigning two types according to the <i>type-hierarchy</i> made by <a href="#misc.GffTree">misc.GffTree</a>: objects of the ancestral type will be reported as individual entries and objects of the descendant type will be collected as corresponding sub-regions. For example, locus AT3G62190 generates two models AT3G62190.1 and AT3G62190.2, each of them contains blue exons as in the following picture. With option <i>-GE mRNA exon</i>, misc.CanonicalGFF generates two entries (AT3G62190.1 and AT3G62190.2). With option <i>-GE gene exon</i>, misc.CanonicalGFF generates one entries (AT3G62190) with gray sub-regions, which are combined regions of blue exons.</p>
+		<table border=0 align=center>
+			<tr><td>
+					<image src="CanonicalGFFexample01.png">
+			</td></tr>
+		</table></p>
+		From version 0.99, setting the option <i>-IP</i> to be true would trun on the <i>intron preserving</i> mechanism. This mechanism is to perserve any introns in any models when combining exon regions. At the same time, it also generates introns with closest donor-acceptor pairs. For example, locus AT1G13080 generates two models, the first intron of AT1G13080.2 will be preserved as in the gray model.</p>
+		<table border=0 align=center>
+			<tr><td>
+					<image src="CanonicalGFFexample02.png">
+			</td></tr>
+		</table>
+		
+		<h4>Parameters</h4>
+		<ul>
+			<li>-I: intput filename of the GFF3 file</li>
+			<li>-O: output filename</li>
+			<li>-GE: <a href="http://www.sequenceontology.org/gff3.shtml"><i>types</i></a> for gene-exon pairs. This option can be multiply applied. If not assigned, the default pair &quot;gene-exon&quot; will be assigned. The <i>Path Separator</i> (Windows <font color="red"><b>;</b></font> and UN*X <font color="red"><b>:</b></font>) could be used for saving input; for example, <i>-GE AAA;BBB CCC</i> equals <i>-GE AAA CCC -GE BBB CCC</i>.</li>
+			<li>-idAttr: the <a href="http://www.sequenceontology.org/gff3.shtml"><i>tag</i></a> for IDs. If not assigned, &quot;ID&quot; will be assigned.</li>
+			<li>-parentAttr: <a href="http://www.sequenceontology.org/gff3.shtml"><i>tags</i></a> for parent-child relationships in the GFF3 structure. This option can be mulitply applied. If not assigned, &quot;Parent&quot; and &quot;Derives_from&quot; will be assigned.</li>
+			<li>-IP: switch of the <i>intron-preserving</i> model. (default: false)</li>
+		</ul>
+		
+		<h4>See also</h4>
+		See <a href="../RNAseqExample/index.html#cgff">here</a> for an example in RNAseq analysis.</p>
+		<hr>
+		
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="misc.SeqGeneMd">misc.SeqGeneMd</a></h3>
+		This program reads a seq_gene.md file and processes it into two files: a .cgff file that contains gene regions and exon regions, and a .model file that contains transcript region and exon regions. Problematic records such as genes with repetitive records will be skipped and saved in a .skipped file. You may process it manually. For prebuild .cgff and .model files, please refer <a href="../PrebuildCGFF/PrebuildCGFF.htm">here</a>.</p>
+		
+		<h4>Parameters </h4>
+		<ul>
+        	<li>-I: intput filename of the seq_gene.md file</li>
+        	<li>-O: output prefix filename</li>
+        	<li>-G: group label type to process. If not assigned, program will show a list of all group label types. Input the number of the group label type to choose it.</li>
+	    </ul>
+		<hr>
+		
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="special.PromoterCGFF">special.PromoterCGFF</a></h3>
+		This program reads a list of gene IDs and forms their promoter regions (or regions around transcription stop sites) in .cgff format base on the given canonical GFF file.</p>
+		
+		<h4>Parameters </h4>
+		<ul>
+			<li>-GFF: input .cgff file, defines gene regions and exon regions.</li>
+        	<li>-I: intput filename. This file should contains gene IDs.</li>
+        	<li>-TSS: reference point. <i>true</i> for transcription start site, and <i>false</i> for transcription stop site. (default: true)</li>
+        	<li>-L1: number of upstream base-pairs to be defined (in gene orientation). (default: 0)</li>
+        	<li>-L2: number of downstream base-pairs to be defined (in gene orientation). (default: 0)</li>
+        	<li>-intergenic: truncate the defined region if overlapping other genes. (default: false)</li>
+        	<li>-min: discard a defined region if its length is less than this parameter. (default: 0, for no discard)</li>
+        	<li>-O: output filename. The output file will be a .cgff file.</li>
+	    </ul>
+
+		<h4>Notes</h4>
+		<ul>
+			<li>This program should be used in conjugation with <a href="../Scripts/index.html#SeqGen">SeqGen.pl</a> so that sequences of regions defined in the produced .cgff file will then be extracted.</li>
+		</ul>
+		<hr>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="rnaseq.MappingInfoRecover">rnaseq.MappingInfoRecover</a></h3>
+		This program reads a number of mapping result files, and outputs the follows: (1) a .exonInfo file: containing genomic intervals that are mapped by reads, (2) a .intronInfo file: containing genomic intervals that are spanned by splicing reads, and (3) a .matePairInfo file: containing pairs of intervals in the .exonInfo file, where each of these pairs are mapped by at least one mate pair of reads. These files are inputs of the <a href="#rnaseq.TranscriptomeRecover">rnaseq.TranscriptomeRecover</a> program, which is used for recover unannotated transcriptome regions based on RNAseq evidence.</p>
+
+		<h4>Parameters </h4>
+		<ul>
+			<li>-M &lt;method&gt; &lt;mappingResultFile&gt;: this option requires two parameters, a string of mapping method and a filename of mapping results. The string of mapping method spcifies the format of the input file. This option can be mulitply applied. If this option is not entered, applicable strings of mapping methods will be listed. See <a href="#mappingFormats">here</a> for supported formats.</li>
+			<li>-O: output prefix. This program outputs three files (.exonInfo, .intronInfo, and .matePairInfo), where their filenames are prefixed by the same string specified by this option.</li>
+			<li>-J: block join factor. RACK<font color="blue"><b>J</b></font> considers an alignment as a combination of alignment blocks without insertion/deletion, and two nearby blocks will be joined if the distance between them (defined as the number of unmapped base-pairs) are less than the block join factor. (default: 2)</li>
+			<li>-ID: identity threshold. RACK<font color="blue"><b>J</b></font> considers a read as mapped to the genome if its best alignment identity of its alignments is above the identify cutoff. (default: 0.95)</li>
+			<li>-min: minimum block size for an alignment. (default: 8)</li>
+			<li>-mate: length of read ID tail-trimming for mate-pair check. If set to be greater than zero, two reads are recognized as mate-pair reads if their read IDs are the same after trimming specified tailing characters. Alignments of every mate pair of reads are then examined so that only a pair of reads with alignments within a certain distance (see <i>-minD</i> and <i>-maxD</i>) are qualified. (default: 0, for no mate-pair check)</li>
+			<li>-minD: minimum distance for <i>a pair of alignments</i> of <i>a pair of reads</i>, where the distance is defined as, (start point of <i>alignmentB</i>)-(stop point of <i>alignmentA</i>), supposing that <i>alignmentA</i> is in front of <i>alignmentB</i>. Note that this distance would be negative if the two alignments are overlapping each other. Enabled if <i>-mate</i> set to be greater than 0. (default: 0)</li>
+			<li>-maxD: maximum distance for <i>a pair of alignment</i> of <i>a pair of reads</i>. See <i>-minD</i> for the definition of the distance. Enabled if <i>-mate</i> set to be greater than 0. (default: 1200)</li>
+			<li>-multi: include multi-reads for building the .exonInfo file. (default: false)</li>
+	    </ul>
+		<hr>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="rnaseq.TranscriptomeRecover">rnaseq.TranscriptomeRecover</a></h3>
+		This program reads outputs of <a href="#rnaseq.MappingInfoRecover">rnaseq.MappingInfoRecover</a>, and recovers unannotated transcriptome regions based on RNAseq evidence. Recovered information will be stored in three files: (1) a .extdCGFF file: in the same format as made by <a href="#misc.CanonicalGFF">misc.CanonicalGFF</a> or <a href="#misc.SeqGeneMd">misc.SeqGeneMd</a>, storing gene regions and corresponding exon regions, (2) a .extdReport file: recording extension information of existing genes in the given .cgff file (assigned by <i>-GFF</i>), and (3) a .novelReport file: recording novel transcriptome regions.</p>
+
+		<h4>Parameters </h4>
+		<ul>
+			<li>-GFF: input .cgff file, defines gene regions and exon regions.</li>
+			<li>-exon: the .exonInfo file made by <a href="#rnaseq.MappingInfoRecover">rnaseq.MappingInfoRecover</a>.</li>
+			<li>-intron: the .intronInfo file made by <a href="#rnaseq.MappingInfoRecover">rnaseq.MappingInfoRecover</a>.</li>
+			<li>-matePair: the .matePairInfo file made by <a href="#rnaseq.MappingInfoRecover">rnaseq.MappingInfoRecover</a>. Optional.</li>
+			<li>-depth: depth filter. A novel transcriptome region is filtered out if it has no base-pair with coverage depth larger than this filter. (default: 2)</li>
+			<li>-O: output prefix. This program outputs three files (.extdCGFF, .extdReport, and .novelReport), where their filenames are prefixed by the same string specified by this option.</li>
+	    </ul>
+
+
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="alignment">Alignment Manipulation</a></h2>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="rnaseq.AlignmentFilter">rnaseq.AlignmentFilter</a></h3>
+		This program is for alignment filtering. The filtering is of three levels: (1) identity filtering: a read is filtered out if it has no alignments with better identity than the threshold, (2) gene model filtering: a read is filtered out if it matches no genes, and (3) mate-pair filtering: a pair of reads are qualified if they have corresponding alignments matching to the same gene.</p>
+
+		<h4>Parameters </h4>
+		<ul>
+			<li>-M &lt;method&gt; &lt;mappingResultFile&gt;: this option requires two parameters, a string of mapping method and a filename of mapping results. The string of mapping method spcifies the format of the input file. This option can be mulitply applied. If this option is not entered, applicable strings of mapping methods will be listed. See <a href="#mappingFormats">here</a> for supported formats.</li>
+			<li>-ID: identity threshold. Identity here is defined as the ratio of the number of matches and the read length. An alignment with identity lower than this threshold will be filtered. (default: 0)</li>
+			<li>-mID: mapping identity threshold. Mapping identity here is defined as the ratio of the number of matches and the length of mapped regions (matches plus mismatches). An alignment with mapping identity lower than this threshold will be filtered. (default: 0)</li>
+			<li>-top: For each read, retain only those alignments with the best identity. (default: false)</li>
+			<li>-uniq: For each read, retain its alignment if there is only one alignment. (default: false)</li>
+			<li>-translation: translation canonical GFF, recording mapping of one reference to the other reference in the form of canonical GFF. Translate alignments from the source reference to target reference. Untranslatable alignments will be dicarded, i.e. when source reference sequence not in the translation canonical GFF file. (default: null)</li>
+			<li>-J: block join factor. RACK<font color="blue"><b>J</b></font> considers an alignment as a combination of alignment blocks without insertion/deletion, and two nearby blocks will be joined if the distance between them (defined as the number of unmapped base-pairs) are less than the block join factor. (default: 0)</li>
+			<li>-minB: minimum alignment block. An alignment with an alignment block whose any side (query or reference) shorter than this parameter will be removed. (default: 0)</li>
+			<li>-splice: maximum splice distance. This parameter controls the maximum distance between two consecutive alignment block on the reference. (default: 0 for no limitation)</li>
+			<li>-GFF: input .cgff file, defines gene regions and exon regions. <b>The following options are enabled if this option is specified.</b> Assigning this option enables the second level filter (gene model filtering).</li>
+			<li>-exon: using either only exonic regions or gene regions (including intronic region) to qualify alignments. (default: false)</li>
+			<li>-contain: qualifying alignments based on containment- or intersection-relationships between alignment blocks and qualifying regions. (default: false)</li>
+			<li>-min: minimum overlapping size for defining containment or intersection. (default: 8)</li>
+			<li>-ALL: require all or any alignment blocks to be qualified. (default: false)</li>
+			<li>-mate: length of read ID tail-trimming for mate-pair filtering. If set to be greater than zero, two reads are recognized as mate-pair reads if their read IDs are the same after trimming specified tailing characters. Only alignments of recognized mate-pair reads are checked for the third level filtering (mate-pair filtering). (default: 0, for no mate-pair filtering)</li>
+			<li>-O: output filename. Note that the formate of records in the output file depends on their source, i.e., PSL records will be outputted in <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format2">the PSL format</a>, and SAM records will be outputted in <a href="http://samtools.sourceforge.net/">the SAM format</a>.</li>
+			<li>-forceSAM: output SAM record in <a href="http://samtools.sourceforge.net/">the SAM format</a> or not. Setting this option false shall let SAM records been outputted in <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format2">the PSL format</a>. (default: true)</li>
+			<li>-quiet: setting this option true would silence the output of program information. (default: false)</li>
+		</ul>
+
+		<h4>Notes</h4>
+		<ul>
+			<li>The order of alignment filtering steps follows the order of the options described above. Some common combinations of options: (1) <i>-top true -uniq true</i>: selecting reads with only one alignment with the best identity, or (2) <i>-J 2 -minB 8</i>: selecting alignments without noisy alignment blocks.</li>
+			<li>The nearby-join operation (<i>-J</i>)only affects alignment filtering. Alignment blocks in outputted alignment records will not be joined.</li>
+			<li>This program does NOT output SAM headers.</li>
+			<li>The combination of <i>-quiet true -O /dev/stdout</i> (under UN*X) would be a good idea for piping SAM records to tools like samtools for saving filtered results in BAM (binary SAM).</li>
+			<li>One typical usage of <i>-translation</i> is to translate mapping results with transcriptome reference into mapping results with genome reference. That is, the parameter is a canonical GFF file describing transcripts and their exons.</li>
+		</ul>
+
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="computation">Computation of Numbers</a></h2>
+	    
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="rnaseq.RPKMComputer">rnaseq.RPKMComputer</a></h3>
+		This program computes RPKM values and counts reads for exon and splicing events. It reports three files:</p>
+
+		<table border=1 align=center>
+			<tr>
+				<td><b>file extension</b></td><td><b>#columns</b></td><td><b>description</b></td>
+			</tr>
+			<tr>
+				<td>.geneRPKM</td><td>five</td>
+				<td><ol>
+					<li>gene ID
+					<li>length in Kbp
+					<li>number of mapped reads, including fractions of multi-reads
+					<li>RPKM value
+					<li>ratio of multi-reads versus all reads
+				</ol></td>
+			</tr>
+			<tr>
+				<td>.exonCount</td><td>five</td>
+				<td><ol>
+					<li>gene ID
+					<li>exon number (count from 5' of the genome but not the gene)
+					<li>number of mapped reads, including fractions of multi-reads
+					<li>exon length
+					<li>ratio of multi-reads versus all reads
+				</ol></td>
+			</tr>
+			<tr>
+				<td>.spliceCount</td><td>five or six</td>
+				<td><ol>
+					<li>gene ID
+					<li>exon pair, in the form of <i>a</i>&lt;=&gt;<i>b</i>
+					<li>number of reads supporting this splicing event
+					<li>is there any other exon between <i>a</i> and <i>b</i>?
+					<li>is this splicing event novel? (optional, will be given if <i>-model</i> is specified)
+					<li>splicing position fequency of reads
+				</ol></td>
+			</tr>
+		</table></p>
+		
+		<h4>Parameters</h4>
+		<ul>
+			<li>-GFF: input .cgff file, defines gene regions and exon regions.</li>
+			<li>-M &lt;method&gt; &lt;mappingResultFile&gt;: this option requires two parameters, a string of mapping method and a filename of mapping results. The string of mapping method spcifies the format of the input file. This option can be mulitply applied. If this option is not entered, applicable strings of mapping methods will be listed. See <a href="#mappingFormats">here</a> for supported formats.</li>
+			<li>-O: output prefix. This program outputs four files (.geneRPKM, .exonCount, .spliceCount, and .findSplice), where their filenames are prefixed by the same string specified by this option.</li>
+			<li>-J: block join factor. RACK<font color="blue"><b>J</b></font> considers an alignment as a combination of alignment blocks without insertion/deletion, and two nearby blocks will be joined if the distance between them (defined as the number of unmapped base-pairs) are less than the block join factor. (default: 2)</li>
+			<li>-ID: identity threshold. RACK<font color="blue"><b>J</b></font> considers a read as mapped to the genome if its best alignment identity of its alignments is above the identify cutoff. (default: 0.95)</li>
+			<li>-exon: using either only exonic regions or gene regions (including intronic region) to qualify alignments. (default: true)</li>
+			<li>-contain: qualifying alignments based on containment- or intersection-relationships between alignment blocks and qualifying regions. (default: false)</li>
+			<li>-min: minimum overlapping size for defining containment or intersection. (default: 8)</li>
+			<li>-ALL: require all or any alignment blocks to be qualified. (default: true)</li>
+			<li>-model: input .model file. Similar to .cgff file, this file defines transcript information, for detecting novel splicing events. Optional.</li>
+		</ul>
+		
+		<h4>See also</h4>
+		See <a href="../RNAseqExample/index.html#computation">here</a> for a detailed explanation of read counting.</p>
+
+		<h4>Notes</h4>
+		<ul>
+			<li>Only alignment(s) with the best identity above the identity threshold of a read will be counted, as the option <i>-top true</i> of <a href="#rnaseq.AlignmentFilter">rnaseq.AlignmentFilter</a>.</li>
+			<li>All numbering of exons follows the genome orientation but not gene orientation.</li>
+		</ul>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="rnaseq.ExonCounter">rnaseq.ExonCounter</a></h3>
+		This program reports read counts of each exon, which are also reported by <a href="#rnaseq.RPKMComputer">rnaseq.RPKMComputer</a>. The only difference is that you may use this program to get read counts of introns by setting the option <i>-intronic</i> true.</p>
+		
+		<h4>Parameters</h4>
+		<ul>
+			<li>-GFF: input .cgff file, defines gene regions and exon regions.</li>
+			<li>-M &lt;method&gt; &lt;mappingResultFile&gt;: this option requires two parameters, a string of mapping method and a filename of mapping results. The string of mapping method spcifies the format of the input file. This option can be mulitply applied. If this option is not entered, applicable strings of mapping methods will be listed. See <a href="#mappingFormats">here</a> for supported formats.</li>
+			<li>-O: output prefix. This program outputs only one .exonCount file (or .intronCount, depends on <i>-intronic</i>), where its filename is prefixed by the same string specified by this option.</li>
+			<li>-J: block join factor. RACK<font color="blue"><b>J</b></font> considers an alignment as a combination of alignment blocks without insertion/deletion, and two nearby blocks will be joined if the distance between them (defined as the number of unmapped base-pairs) are less than the block join factor. (default: 2)</li>
+			<li>-ID: identity threshold. RACK<font color="blue"><b>J</b></font> considers a read as mapped to the genome if its best alignment identity of its alignments is above the identify cutoff. (default: 0.95)</li>
+			<li>-exon: using either only exonic regions or gene regions (including intronic region) to qualify alignments. (default: false)</li>
+			<li>-contain: qualifying alignments based on containment- or intersection-relationships between alignment blocks and qualifying regions. (default: false)</li>
+			<li>-min: minimum overlapping size for defining containment or intersection. (default: 8)</li>
+			<li>-ALL: require all or any alignment blocks to be qualified. (default: true)</li>
+			<li>-intronic: computing read counts of introns or exon. Setting true for getting a .intronCount file with read counts of introns. (default: false)</li>
+		</ul>
+
+		<h4>Notes</h4>
+		<ul>
+			<li>Only alignment(s) with the best identity above the identity threshold of a read will be counted, as the option <i>-top true</i> of <a href="#rnaseq.AlignmentFilter">rnaseq.AlignmentFilter</a>.</li>
+			<li>With the option <i>-intronic true</i>, this program qualifies reads by taking introns as qualifying exons. It would then be a good idea to use the option <i>-exon false</i> so that only reads falling into some intron of one gene but not in any other genes will be considered as uniq-intron-reads.</li>
+		</ul>
+		<hr>
+	    
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="rnaseq.FineSpliceCounter">rnaseq.FineSpliceCounter</a></h3>
+		This program reports splicing events in a resolution of nucleotide level. The reported .fineSplice file contains four or five columns: (1) gene ID, (2) splicing pattern (see below), (3) number of reads supporting this splicing event, (4) is this splicing event novel? (optional, will be given if <i>-model</i> is specified), and (5) splicing position fequency of reads.</p>
+		
+		The second column, splicing pattern, is used to describe the relationships between two consecutive alignment blocks and corresponding exons:</p>
+
+		<table border=1 align=center>
+			<tr>
+				<td><b>form</b></td><td><b>description</b></td>
+			</tr>
+			<tr>
+				<td align=center>
+					<pre><i>exonA</i>(<i>relativePosA</i>)-<i>exonB</i>(<i>relativePosB</i>)</pre>
+				</td>
+				<td>
+					The two alignment blocks overlaps with two different exons, where <i>relativePosA</i>(<i>relativePosB</i>) is the relative position of actual splicing site of the first(second) block to splicing site of <i>exonA</i>(<i>exonB</i>) in the database. Note that a negative(positive) relative position means that the splicing site is inside(outside) the exon, and a zero relative position means that the splicing site agrees with that in the database.
+				</td>
+			</tr>
+			<tr>
+				<td align=center>
+					<pre><i>exonX</i>[<i>relativePosA</i>-<i>relativePosB</i>]</pre>
+				</td>
+				<td>
+					The two alignment blocks overlaps with the same exon <i>exonX</i>, where their splicing positions, relative to start point of <i>exonX</i>, are <i>relativePosA</i> and <i>relativePosB</i>.
+				</td>
+			</tr>
+			<tr>
+				<td align=center>
+					<pre><i>exonA</i>(<i>relativePosA</i>)-<i>genomicPosB</i></pre>
+					or
+					<pre><i>genomicPosA</i>-<i>exonB</i>(<i>relativePosB</i>)</pre>
+					or
+					<pre><i>genomicPosA</i>-<i>genomicPosB</i></pre>
+				</td>
+				<td>
+					At least one alignment block overlaps no exon. For those alignment blocks that overlap no exon, it splicing position in genomic coordinate will be presented.
+				</td>
+			</tr>
+		</table></p>
+		
+		<h4>Parameters</h4>
+		<ul>
+			<li>-GFF: input .cgff file, defines gene regions and exon regions.</li>
+			<li>-M &lt;method&gt; &lt;mappingResultFile&gt;: this option requires two parameters, a string of mapping method and a filename of mapping results. The string of mapping method spcifies the format of the input file. This option can be mulitply applied. If this option is not entered, applicable strings of mapping methods will be listed. See <a href="#mappingFormats">here</a> for supported formats.</li>
+			<li>-O: output prefix. This program outputs only one .fineSplice file, where its filename is prefixed by the same string specified by this option.</li>
+			<li>-J: block join factor. RACK<font color="blue"><b>J</b></font> considers an alignment as a combination of alignment blocks without insertion/deletion, and two nearby blocks will be joined if the distance between them (defined as the number of unmapped base-pairs) are less than the block join factor. (default: 0)</li>
+			<li>-ID: identity threshold. RACK<font color="blue"><b>J</b></font> considers a read as mapped to the genome if its best alignment identity of its alignments is above the identify cutoff. (default: 0.95)</li>
+			<li>-exon: using either only exonic regions or gene regions (including intronic region) to qualify alignments. (default: false)</li>
+			<li>-contain: qualifying alignments based on containment- or intersection-relationships between alignment blocks and qualifying regions. (default: false)</li>
+			<li>-min: minimum overlapping size for defining containment or intersection. (default: 8)</li>
+			<li>-ALL: require all or any alignment blocks to be qualified. (default: false)</li>
+			<li>-model: input .model file. Similar to .cgff file, this file defines transcript information, for detecting novel splicing events. Optional.</li>
+		</ul>
+
+		<h4>Notes</h4>
+		<ul>
+			<li>Only reads with <b>exactly one best alignment</b> above the identity threshold will be counted, as the option combination <i>-top true -uniq true</i> of <a href="#rnaseq.AlignmentFilter">rnaseq.AlignmentFilter</a>.</li>
+			<li>The default option combination <i>-exon false -contain false -ALL false</i> would let all reads <b>overlapping some gene</b> been counted, and the default option combination <i>-exon true -contain false -ALL true</i> of <a href="#rnaseq.RPKMComputer">rnaseq.RPKMComputer</a> would let all reads <b>overlapping exons of some gene</b> been counted.</li>
+			<li>All numbering of exons follows the genome orientation but not gene orientation.</li>
+		</ul>
+		<hr>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="rnaseq.GeneCoverageArray">rnaseq.GeneCoverageArray</a></h3>
+		This program reports a array of coverage depths for each gene in the specified .cgff file (<i>-GFF</i>). In the .geneCoverage file, each row represents one gene, where its columns are: (1) gene ID, (2) chromosome and start position of this gene (from 5' of the genome), (3) number of reads, and (4) the array of coverage depths.</p>
+		
+		<h4>Parameters</h4>
+		<ul>
+			<li>-GFF: input .cgff file, defines gene regions and exon regions.</li>
+			<li>-M &lt;method&gt; &lt;mappingResultFile&gt;: this option requires two parameters, a string of mapping method and a filename of mapping results. The string of mapping method spcifies the format of the input file. This option can be mulitply applied. If this option is not entered, applicable strings of mapping methods will be listed. See <a href="#mappingFormats">here</a> for supported formats.</li>
+			<li>-O: output prefix. This program outputs only one .geneCoverage file, where its filename is prefixed by the same string specified by this option.</li>
+			<li>-J: block join factor. RACK<font color="blue"><b>J</b></font> considers an alignment as a combination of alignment blocks without insertion/deletion, and two nearby blocks will be joined if the distance between them are less than or equal to the block join factor. (default: 2)</li>
+			<li>-ID: identity threshold. RACK<font color="blue"><b>J</b></font> considers a read as mapped to the genome if its best alignment identity of its alignments is above the identify cutoff. (default: 0.95)</li>
+			<li>-exon: using either only exonic regions or gene regions (including intronic region) to qualify alignments. (default: true)</li>
+			<li>-contain: qualifying alignments based on containment- or intersection-relationships between alignment blocks and qualifying regions. (default: false)</li>
+			<li>-min: minimum overlapping size for defining containment or intersection. (default: 8)</li>
+			<li>-ALL: require all or any alignment blocks to be qualified. (default: true)</li>
+			<li>-multi: include computation of multi-reads or not. (default: false)</li>
+		</ul>
+
+		<h4>Notes</h4>
+		<ul>
+			<li>Only alignment(s) with the best identity above the identity threshold of a read will be counted, as the option <i>-top true</i> of <a href="#rnaseq.AlignmentFilter">rnaseq.AlignmentFilter</a>.</li>
+		</ul>
+
+
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="statistics">Statistics</a></h2>
+		
+				
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="statistics.CountComparator">statistics.CountComparator</a></h3>
+		This program reads a table (.exonCount, .spliceCount, or .fineSplice) as a base table, and compares the base table with other many tables in the same format. The output file named <i>&lt;ControlTable&gt;</i>-<i>&lt;TreatmentTable&gt;</i> is in a format as follows:</p>
+		
+		<table border=1 align=center>
+			<tr><td>Group</td><td>GeneID1</td><td>1.897405712778585E-38</td></tr>
+			<tr><td>1</td><td>317</td><td>152</td><td>2</td><td>1.8974057128587125E-38</td></tr>
+			<tr><td>2</td><td>10589</td><td>17530</td><td>1</td><td>1.897405712778585E-38</td></tr>
+			<tr><td>Group</td><td>GeneID2</td><td>5.315100671928383E-32</td></tr>
+			<tr><td>1</td><td>3835</td><td>4530</td><td>10</td><td>5.315100671962806E-32</td></tr>
+			<tr><td>2</td><td>2229</td><td>2545</td><td>10</td><td>5.660985366966761E-25</td></tr>
+			<tr><td>3</td><td>1570</td><td>1621</td><td>10</td><td>4.615877710327863E-15</td></tr>
+			<tr><td>4</td><td>2785</td><td>3028</td><td>10</td><td>4.817867736707222E-22</td></tr>
+			<tr><td>5</td><td>1694</td><td>2002</td><td>10</td><td>6.45000050068055E-26</td></tr>
+			<tr><td>6</td><td>1594</td><td>1825</td><td>10</td><td>1.1376381066404553E-22</td></tr>
+			<tr><td>7</td><td>913</td><td>1052</td><td>10</td><td>1.9015496347218025E-18</td></tr>
+			<tr><td>8</td><td>1298</td><td>1354</td><td>10</td><td>1.212634909931947E-14</td></tr>
+			<tr><td>9</td><td>878</td><td>721</td><td>1</td><td>3.4675426999854235E-11</td></tr>
+			<tr><td>10</td><td>1279</td><td>848</td><td>1</td><td>5.315100671928383E-32</td></tr>
+		</table></p>
+
+		In each group, for each exon (column 1), we have its read counts in the control sample (column 2) and that in the treatment sample (column 3). By applying the Fisher's exact test with these two counts and those of each other exon of the same gene, we put the most significant P-value in column 5 and corresponding exon in column 4. The P-value assigned to the group is exactly the most significant P-value among its exons. In this example, the 10th exon is mostly reported as differentially expressed when comparing it with other exons of GeneID2.</p>
+		
+		<b>NOTE:</b> This program was designed for discovering significant difference of exon utility (or isoform utility) between samples <i>by statistical interference</i>, but seems not work very well. Now we have <a href="../Scripts/index.html#comparison">a number of scripts</a> for detection of sample-sensitive alternative-splicing events.</p>
+		
+		<h4>Parameters</h4>
+		<ul>
+			<li>-S: tables to be compared with the base table. This option can be mulitply applied.</li>
+			<li>-B: the base table</li>
+			<li>-min: minimum count for an item to be displayed. (default: 2)</li>
+			<li>-limit: limit of the total line number of an output file, zero for no limitation. (default: 60000)</li>
+		</ul>
+		<hr>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="statistics.GeneCoverageDiff">statistics.GeneCoverageDiff</a></h3>
+		This program reads two .geneCoverage files and reporets the difference between two coverage distributions (of the two files) for each gene in the following columns: (1) gene ID, (2) start point (5' of the genome), (3) length of the gene in genome, (4) and (5) numbers of uniquely mapped reads of the gene in the two files, say <i>n1</i> and <i>n2</i>, (6) position of maximum distribution difference, (7) the maximum distribution difference <i>D</i>, and (8) adjusted <i>D</i> value. The distribution difference (<i>D</i>) is computed based on the concept of the KS-test, where the adjusted <i>D</i> is <i>D</i>*SQRT(<i>n1</i>*<i>n2</i> / (<i>n1</i>+<i>n2</i>)).</p>
+		
+		<h4>Parameters</h4>
+		<ul>
+			<li>-C: the .geneCoverage file of the control sample.</li>
+			<li>-T: the .geneCoverage file of the treatment sample.</li>
+			<li>-O: output filename</li>
+		</ul>
+		<hr>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="special.ReadStatistics">special.ReadStatistics</a></h3>
+		This program simply give some statistics of <i>uniq</i>-reads, where a read is defined as a <i>uniq</i>-read if it has exactly one best alignment. For those <i>uniq</i>-reads mapping to one single gene, the following statistics of these <i>uniq-gene-mapping</i>-reads are reported: (1) numbers of reads contained by exons, (2) numbers of reads contained by introns, (3) numbers of reads crossing exon-intron boundaries, and (4) numbers of splice-reads matching two or more exons.</p>
+		
+		<h4>Parameters</h4>
+		<ul>
+			<li>-GFF: input .cgff file, defines gene regions and exon regions.</li>
+			<li>-M &lt;method&gt; &lt;mappingResultFile&gt;: this option requires two parameters, a string of mapping method and a filename of mapping results. The string of mapping method spcifies the format of the input file. This option can be mulitply applied. If this option is not entered, applicable strings of mapping methods will be listed. See <a href="#mappingFormats">here</a> for supported formats.</li>
+			<li>-J: block join factor. RACK<font color="blue"><b>J</b></font> considers an alignment as a combination of alignment blocks without insertion/deletion, and two nearby blocks will be joined if the distance between them are less than or equal to the block join factor. (default: 2)</li>
+			<li>-ID: identity threshold. RACK<font color="blue"><b>J</b></font> considers a read as mapped to the genome if its best alignment identity of its alignments is above the identify cutoff. (default: 0.95)</li>
+			<li>-min: minimum overlapping size for defining containment. (default: 8)</li>
+		</ul>
+		
+				
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="visualization">Visualization</a></h2>
+		
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="rnaseq.GeneTracer">rnaseq.GeneTracer</a></h3>
+		This program reports reads and their alignments for with specified genes. A file named <i>OutPrefix</i>.<i>geneID</i> will be produced for each gene, where each such file could be used for visualization of mapping using <a href="#graphics.ReadViz">graphics.ReadViz</a>. Note that whether reads belonging to a gene or not is controlled by the four parameters: <i>-exon</i>, <i>-contain</i>, <i>-min</i>, and <i>-ALL</i>.</p>
+		
+		<h4>Parameters</h4>
+		<ul>
+			<li>-GFF: input .cgff file, defines gene regions and exon regions.</li>
+			<li>-M &lt;method&gt; &lt;mappingResultFile&gt;: this option requires two parameters, a string of mapping method and a filename of mapping results. The string of mapping method spcifies the format of the input file. This option can be mulitply applied. If this option is not entered, applicable strings of mapping methods will be listed. See <a href="#mappingFormats">here</a> for supported formats.</li>
+			<li>-O: output prefix. This program outputs as many files as specified genes (by <i>-trace</i> or by <i>-traceFile</i>). Each filename will be prefixed by the output prefix.</li>
+			<li>-J: block join factor. RACK<font color="blue"><b>J</b></font> considers an alignment as a combination of alignment blocks without insertion/deletion, and two nearby blocks will be joined if the distance between them are less than or equal to the block join factor. (default: 2)</li>
+			<li>-ID: identity threshold. RACK<font color="blue"><b>J</b></font> considers a read as mapped to the genome if its best alignment identity of its alignments is above the identify cutoff. (default: 0.95)</li>
+			<li>-exon: using either only exonic regions or gene regions (including intronic region) to qualify alignments. (default: true)</li>
+			<li>-contain: qualifying alignments based on containment- or intersection-relationships between alignment blocks and qualifying regions. (default: false)</li>
+			<li>-min: minimum overlapping size for defining containment or intersection. (default: 8)</li>
+			<li>-ALL: require all or any alignment blocks to be qualified. (default: true)</li>
+			<li>-model: input .model file. Similar to .cgff file. Optional.</li>
+			<li>-trace: genes to be reported. This option can be multiply applied.</li>
+			<li>-traceFile: a file that records genes to be reported.</i>
+			<li>-buffer: buffer size of writting output files. A larger buffer size means better efficiency. (default: 10240)</li>
+		</ul>
+
+		<h4>See also</h4>
+		See <a href="../RNAseqExample/index.html#visualization">here</a> for example.</p>
+		
+		<h4>Notes</h4>
+		<ul>
+			<li>Only alignment(s) with the best identity above the identity threshold of a read will be counted, as the option <i>-top true</i> of <a href="#rnaseq.AlignmentFilter">rnaseq.AlignmentFilter</a>.</li>
+		</ul>
+		<hr>
+
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="rnaseq.RegionTracer">rnaseq.RegionTracer</a></h3>
+		This program reports reads and their alignments belonging to specified regions. A file named <i>OutPrefix</i>.<i>regionString</i> will be produced for each specified region, where each such file could be used for visualization of mapping using <a href="#graphics.ReadViz">graphics.ReadViz</a>. A <i>regionString</i> should be exactly a gene ID or a triple of <i>chromosome</i>, <i>start position</i>, and <i>stop position</i>.</p>
+		
+		Note that the major difference between this program and <a href="#rnaseq.GeneTracer">rnaseq.GeneTracer</a> is the classification of multiply mapped reads: <a href="#rnaseq.GeneTracer">rnaseq.GeneTracer</a> classifies a read as multiply mapped if this read mapped to multiple genes even if it is uniquely mapped to the genome, and this program classifies a reads as multiply mapped if this read does have multiple alignments to the genome. BTW, <a href="#rnaseq.GeneTracer">rnaseq.GeneTracer</a> reports reads belonging to a gene based on the control of the four parameters: <i>-exon</i>, <i>-contain</i>, <i>-min</i>, and <i>-ALL</i>.</p>
+		
+		<h4>Parameters</h4>
+		<ul>
+			<li>-GFF: input .cgff file, defines gene regions and exon regions.</li>
+			<li>-M &lt;method&gt; &lt;mappingResultFile&gt;: this option requires two parameters, a string of mapping method and a filename of mapping results. The string of mapping method spcifies the format of the input file. This option can be mulitply applied. If this option is not entered, applicable strings of mapping methods will be listed. See <a href="#mappingFormats">here</a> for supported formats.</li>
+			<li>-O: output prefix. This program outputs as many files as specified regions (by <i>-traceFile</i>). Each filename will be prefixed by the output prefix.</li>
+			<li>-J: block join factor. RACK<font color="blue"><b>J</b></font> considers an alignment as a combination of alignment blocks without insertion/deletion, and two nearby blocks will be joined if the distance between them are less than or equal to the block join factor. (default: 0)</li>
+			<li>-ID: identity threshold. RACK<font color="blue"><b>J</b></font> considers a read as mapped to the genome if its best alignment identity of its alignments is above the identify cutoff. (default: 0.95)</li>
+			<li>-model: input .model file. Similar to .cgff file. Optional.</li>
+			<li>-traceFile: a file that records regions to be reported. In this file, each line represents a region as a gene ID or a triple of <i>chromosome</i>, <i>start position</i>, and <i>stop position</i> (serarated by &lt;TAB&gt;).</i>
+			<li>-buffer: buffer size of writting output files. A larger buffer size means better efficiency. (default: 10240)</li>
+		</ul>
+
+		<h4>Notes</h4>
+		<ul>
+			<li>Only alignment(s) with the best identity above the identity threshold of a read will be counted, as the option <i>-top true</i> of <a href="#rnaseq.AlignmentFilter">rnaseq.AlignmentFilter</a>.</li>
+		</ul>
+		<hr>
+		
+		
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="graphics.ReadViz">graphics.ReadViz</a></h3>
+		This program reads a file that is made by <a href="#rnaseq.GeneTracer">rnaseq.GeneTracer</a> or <a href="#rnaseq.RegionTracer">rnaseq.RegionTracer</a>, and produces a picture of mapping of reads.</p>
+		
+		<h4>Parameters</h4>
+		<ul>
+			<li>-I: input filename</li>
+			<li>-O: output filename</li>
+			<li>-mode: output mode of the picture: <i>mapping</i>, <i>depth</i>, or <i>depthlog</i>. (default: <i>mapping</i>)</li>
+			<li>-h: read height in pt. (default: 2)</li>
+			<li>-splice: include splice-reads or not. (default: true)</li>
+			<li>-uniq: include uniq-reads or not. (default: true)</li>
+			<li>-multi: include multi-reads or not. (default: true)</li>
+			<li>-direction: plotting direction. Three modes: (1) <i>forward</i>: plotting the chromosome in the forward direction (from left to right), (2) <i>reverse</i>: plotting the chromosome in the reverse direction, and (3) <i>first</i>: use the first gene model in the input file to decide the direction. (default: <i>forward</i>)</li>
+			<li>-auto: automatic adjustment of -start, -stop, and -scale options. (default: true)</li>
+			<li>-F: use the first gene model in the input file for automatic adjustment. Enabled by <i>-auto</i>. (default: true)</li>
+			<li>-start: start position in the genome, in bp.</li>
+			<li>-stop: stop position in the genome, in bp.</li>
+			<li>-scale: scale in the genome, in bp.</li>
+			<li>-size: width of the picture, in pt. (default: 1000)</li>
+			<li>-font: font. (default: Courier)</li>
+		</ul>
+
+		<h4>See also</h4>
+		See <a href="../RNAseqExample/index.html#visualization">here</a> for example.</p>
+		
+				
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h2><a name="interactive">Interact with Scripts</a></h2>
+		Programs in this sub-section were created for fast answers of some specific questions like interval query and computing fisher exact test. These programs are made interactive so that they can be operated manually or programmatically. See <a href="http://perldoc.perl.org/perlipc.html#Bidirectional-Communication-with-Another-Process">here</a> for an example perl code.<p>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="statistics.FisherExactTest">statistics.FisherExactTest</a></h3>
+		This program can be operated in three modes, depending on the number of command-line parameters:
+		<ol>
+			<li> four parameters: the four parameters will be treated as n11, n12, n21, and n22. A fisher exact test shall then be carried out so that the left-tail, right-tail, and two-tail probabilities are reported.</li>
+			<li> two parameters: the two parameters will be treated as the input file and the output file. The input file should contains four numbers per each line so that a fisher exact test will be computed for each line. Output probabilities will be stored in one line for each test.</li>
+			<li> no paramters: four numbers should be in every line of the standard input, and the three probabilities will be outputted to the standard output.</li>
+		</ol>
+
+		<h4>Special thanks</h4>
+		The computing module of the fisher exact test was modified from a java script of Dr. Oyvind Langsrud (permission granted, see <a href="http://www.langsrud.com/fisher.htm">here</a> for his on-line fisher exact test).
+		<hr>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="special.GeneQuery">special.GeneQuery</a></h3>
+		This program reads genomic position (or interval) queries and answers matched genic objected described in a given .cgff file. Every line in the input file is considered as a query, where its first token should be a genomic position or interval in one of the following formats:
+		<ol>
+			<li>&lt;chromosome&gt;:&lt;position&gt;</li>
+			<li>&lt;chromosome&gt;(&lt;start&gt;,&lt;stop&gt;)</li>
+		</ol>
+		Second to fourth tokens are optional:
+		<ol>
+			<li>if the second token exists: this token will be considered as a boolean value, which decides, for every gene, to take only exonic regions to test the query or not (gene regions including intronic region)</li>
+			<li>if the third token exists: this token will be considered as a boolean value, which decides to the way to test the query. If <i>true</i>, by containment; otherwise, by intersection.</li>
+			<li>if the fourth token exists: this token will be considered as an integer, which means the minimum length to qualify the containment or the intersection</li>
+		</ol>
+
+		<h4>Parameters</h4>
+		<ul>
+			<li>-GFF: input .cgff file, defines gene regions and exon regions.</li>
+			<li>-I: the input file, one query per line. This will be the standard input if this option is not applied.</li>
+			<li>-O: the output file, each line contains answers for each query. This will be the standard output if this option is not applied.</li>
+			<li>-exon: default value when the second token not present. (default: true)</li>
+			<li>-contain: default value when the third token not present. (default: true)</li>
+			<li>-min: default value when the fourth token not present. (default: 8)</li>
+		</ul>
+		<hr>
+
+
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="special.IntervalQuery">special.IntervalQuery</a></h3>
+		This program maintains <a href="http://en.wikipedia.org/wiki/Interval_tree">interval tree</a> data structures so that interval queries can be answered fast. This program reads two commands from the standard input:
+		<ol>
+			<li><i>insert</i> &lt;sequence&gt; &lt;start&gt; &lt;stop&gt;: insert the interval [<i>start</i>,<i>stop</i>] (both ends included) on <i>sequence</i></li>
+			<li><i>query</i> &lt;sequence&gt; &lt;start&gt; &lt;stop&gt;: query intervals overlapping [<i>start</i>,<i>stop</i>] on <i>sequence</i>. The output should be in one line. Outputted intervals will be comma-separated.</li>
+		</ol>
+
+
+		<hr size=6>
+		<table border=2 align=right><tr><td><a href="#top">top</a></td></tr></table>
+		<h3><a name="mappingFormats">Supported formats of mapping results</a></h3>
+		RACK<font color="blue"><b>J</b></font> now supports the PSL/PSLX format and the SAM format. The SAM portion was done by incorporating the <a href="http://picard.sourceforge.net/index.shtml">Picard</a> program (download <i>sam-x.yz.jar</i> <a href="https://sourceforge.net/projects/picard/files/">here</a>).</p>
+		
+		<h4>Supported formats and its method string</h4>
+		Here is a list of method strings (for option <i>-M</i> of all above programs) and the corresponding format:
+		<ul>
+			<li>BLAT: made by <a href="http://genome.ucsc.edu/FAQ/FAQblat.html#blat3">the BLAT program</a>, AKA <a href="http://genome.ucsc.edu/FAQ/FAQformat.html#format2">the PSL format</a>.</li>
+			<li>PSLX: made by <a href="http://genome.ucsc.edu/FAQ/FAQblat.html#blat3">the BLAT program</a>, with option <i>-out=pslx</i>.</li>
+			<li>SAM: the <a href="http://samtools.sourceforge.net/">Sequence Alignment/Map</a> format. We have tested the following tools:
+			<ol>
+				<li><a href="http://research-pub.gene.com/gmap/">GSNAP</a>: with option <i>--format=sam</i></li>
+				<li><a href="http://bowtie-bio.sourceforge.net/index.shtml">Bowtie</a>: with option <i>--sam</i></li>
+				<li><a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">Bowtie2</a></li>
+			</ol>
+			</li>
+		</ul>
+		
+		<h4>Notes</h4>
+		<ul>
+			<li>Remember to replace &quot;-classpath rackj.jar&quot; with &quot;-classpath rackj.jar<font color="red"><b>;</b></font>yourSamJarPath&quot; (note that the <i>Path Separator</i> for Windows <font color="red"><b>;</b></font> and for UN*X <font color="red"><b>:</b></font>) when processing a SAM or BAM file.</li>
+			<li>All programs at this page work properly with SAM files whose records of the same read ID are consecutive. Generally speaking, SAM or BAM files made directly by most aligners and BAM files sorted by names should fit this requirement.</li>
+			<li>We strongly suggest to use SAM/BAM files with the &quot;NM&quot; (Number of nucleotide differences) attribute or &quot;XM&quot; attribute made by Bowtie2.</li>
+		</ul>
+
+
+	</body>
+
+</html>
