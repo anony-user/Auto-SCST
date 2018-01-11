@@ -1,1 +1,1 @@
-sdf
+https://github.com/anony-user/Auto-SCST-Plugin
