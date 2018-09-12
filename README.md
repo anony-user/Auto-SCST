@@ -1,4 +1,4 @@
-- `plugin`: Contains `pluginpath.txt` that contains the path (https://github.com/anony-user/Auto-SCST-Plugin) to plugin jar and `demo.pdf` that shows the installation and usage instructions of the tool.
+- `plugin`: Contains `pluginpath.txt` that contains the path (https://github.com/anony-user/Auto-SCST-Plugin) to plugin jar and `README.pdf` that shows the installation and usage instructions of the tool.
 
 - `auto_generated_reports`: Contains the automatically generated reports of identified refactoring opportunities.
 
